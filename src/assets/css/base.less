@@ -41,30 +41,88 @@
 
 //主标题
 .extraLarge{
-    font-size: 32px;
+    @media screen {
+        @media (max-width:480px){
+            font-size: 20px;
+        }
+
+        @media (min-width:481px) and (max-width:1279px){
+            font-size: 26px;
+        }
+
+        @media (min-width:1280px){
+            font-size: 48px;
+        }
+    }
+    
 }
 
 //标题
 .large{
-    font-size: 24px;
+    @media screen {
+        @media (max-width:480px){
+            font-size: 18px;
+        }
+
+        @media (min-width:481px) and (max-width:1279px){
+            font-size: 20px;
+        }
+
+        @media (min-width:1280px){
+            font-size: 24px;
+        }
+    }
 }
 
 //小标题
 .medium{
-    font-size: 20px;
+    @media screen {
+        @media (max-width:480px){
+            font-size: 16px;
+        }
+
+        @media (min-width:481px) and (max-width:1279px){
+            font-size: 18px;
+        }
+
+        @media (min-width:1280px){
+            font-size: 20px;
+        }
+    }
 }
 
 //正文
 .base{
-    font-size: 18px;
+    
+    @media screen {
+        @media (max-width:480px){
+            font-size: 14px;
+        }
+
+        @media (min-width:481px) and (max-width:1279px){
+            font-size: 16px;
+        }
+
+        @media (min-width:1280px){
+            font-size: 18px;
+        }
+    }
 }
 
 .small{
-    font-size: 16px;
-}
+    @media screen {
+        @media (max-width:480px){
+            font-size: 12px;
+        }
 
-.mini{
-    font-size: 14px;
+        @media (min-width:481px) and (max-width:1279px){
+            font-size: 14px;
+        }
+
+        @media (min-width:1280px){
+            font-size: 16px;
+        }
+    }
 }
 
 
@@ -79,4 +137,20 @@
 //伸缩布局
 .flex{
     display: flex;
+}
+
+//水平居中
+.justifyCenter{
+    justify-content: center;
+}
+
+//垂直居中
+.itemsCenter{
+    align-items: center;
+}
+
+//居中
+.flexCenter{
+    .justifyCenter;
+    .itemsCenter;
 }
