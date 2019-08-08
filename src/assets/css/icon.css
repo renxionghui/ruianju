@@ -1,0 +1,163 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('./fonts/icomoon.eot?kkbndz');
+  src:  url('./fonts/icomoon.eot?kkbndz#iefix') format('embedded-opentype'),
+    url('./fonts/icomoon.ttf?kkbndz') format('truetype'),
+    url('./fonts/icomoon.woff?kkbndz') format('woff'),
+    url('./fonts/icomoon.svg?kkbndz#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-left:before {
+  content: "\e900";
+  color: #fff;
+}
+.icon-arrow-right:before {
+  content: "\e901";
+  color: #fff;
+}
+.icon-bed:before {
+  content: "\e902";
+  color: #fff;
+}
+.icon-camera .path1:before {
+  content: "\e903";
+  color: rgb(51, 51, 51);
+}
+.icon-camera .path2:before {
+  content: "\e904";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-camera .path3:before {
+  content: "\e905";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-clock:before {
+  content: "\e906";
+  color: #3bac37;
+}
+.icon-contact:before {
+  content: "\e907";
+  color: #bdb194;
+}
+.icon-dollar:before {
+  content: "\e908";
+  color: #3bac37;
+}
+.icon-eye:before {
+  content: "\e909";
+  color: #fff;
+}
+.icon-facebook .path1:before {
+  content: "\e90a";
+  color: rgb(48, 173, 55);
+}
+.icon-facebook .path2:before {
+  content: "\e90b";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-furniture:before {
+  content: "\e90c";
+  color: #fff;
+}
+.icon-home:before {
+  content: "\e90d";
+  color: #fff;
+}
+.icon-house:before {
+  content: "\e90e";
+  color: #fff;
+}
+.icon-line:before {
+  content: "\e90f";
+  color: #3bac37;
+}
+.icon-location2:before {
+  content: "\e910";
+  color: #fff;
+}
+.icon-organization:before {
+  content: "\e911";
+  color: #fff;
+}
+.icon-play .path1:before {
+  content: "\e912";
+  color: rgb(255, 255, 255);
+}
+.icon-play .path2:before {
+  content: "\e913";
+  margin-left: -1em;
+  color: rgb(58, 174, 54);
+}
+.icon-plus:before {
+  content: "\e914";
+  color: #41a839;
+}
+.icon-refresh:before {
+  content: "\e915";
+  color: #41a839;
+}
+.icon-service:before {
+  content: "\e916";
+  color: #bdb194;
+}
+.icon-wechat .path1:before {
+  content: "\e917";
+  color: rgb(48, 173, 55);
+}
+.icon-wechat .path2:before {
+  content: "\e918";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-wechat .path3:before {
+  content: "\e919";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-weibo .path1:before {
+  content: "\e91a";
+  color: rgb(48, 173, 55);
+}
+.icon-weibo .path2:before {
+  content: "\e91b";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-weibo .path3:before {
+  content: "\e91c";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-weibo .path4:before {
+  content: "\e91d";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-weibo .path5:before {
+  content: "\e91e";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-www:before {
+  content: "\e91f";
+}

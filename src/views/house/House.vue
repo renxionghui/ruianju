@@ -121,6 +121,11 @@
         </div>
       </el-col>
     </el-row>
+
+    <!-- 走势图 -->
+    <div id='chartvisio1'>
+
+    </div>
   </div>
 </template>
 <script>
@@ -178,6 +183,10 @@ stores, restaurants etc. Proud ownership of this fabulous townhouse!...`
         phone: "604-279-9822"
       }
     };
+  },
+  mounted(){
+    makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},
+                               {col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
   }
 };
 </script>
@@ -390,6 +399,11 @@ stores, restaurants etc. Proud ownership of this fabulous townhouse!...`
         border-bottom: 4px solid @themeColor;
     }
   }
+}
+
+#chartvisio1{
+  width: 100%;
+  height:500px;
 }
 </style>
 

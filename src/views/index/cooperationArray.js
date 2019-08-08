@@ -1,0 +1,65 @@
+/**
+ * 合作伙伴
+ */
+export default [
+    {
+        logo:require('../../assets/image/hz1.png'),
+        name:'胡润百货',
+        url:'http://www.hurun.net/CN/Default.aspx'
+    },
+    {
+        logo:require('../../assets/image/hz2.png'),
+        name:'财富品质',
+        url:'https://caifupinzhi.zazhi.com/'
+    },
+    {
+        logo:require('../../assets/image/hz3.png'),
+        name:'中金网',
+        url:'http://www.cngold.com.cn'
+    },
+    {
+        logo:require('../../assets/image/hz4.png'),
+        name:'Property Report',
+        url:'http://www.property-report.com/'
+    },
+    {
+        logo:require('../../assets/image/hz5.png'),
+        name:'《Elite▪精英生活》',
+        url:'https://weibo.com/elitecsn'
+    },
+    {
+        logo:require('../../assets/image/hz6.png'),
+        name:'环球外汇',
+        url:'http://cnforex.com/'
+    },
+    {
+        logo:require('../../assets/image/hz7.png'),
+        name:'Webmainland',
+        url:'http://www.webmainland.com/'
+    },
+    {
+        logo:require('../../assets/image/hz8.png'),
+        name:'总裁网',
+        url:'http://www.ichinaceo.com/'
+    },
+    {
+        logo:require('../../assets/image/hz9.png'),
+        name:'中华商报',
+        url:'https://www.chinesebiznews.com/news'
+    },
+    {
+        logo:require('../../assets/image/hz10.png'),
+        name:'21世纪网',
+        url:'http://www.21cn.com/'
+    },
+    {
+        logo:require('../../assets/image/hz11.png'),
+        name:'慢生活俱乐部',
+        url:'http://www.mshjlb.com/'
+    },
+    {
+        logo:require('../../assets/image/hz12.png'),
+        name:'新东方',
+        url:'http://www.xdf.cn/'
+    },
+]
