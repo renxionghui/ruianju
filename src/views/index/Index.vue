@@ -145,7 +145,7 @@
               <p>{{item.username}}</p>
               <p>{{item.from}}</p>
             </div>
-            <span v-if="item.listingtype == "saled"">已售</span>
+            <span v-if="item.listingtype == 'saled'">已售</span>
           </div>
           <div class="item-detail" v-show="recommendHoverIndex == index && recommendHoverIndex!=7">
             <div class="item-detail-price" style="font-size:28px;">{{item.price}}</div>
@@ -194,7 +194,7 @@
     <div class="index-morehouse">
       <div class="common-title">更多房源</div>
       <div class="common-subtitle">商业地产，房产信托以及开发商新盘</div>
-      <el-row :gutter="12" style="margin-top:4vw;">
+      <el-row  style="margin-top:4vw;">
         <el-col :span="8" style="position:relative">
           <img :src="house1" alt style="width:100%;height:auto" />
           <div class="morehouse-descript">
@@ -222,15 +222,15 @@
     <div class="index-reading">
       <div class="common-title">相关阅读</div>
       <div class="common-subtitle">100+实力媒体跟踪报道，13大行业资质权威服务保障</div>
-      <el-row type="flex" justify="center" :gutter="64" style="margin-top:4vw">
-        <el-col :span="8">
+      <el-row style="margin-top:4vw;">
+        <el-col :span="8" :offset="3">
           <el-card :body-style="{padding:'0px'}" shadow="hover" class="reading-item">
             <img :src="reading1" alt style="width:100%;height:auto" />
             <p v-if="articlesData.length>1">{{articlesData[0].title}}</p>
             <a v-if="articlesData.length>1" :href="articlesData[0].url">查看更多</a>
           </el-card>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" :offset='2'>
           <el-card :body-style="{padding:'0px'}" shadow="hover" class="reading-item">
             <img :src="reading2" alt style="width:100%;height:auto" />
             <p v-if="articlesData.length>1">{{articlesData[1].title}}</p>
@@ -304,7 +304,7 @@
       </div>
     </div>
 
-    <div class="index-footer">
+    <!-- <div class="index-footer">
         <div class="footer-top">
           <a href="">更多城市</a>
           <a href="">关于我们</a>
@@ -315,7 +315,9 @@
           ©海外瑞安居（北京）科技发展有限公司 版权所有|京ICP备17003593号
         </div>
         <img :src="require('../../assets/image/footer-logo.jpg')" height="64px" width="auto" alt="">
-    </div>
+    </div> -->
+
+    <common-footer></common-footer>
   </div>
 </template>
 <script>
@@ -334,8 +336,10 @@ import reading1 from "../../assets/image/reading1.png";
 import reading2 from "../../assets/image/reading2.png";
 import { log } from "util";
 import cooperationArray from "./cooperationArray";
+import CommonFooter from '../../components/CommonFooter.vue';
 export default {
   name: "Index",
+  components:{CommonFooter},
   data() {
     return {
       navList: [
@@ -459,9 +463,9 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../assets/css/base.less");
-#index {
-  width: 100vw;
-}
+// #index {
+//   width: 100vw;
+// }
 @vw100: 100vw;
 //图片基本路径
 @image: "../../assets/image";
@@ -471,6 +475,7 @@ export default {
   .nav-item {
     .primaryText;
     line-height: 100%;
+    .medium;
     &:nth-child(1) {
       border-bottom: 2px solid @themeColor;
     }
@@ -1027,42 +1032,6 @@ export default {
   }
 }
 
-//尾部
-.index-footer{
-  background-color: #000;
-  .whiteText;
-  .flex;
-  .flexCenter;
-  flex-direction: column;
-  height: 80px;
-  padding: 12px;
-  position: relative;
-
-  .footer-top{
-    a{
-      .small;
-      .boldText;
-      .whiteText;
-      padding: 0 12px;
-      line-height: 2em;
-    }
-
-    a+a{
-      border-left:2px solid #fff;
-    }
-  }
-
-  .footer-bottom{
-    font-size: 14px;
-  }
-
-  img{
-    position: absolute;
-    top:20px;
-    left: 48px;
-  }
-  
-}
 .common-title {
   .extraLarge;
   .boldText;

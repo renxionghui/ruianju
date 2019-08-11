@@ -185,8 +185,7 @@ stores, restaurants etc. Proud ownership of this fabulous townhouse!...`
     };
   },
   mounted(){
-    makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},
-                               {col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
+    makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},{col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
   }
 };
 </script>
@@ -200,6 +199,7 @@ stores, restaurants etc. Proud ownership of this fabulous townhouse!...`
   .nav-item {
     .primaryText;
     line-height: 100%;
+    .medium;
     &:nth-child(2) {
       border-bottom: 2px solid @themeColor;
     }

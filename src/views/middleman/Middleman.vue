@@ -28,29 +28,33 @@
     <div class="middleman-banner">
       <img :src="bannerUrl" />
       <div class="banner-masker">
-        <div class="contact-type" @click="showCTDialog=true">
-          <span class="el-icon-s-order"></span>联系方式
-        </div>
-        <div class="chinese-service" @click="showCSDialog=true">
-          <span class="el-icon-s-order"></span>中文服务
+        <div class="agent-name">{{agentInfo.username}}</div>
+        <div class="agent-corp">{{agentInfo.corp}}</div>
+        <div class="agent-visit">访问量：{{agentInfo.visit}}</div>
+        <div class="agent-contact">
+          <div class="contact-type" @click="showCTDialog=true">
+            <span class="icon-contact banner-icon"></span>联系方式
+          </div>
+          <div class="chinese-service" @click="showCSDialog=true">
+            <span class="icon-service banner-icon"></span>中文服务
+          </div>
         </div>
       </div>
     </div>
 
     <!-- 经纪人详情 -->
     <el-row class="middleman-detail">
-      <el-col :md="12" :xs="24" style="text-align:center;">
-        <img :src="middlemanUrl" alt />
+      <el-col :md="12" :xs="24" style="text-align:center;" class="agent-head">
+        <img :src="agentInfo.head2" alt width="60%" height="auto" />
+        <span class="agent-auth" v-if="agentInfo.auth">认证经纪</span>
       </el-col>
       <el-col :md="12" :xs="24">
         <div class="detail-title">
           <span>个人</span>介绍
         </div>
         <div class="detail-descript">
-          We believe the way to succeed in real estate is simple – conduct yourselves ethically, hold yourselves to high standards, and above all, always do the best possible thing for your clients. This simple recipe has yielded long term agent relationships, clients for life, and a steady stream of referral business, which is all the proof we need to know that what we do, we do right...
-          <a
-            href
-          >more>></a>
+          <span>{{agentInfo.selfintro}}</span>
+          <a :href="`http://${agentInfo.website}`" target="_blank">more>></a>
         </div>
       </el-col>
     </el-row>
@@ -58,42 +62,63 @@
     <!-- 推荐房源 -->
     <div class="middleman-recommend">
       <div :span="24" class="recommend-title">推荐房源</div>
-      <el-row type="flex" justify="center" :gutter="24">
-        <el-col :md="8" :xs="10">
-          <img :src="middlemanUrl" width="100%" height="auto" alt />
-        </el-col>
-        <el-col :md="8" :xs="10">
-          <img :src="middlemanUrl" width="100%" height="auto" alt />
-        </el-col>
-      </el-row>
+      <div class="recommend-list" v-if="recommendData.length>0">
+        <div
+          class="recommend-item"
+          v-for="(item,index) of recommendData"
+          :key="index"
+          @mouseover="recommendHoverIndex = index"
+          @mouseout="recommendHoverIndex = -1"
+          :style="{backgroundImage:`url(${item.img})`}"
+        >
+          <div class="item-agent" v-show="recommendHoverIndex != index">
+            <span v-if="item.salestatus == 'yes'">已售</span>
+          </div>
+          <div class="item-detail" v-show="recommendHoverIndex == index">
+            <div class="item-detail-price">{{item.price}}</div>
+            <div class="item-detail-addr">{{item.address}}</div>
+            <div class="item-detail-cityname">{{item.cityname}}</div>
 
-      <el-row type="flex" justify="center" :gutter="24">
-        <el-col :md="8" :xs="10">
-          <img :src="middlemanUrl" width="100%" height="auto" alt />
-        </el-col>
-        <el-col :md="8" :xs="10">
-          <img :src="middlemanUrl" width="100%" height="auto" alt />
-        </el-col>
-      </el-row>
+            <div class="item-detail-housetype">{{item.housetype}} | {{item.areas}}</div>
+            <div class="item-detail-roomcount">
+              <span class="icon-furniture">{{item.bashroom}}</span>
+              <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
+            </div>
+
+            <div class="item-detail-viewcount" style="margin-top:8px;">
+              <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
+              <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
+              <a :href='item.url' target="_blank">查看房源</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center">
+        <a class="recommend-button">查看更多</a>
+      </div>
     </div>
 
-    <el-dialog :visible.sync="showCTDialog" width="60%" center :show-close="false">
+
+    <el-dialog :visible.sync="showCTDialog" width="80%" center :show-close="false">
       <div slot="title" class="dialog-title">
         <span>经纪人联系方式</span>
         <span class="el-icon-close dialog-close" @click="handleClose"></span>
       </div>
       <el-row>
         <el-col :span="10" style="text-align:center">
-          <img :src="qrcodeUrl" alt width="80%" height="auto" />
+          <img :src="agentInfo.qrcode" alt width="80%" height="auto" />
           <p class="scan-add">扫一扫添加我为微信好友</p>
         </el-col>
         <el-col :span="14" class="contact-info">
-          <p class="name">ELISA YU</p>
-          <p class="company">麦当劳地产经纪 | 温哥华</p>
-          <p class="contact-method">电话 | 604-279-9822</p>
-          <p class="contact-method">邮箱 | elisayu.realty@gmail.com</p>
-          <p class="contact-method">地址 | 5188 Westminser HWY</p>
-          <p class="contact-method">网站 | www.elisayu.com</p>
+          <p class="name">{{agentInfo.username}}</p>
+          <p class="company">{{agentInfo.corpintro_cn||'地产经纪'}} | {{agentInfo.cityName}}</p>
+          <p class="contact-method">电话 | {{agentInfo.tel}}</p>
+          <p class="contact-method">邮箱 | {{agentInfo.email}}</p>
+          <p class="contact-method">地址 | {{agentInfo.address}}</p>
+          <p class="contact-method">
+            网站 |
+            <a :href="`http://${agentInfo.website}`" target="_blank">{{agentInfo.website}}</a>
+          </p>
         </el-col>
       </el-row>
     </el-dialog>
@@ -105,20 +130,28 @@
       </div>
       <el-row :gutter="12">
         <el-col :span="12">
-          <el-input placeholder="您的姓名"></el-input>
-          <el-input placeholder="您的邮箱"></el-input>
-          <el-input placeholder="免费注册获取我的独家地产资讯" type="textarea" :rows="3" resize="none"></el-input>
-          <el-button type="primary">发送</el-button>
+          <el-input placeholder="您的姓名" v-model="serviceParams.custname"></el-input>
+          <el-input placeholder="您的邮箱" v-model="serviceParams.custemail"></el-input>
+          <el-input
+            placeholder="免费注册获取我的独家地产资讯"
+            v-model="serviceParams.custmsg"
+            type="textarea"
+            :rows="3"
+            resize="none"
+          ></el-input>
+          <el-button type="primary" @click='handleSend' :disabled="!canSend">发送</el-button>
         </el-col>
-        <el-col :span="12" >
-          <div>
-            <p >扫一扫添加我为微信好友</p>
-            <img :src="qrcodeUrl" alt width="50%" height="auto" />
+        <el-col :span="10" :offset="2">
+          <div class="dialog-chinese-service">
+            <div class="qrcode">
+              <p>扫一扫添加我为微信好友</p>
+              <img :src="qrcodeUrl" alt width="50%" height="auto" />
+            </div>
+            <p class="name">{{agentInfo.username2}}</p>
+            <p class="contact-method">电话 | {{agentInfo.tel2}}</p>
+            <p class="contact-method">邮箱 | {{agentInfo.email2}}</p>
           </div>
-          
-          
         </el-col>
-        
       </el-row>
     </el-dialog>
   </div>
@@ -159,19 +192,60 @@ export default {
       middlemanUrl: middleman,
       qrcodeUrl: qrcode,
       showCTDialog: false,
-      showCSDialog: false
+      showCSDialog: false,
+      agentInfo: {},
+      agentId: 222,
+      sortMethod: "date",
+      serviceParams: {
+        custname: "", //姓名
+        custemail: "", //邮箱
+        custmsg: "" //留言
+      },
+      recommendData: [],
+      recommendHoverIndex: -1
     };
+  },
+  computed:{
+    canSend(){
+      return this.serviceParams.custname && this.serviceParams.custemail && this.serviceParams.custmsg;
+    }
   },
   methods: {
     handleClose() {
       this.showCTDialog = false;
       this.showCSDialog = false;
+    },
+    getAgentById() {
+      this.$get(this.$api.AGENT_BYID + "/" + this.agentId).then(resData => {
+        console.log("经纪人信息", resData);
+        this.agentInfo = resData;
+      });
+    },
+    getAgentListing() {
+      this.$get(
+        `${this.$api.AGENT_LISTINGS}/?id=${this.agentId}&sort=${this.sortMethod}`
+      ).then(resData => {
+        this.recommendData = resData.slice(0, 4);
+        console.log("推荐房源", this.recommendData);
+      });
+    },
+    handleSend(){
+      let params = {
+        userid:agentInfo.userid,
+        custname:serviceParams.custname,
+        custemail:serviceParams.custemail,
+        custmsg:serviceParams.custmsg
+      }
+      this.$post(this.$api.AGENT_CHINESE_SERVICE).then(resData=>{
+        this.$message({type:'success',message:'发送成功'})
+      })
     }
   },
-  mounted(){
+  mounted() {
     console.log(window.location.href);
-    let agnetId = `${agnetId}`
-    let host = 'http://192.168.43.233:8000/'
+    this.getAgentById();
+    this.getAgentListing();
+
     //经纪人信息
     /*
 active: "1"  废弃
@@ -219,12 +293,11 @@ website: "AmirMiri.com"  经纪人网站
     */
     // this.$http.get(host+'portal/agent/222')
 
-
     //推荐房源
-    let listingParams = {
-      id:'222',//必填
-      sort:'date'//排序  date:时间默认  price 价格   visit 访问量  -降序:-date -price  -visit
-    }
+    // let listingParams = {
+    //   id: "222", //必填
+    //   sort: "date" //排序  date:时间默认  price 价格   visit 访问量  -降序:-date -price  -visit
+    // };
     /*
 address: "209 1621 HAMILTON AVENUE"  地址
 areas: "543 sqft."   面积
@@ -244,13 +317,12 @@ visit: 146  访问量
     // this.$http.get(host+'portal/agent/listings',{params: {id: 222}})
 
     //中文服务 表单提交
-    let serviceParams = {
-        userid:'amir@amirmiri.com',
-        custname:'11111',//姓名
-        custemail:'2222',//邮箱
-        custmsg:'333333'//留言
-      
-    }
+    // let serviceParams = {
+    //   userid: "amir@amirmiri.com",
+    //   custname: "11111", //姓名
+    //   custemail: "2222", //邮箱
+    //   custmsg: "333333" //留言
+    // };
     // this.$http.post(host+'portal/chinese/service/',serviceParams);
   }
 };
@@ -258,7 +330,7 @@ visit: 146  访问量
 <style lang="less">
 @import url("../../assets/css/base.less");
 #middleman {
-  width: 100vw;
+  // width: 100vw;
 }
 @vw100: 100vw;
 //图片基本路径
@@ -268,6 +340,7 @@ visit: 146  访问量
   //导航
   .nav-item {
     .primaryText;
+    .medium;
     line-height: 100%;
     &:nth-child(3) {
       border-bottom: 2px solid @themeColor;
@@ -297,21 +370,56 @@ visit: 146  访问量
   .banner-masker {
     position: absolute;
     .flex;
+    flex-direction: column;
     .flexCenter;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
     background-color: rgba(0, 0, 0, 0.6);
-
-    .contact-type,
-    .chinese-service {
-      color: @white;
-      margin: 2vw;
+    //姓名
+    .agent-name {
+      .mostLarge;
+      .whiteText;
+      .boldText;
+      line-height: 2em;
+    }
+    //公司
+    .agent-corp {
       .large;
-      cursor: pointer;
-      &:hover {
-        opacity: 0.8;
+      .whiteText;
+      line-height: 3em;
+    }
+    //访问量
+    .agent-visit {
+      .medium;
+      .whiteText;
+      position: absolute;
+      bottom: 24px;
+      left: 10%;
+      border: 1px solid #fff;
+      border-radius: 12px;
+      padding: 12px 24px;
+    }
+    .agent-contact {
+      display: flex;
+      justify-content: center;
+
+      .contact-type,
+      .chinese-service {
+        color: @white;
+        margin: 2vw;
+        .large;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
+
+        .banner-icon {
+          position: relative;
+          padding: 12px;
+          top: 2px;
+        }
       }
     }
   }
@@ -329,10 +437,46 @@ visit: 146  访问量
     }
   }
 
+  .agent-head {
+    position: relative;
+    .agent-auth {
+      background-color: @themeColor;
+      border-radius: 32px;
+      border-color: 1px solid @white;
+      font-size: 32px;
+      position: absolute;
+      padding: 0 26px 0 64px;
+      height: 48px;
+      line-height: 48px;
+      bottom: 10%;
+      left: 22%;
+      box-sizing: border-box;
+      color: @white;
+      &::before {
+        content: "V";
+        border-radius: 50%;
+        border: 2px solid @white;
+        width: 48px;
+        height: 48px;
+        text-align: center;
+        line-height: 48px;
+        .boldText;
+        box-sizing: border-box;
+        top: 0;
+        left: 0;
+        position: absolute;
+      }
+    }
+  }
+
   .detail-descript {
     .regularText;
-    .base;
+    .large;
     padding: 2vw;
+    span {
+      .textLinesEllipsis;
+    }
+
     a {
       color: @themeColor;
       &:hover {
@@ -347,9 +491,113 @@ visit: 146  访问量
 
   .recommend-title {
     .boldText;
-    .extraLarge;
+    .mostLarge;
     text-align: center;
     line-height: 3em;
+  }
+
+  .recommend-list {
+    margin: 0 auto;
+
+    .flex;
+    .justifyCenter;
+    flex-wrap: wrap;
+
+    .recommend-item {
+      @media screen {
+        @media (max-width: 480px) {
+          width: 40vw;
+          height: 28vw;
+        }
+
+        @media (min-width: 481px) and (max-width: 1279px) {
+          width: 38vw;
+          height: 26vw;
+        }
+
+        @media (min-width: 1280px) and (max-width: 1439px) {
+          width: 36vw;
+          height: 24vw;
+        }
+
+        @media (min-width: 1440px) and (max-width: 1679px) {
+          width: 34vw;
+          height: 22vw;
+        }
+
+        @media (min-width: 1680px) {
+          width: 32vw;
+          height: 20vw;
+        }
+      }
+
+      margin: 24px 12px;
+      position: relative;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+
+      .item-agent {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: transparent;
+        span {
+          background-color: @themeColor;
+          .whiteText;
+          .large;
+          .boldText;
+          padding: 4px 48px;
+          position: absolute;
+          top: 32px;
+          left: 0;
+        }
+      }
+
+      .item-detail {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 32px;
+        .medium;
+        color: @white;
+        line-height: 1.8em;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        left: 0;
+        top: 0;
+
+        .item-detail-price {
+          .extraLarge;
+          .boldText;
+        }
+
+        .item-detail-viewcount {
+          position: absolute;
+          bottom: 32px;
+          width: 100%;
+          line-height: 1.5em;
+          a {
+            .medium;
+            color: @white;
+            line-height: 1.5em;
+            position: absolute;
+            right: 48px;
+            border: 1px solid @white;
+            padding: 4px 24px;
+            border-radius: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  .recommend-button {
+    .large;
+    .themeText;
+    border-bottom: 1px solid @themeColor;
+    line-height: 4em;
   }
 }
 
@@ -358,7 +606,7 @@ visit: 146  访问量
   padding: 0 4vw;
 
   .dialog-title {
-    .large;
+    .extraLarge;
     .boldText;
     line-height: 3em;
     border-bottom: 1px solid @secondaryTextColor;
@@ -377,37 +625,79 @@ visit: 146  访问量
   .scan-add {
     color: @themeColor;
     .medium;
-    line-height: 3em;
   }
 
-  .contact-info{
-    .name{
+  .contact-info {
+    .name {
+      .boldText;
+      .primaryText;
+      .large;
+      margin-top: 24px;
+    }
+
+    .company {
+      .large;
+      color: rgb(171, 137, 90);
+      margin-bottom: 2vw;
+    }
+
+    .contact-method {
+      .large;
+      line-height: 2em;
+      .secondaryText;
+      .textOverflowEllipsis;
+      a {
+        .secondaryText;
+      }
+    }
+  }
+
+  .dialog-chinese-service {
+    .qrcode {
+      width: 240px;
+      text-align: center;
+      p {
+        color: @themeColor;
+        .base;
+      }
+      img {
+        width: 90%;
+        height: auto;
+      }
+    }
+
+    .name {
       .boldText;
       .primaryText;
       .large;
     }
 
-    .company{
+    .contact-method {
       .medium;
-      color: rgb(171, 137, 90);
-      margin-bottom: 2vw;
-    }
-
-    .contact-method{
-      .medium;
-      line-height: 1.5em;
       .secondaryText;
+      .textOverflowEllipsis;
+      text-align: left;
     }
-
   }
 
-  .el-input{
-    margin-bottom: 2vw;
+  .el-input {
+    .medium;
+    margin-bottom: 24px;
+
+    .el-input__inner {
+      height: 56px;
+      line-height: 56px;
+    }
   }
 
-  .el-button{
-    margin-top: 2vw;
+  .el-textarea {
+    .medium;
+  }
+
+  .el-button {
+    margin-top: 24px;
     width: 100%;
+    .medium;
   }
 }
 </style>

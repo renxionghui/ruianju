@@ -1,4 +1,4 @@
-let host = 'http://www.realtoraccess.com/';
+let host = 'http://www.realtoraccess.com';
 export default {
     //首页
     INDEX_COUNT: host + '/portal/count',//计数
