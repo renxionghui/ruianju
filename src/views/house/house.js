@@ -21,6 +21,20 @@ Vue.prototype.$get = (url)=>{
   })
 }
 
+Vue.prototype.$post = (url,params) => {
+  return new Promise((resolve, reject) => {
+    axios.post(url,params).then(res => {
+      if (res.status == 200) {
+        if (res.data.code == '00') {
+          resolve(res.data.data);
+        } else {
+          reject('请求失败');
+        }
+      }
+    })
+  })
+}
+
 new Vue({
     render: h => h(House)
   }).$mount('#house')

@@ -27,7 +27,7 @@ Vue.prototype.$get = (url) => {
 
 Vue.prototype.$post = (url,params) => {
   return new Promise((resolve, reject) => {
-    axios.get(url,params).then(res => {
+    axios.post(url,params).then(res => {
       if (res.status == 200) {
         if (res.data.code == '00') {
           resolve(res.data.data);

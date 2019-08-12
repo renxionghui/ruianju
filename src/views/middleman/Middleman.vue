@@ -98,6 +98,15 @@
       </div>
     </div>
 
+    <!-- 公司介绍 -->
+    <div class='agent-corp-wrap'>
+      <div class="corp-video">
+        <!-- <img :src="agentInfo." alt=""> -->
+      </div>
+      <div class="corp-desc">
+
+      </div>
+    </div>
 
     <el-dialog :visible.sync="showCTDialog" width="80%" center :show-close="false">
       <div slot="title" class="dialog-title">
@@ -598,6 +607,14 @@ visit: 146  访问量
     .themeText;
     border-bottom: 1px solid @themeColor;
     line-height: 4em;
+  }
+}
+
+.agent-corp-wrap{
+  padding: 3vw 2vw;
+  display: flex;
+  .corp-video{
+    
   }
 }
 

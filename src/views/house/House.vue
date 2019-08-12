@@ -30,7 +30,7 @@
       <el-col :span="18">
         <div class="house-view-breadcrumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="item of breadcrumb" :key="item">{{item}}</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(item,index) of breadcrumb" :key="index">{{item}}</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </el-col>
@@ -164,7 +164,7 @@ export default {
       houseViewBg: houseView,
       qrcodeUrl: qrcode,
       middlemanUrl: middleman,
-      breadcrumb: ["全部", "加拿大", "英属哥伦比亚", "白石"],
+      breadcrumb: [],
       houseDetial: {
         price: "$865,000",
         city: "白石",
@@ -185,7 +185,51 @@ stores, restaurants etc. Proud ownership of this fabulous townhouse!...`
     };
   },
   mounted(){
-    makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},{col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
+    this.commitEmail();
+    this.getListingInfo();
+    this.getCrumbs();
+    this.getAgentListing();
+    // makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},{col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
+  },
+  methods:{
+    commitEmail(){
+      let params = {
+        userId : 'michellevaughan@shaw.ca',
+        mls:'r2263487',
+        email:'xxx@xxx.com',
+        name:'aaaa',
+        msg:'消息'
+      }
+      this.$post(this.$api.COMMIT_EMAIL,params).then(resData=>{
+        console.log('邮箱提交',resData);
+      })
+    },
+    getCrumbs(){
+      let city = 'Mission';
+      this.$get(`${this.$api.GET_CRUMBS}?city=${city}`).then(resData=>{
+        console.log(resData);
+        this.breadcrumb.push('全部');
+        this.breadcrumb.push(resData.country);
+        this.breadcrumb.push(resData.group);
+        this.breadcrumb.push(resData.prov);
+        this.breadcrumb.push(resData.city);
+        this.breadcrumb.push(resData.county);
+      })
+    },
+    getListingInfo(){
+       let mls = 'r2263487'
+       //r2003524
+      
+      this.$get(`${this.$api.GET_LISTING_INFO}?mls=${mls}`).then(resData=>{
+        console.log(resData);
+      })
+    },
+    getAgentListing(){
+      let mls = 'r2263487'
+      this.$get(`${this.$api.GET_AGENT_LISTING}?mls=${mls}`).then(resData=>{
+        console.log('经纪人信息',resData);
+      })
+    }
   }
 };
 </script>
