@@ -88,7 +88,7 @@
             <div class="item-detail-viewcount" style="margin-top:8px;">
               <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
               <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
-              <a :href='item.url' target="_blank">查看房源</a>
+              <a :href="item.url" target="_blank">查看房源</a>
             </div>
           </div>
         </div>
@@ -99,14 +99,43 @@
     </div>
 
     <!-- 公司介绍 -->
-    <div class='agent-corp-wrap'>
+    <div class="agent-corp-wrap">
       <div class="corp-video">
-        <!-- <img :src="agentInfo." alt=""> -->
+        <div class="button-play" @click="palyVideo">
+          <img :src="require('../../assets/image/icon-play.svg')" alt width="100%" height="100%" />
+          <video :src="agentInfo.corpVideo" v-if="agentInfo.corpVideo" width="0" height="0"></video>
+        </div>
       </div>
       <div class="corp-desc">
-
+        <div class="desc-title">
+          <span>公司</span>简介
+        </div>
+        <div class="desc-text" v-if="agentInfo.corpintro">{{agentInfo.corpintro}}</div>
+        <a v-if="agentInfo.corpintro" class="more">more>></a>
+        <div class="desc-text" v-else>无</div>
       </div>
     </div>
+
+    <!-- 个人介绍 -->
+    <div class="agent-personal-wrap">
+      <div class="personnal-banner">
+        <el-carousel :interval="3000" height="100%" width="100%" indicator-position="none">
+          <el-carousel-item v-for="item of agentInfo.agentImgs" :key="item">
+            <div class="banner-item" :style="{backgroundImage:`url(${item})`}"></div>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <div class="personnal-desc">
+        <div class="desc-title">
+          <span>关于</span>个人
+        </div>
+        <div class="desc-text" v-if="agentInfo.selfintro">{{agentInfo.selfintro}}</div>
+        <a v-if="agentInfo.selfintro" class="more">more>></a>
+        <div class="desc-text" v-else>无</div>
+      </div>
+    </div>
+    <!-- 通用尾部 -->
+    <CommonFooter></CommonFooter>
 
     <el-dialog :visible.sync="showCTDialog" width="80%" center :show-close="false">
       <div slot="title" class="dialog-title">
@@ -148,7 +177,7 @@
             :rows="3"
             resize="none"
           ></el-input>
-          <el-button type="primary" @click='handleSend' :disabled="!canSend">发送</el-button>
+          <el-button type="primary" @click="handleSend" :disabled="!canSend">发送</el-button>
         </el-col>
         <el-col :span="10" :offset="2">
           <div class="dialog-chinese-service">
@@ -170,8 +199,10 @@ import logo from "../../assets/image/logo.png";
 import banner from "../../assets/image/banner.png";
 import middleman from "../../assets/image/middleman.png";
 import qrcode from "../../assets/image/qrcode.png";
+import CommonFooter from '../../components/CommonFooter.vue';
 export default {
   name: "Middleman",
+  components:{CommonFooter},
   data() {
     return {
       navList: [
@@ -214,9 +245,13 @@ export default {
       recommendHoverIndex: -1
     };
   },
-  computed:{
-    canSend(){
-      return this.serviceParams.custname && this.serviceParams.custemail && this.serviceParams.custmsg;
+  computed: {
+    canSend() {
+      return (
+        this.serviceParams.custname &&
+        this.serviceParams.custemail &&
+        this.serviceParams.custmsg
+      );
     }
   },
   methods: {
@@ -238,16 +273,22 @@ export default {
         console.log("推荐房源", this.recommendData);
       });
     },
-    handleSend(){
+    handleSend() {
       let params = {
-        userid:agentInfo.userid,
-        custname:serviceParams.custname,
-        custemail:serviceParams.custemail,
-        custmsg:serviceParams.custmsg
+        userid: agentInfo.userid,
+        custname: serviceParams.custname,
+        custemail: serviceParams.custemail,
+        custmsg: serviceParams.custmsg
+      };
+      this.$post(this.$api.AGENT_CHINESE_SERVICE).then(resData => {
+        this.$message({ type: "success", message: "发送成功" });
+      });
+    },
+    palyVideo() {
+      if (this.agentInfo.cropVideo) {
+        let video = document.querySelector("video");
+        video.play();
       }
-      this.$post(this.$api.AGENT_CHINESE_SERVICE).then(resData=>{
-        this.$message({type:'success',message:'发送成功'})
-      })
     }
   },
   mounted() {
@@ -610,11 +651,109 @@ visit: 146  访问量
   }
 }
 
-.agent-corp-wrap{
+.agent-corp-wrap {
   padding: 3vw 2vw;
   display: flex;
-  .corp-video{
-    
+  justify-content: center;
+  .corp-video {
+    .flex;
+    .flexCenter;
+    margin: 2vw;
+    flex-direction: column;
+    background-image: url("../../assets/image/default-house.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 36vw;
+    height: 24vw;
+    .button-play {
+      width: 6vw;
+      height: 6vw;
+      background-color: #fff;
+      border-radius: 50%;
+      transition: all 0.3s;
+      &:hover {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .corp-desc {
+    margin: 2vw;
+    width: 36vw;
+    height: 24vw;
+    .desc-title {
+      .extraLarge;
+      .boldText;
+      .primaryText;
+      span {
+        padding-bottom: 12px;
+        border-bottom: 6px solid @themeColor;
+      }
+    }
+
+    .desc-text {
+      .large;
+      margin-top: 48px;
+      .textLinesEllipsis(7);
+    }
+    .more {
+      .themeText;
+      .large;
+    }
+  }
+}
+
+.agent-personal-wrap {
+  padding: 3vw 2vw;
+  display: flex;
+  justify-content: center;
+  .bgLight;
+  .el-carousel--horizontal{
+    height: 100%;
+
+    .el-carousel__arrow{
+      width: 48px;
+      height: 48px;
+      background-color: #fff;
+      .themeText;
+      font-size: 24px;
+      .boldText;
+    }
+  }
+  .personnal-banner {
+    margin: 2vw;
+    width: 36vw;
+    height: 24vw;
+    .banner-item {
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      height: 24vw;
+    }
+  }
+  .personnal-desc {
+    margin: 2vw;
+    width: 36vw;
+    height: 24vw;
+    .desc-title {
+      .extraLarge;
+      .boldText;
+      .primaryText;
+      span {
+        padding-bottom: 12px;
+        border-bottom: 6px solid @themeColor;
+      }
+    }
+
+    .desc-text {
+      .large;
+      margin-top: 48px;
+      .textLinesEllipsis(7);
+    }
+    .more {
+      .themeText;
+      .large;
+    }
   }
 }
 
