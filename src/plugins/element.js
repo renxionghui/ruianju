@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { Button,Image,Card,Row,Col,Carousel,CarouselItem,Dropdown,DropdownItem,DropdownMenu,
-    Breadcrumb,BreadcrumbItem,Input,Dialog
+    Breadcrumb,BreadcrumbItem,Input,Dialog,Form,FormItem
 } from 'element-ui'
 
 Vue.use(Button)
@@ -17,3 +17,5 @@ Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
 Vue.use(Input)
 Vue.use(Dialog)
+Vue.use(Form)
+Vue.use(FormItem)

@@ -3,10 +3,13 @@ import House from './House.vue'
 import '../../assets/css/common.less'
 import '../../plugins/element'
 import 'element-ui/lib/theme-chalk/display.css';
+import '../../assets/css/element-theme.css';
 import axios from 'axios';
 import api from './api';
+import {Message} from 'element-ui';
 
 Vue.prototype.$api = api;
+Vue.prototype.$message = Message;
 Vue.prototype.$get = (url)=>{
   return new Promise((resolve,reject)=>{
     axios.get(url).then(res=>{

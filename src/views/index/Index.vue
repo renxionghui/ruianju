@@ -75,7 +75,7 @@
       </el-card>
     </div>
     <!-- 经纪人轮播图 -->
-    <div class="index-banner-middleman">
+    <div class="index-banner-middleman hidden">
       <div class="index-banner-middleman-title">专业的海外置业顾问</div>
       <el-carousel :interval="3000" height="400px">
         <el-carousel-item v-for="(item,i) of middlemanBanner" :key="i">
@@ -97,7 +97,7 @@
       </el-carousel>
     </div>
     <!-- 原因 -->
-    <div class="index-why-middleman" >
+    <div class="index-why-middleman">
       <div class="why-header">
         <span>为何</span>要找专业的海外置业顾问?
       </div>
@@ -128,7 +128,7 @@
       </div>
     </div>
     <!-- 推荐 -->
-    <div class="index-recommend" >
+    <div class="index-recommend hidden">
       <div class="recommend-header">海外房产经纪推荐房源</div>
       <div class="recommend-list" v-if="recommendData.length>0">
         <div
@@ -181,7 +181,7 @@
       <span class="recommend-button">查看更多</span>
     </div>
     <!-- 描述 -->
-    <div class="index-describe" >
+    <div class="index-describe hidden">
       <div class="describe-header">海外瑞安居 - 海外房展第一门户</div>
       <div
         class="describe-base"
@@ -191,10 +191,10 @@
       </div>
     </div>
     <!-- 更多房源 -->
-    <div class="index-morehouse" >
+    <div class="index-morehouse hidden">
       <div class="common-title">更多房源</div>
       <div class="common-subtitle">商业地产，房产信托以及开发商新盘</div>
-      <el-row  style="margin-top:4vw;">
+      <el-row style="margin-top:4vw;">
         <el-col :span="8" style="position:relative">
           <img :src="house1" alt style="width:100%;height:auto" />
           <div class="morehouse-descript">
@@ -219,7 +219,7 @@
       </el-row>
     </div>
     <!-- 相关阅读 -->
-    <div class="index-reading" >
+    <div class="index-reading hidden">
       <div class="common-title">相关阅读</div>
       <div class="common-subtitle">100+实力媒体跟踪报道，13大行业资质权威服务保障</div>
       <el-row style="margin-top:4vw;">
@@ -230,7 +230,7 @@
             <a v-if="articlesData.length>1" :href="articlesData[0].url">查看更多</a>
           </el-card>
         </el-col>
-        <el-col :span="8" :offset='2'>
+        <el-col :span="8" :offset="2">
           <el-card :body-style="{padding:'0px'}" shadow="hover" class="reading-item">
             <img :src="reading2" alt style="width:100%;height:auto" />
             <p v-if="articlesData.length>1">{{articlesData[1].title}}</p>
@@ -240,7 +240,7 @@
       </el-row>
     </div>
     <!-- 公司动态 -->
-    <div class="index-corps" data-scroll-reveal>
+    <div class="index-corps hidden" data-scroll-reveal>
       <div class="common-title">房地产经纪公司动态</div>
       <div class="common-subtitle">扫描微信二维码，关注房地产经纪公司动态</div>
       <el-carousel :interval="3000" height="300px" indicator-position="none">
@@ -260,7 +260,7 @@
     </div>
 
     <!-- 媒体合作 -->
-    <div class="index-cooperation">
+    <div class="index-cooperation hidden">
       <div class="common-title">媒体合作</div>
       <div class="index-cooperation-list">
         <a
@@ -276,31 +276,35 @@
     </div>
 
     <!-- 公司简介 -->
-    <div class='index-corp-desc'>
-      <img :src="require('../../assets/image/corp_bg.png')" width="100%" height="auto" alt="">
+    <div class="index-corp-desc hidden">
+      <img :src="require('../../assets/image/corp_bg.png')" width="100%" height="auto" alt />
 
-      <div class='desc-wrap'>
-        <div class='desc-left'>
+      <div class="desc-wrap">
+        <div class="desc-left">
           <div class="desc-header">海外瑞安居 - 海外房展第一门户</div>
-          <div class="desc-base">海外瑞安居(简称“瑞安居”，RealtorAccess)，面向全球华人买家和买家，提供最及时的房产投资资讯、最高 效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及 潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平 台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外 华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提 供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是 全球海外房产投资者进行海外房产置业投资的不二选择。</div>
+          <div
+            class="desc-base"
+          >海外瑞安居(简称“瑞安居”，RealtorAccess)，面向全球华人买家和买家，提供最及时的房产投资资讯、最高 效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及 潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平 台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外 华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提 供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是 全球海外房产投资者进行海外房产置业投资的不二选择。</div>
           <div class="know-more">
             <a href>点击了解更多详情>></a>
           </div>
         </div>
-        <div class='desc-right'>
-          <div class='right-tab'>
-            <a href="">最新房源</a><a href="">经纪门户</a> <a href="">房价走势</a> <a href="">全球资讯</a>
+        <div class="desc-right">
+          <div class="right-tab">
+            <a href>最新房源</a>
+            <a href>经纪门户</a>
+            <a href>房价走势</a>
+            <a href>全球资讯</a>
           </div>
-          <div class='right-header'>关注瑞安居微信公众平台</div>
+          <div class="right-header">关注瑞安居微信公众平台</div>
           <p>客服专线 | 400 877 1896</p>
           <p>营业时间 | 周一至周日 | 9:00-17:00</p>
           <p>客服邮箱 | clientservice@realtoraccess.com</p>
           <div class="right-qrcode">
-            <img :src="require('../../assets/image/qrcode.png')" width="96px" height="96px" alt="">
+            <img :src="require('../../assets/image/qrcode.png')" width="96px" height="96px" alt />
           </div>
-          
         </div>
-        <div style='clear:both'></div>
+        <div style="clear:both"></div>
       </div>
     </div>
 
@@ -323,12 +327,12 @@ import reading1 from "../../assets/image/reading1.png";
 import reading2 from "../../assets/image/reading2.png";
 import { log } from "util";
 import cooperationArray from "./cooperationArray";
-import CommonFooter from '../../components/CommonFooter.vue';
-import ScrollReveal from 'scrollreveal';
-import {TweenLite} from "gsap/TweenLite";
+import CommonFooter from "../../components/CommonFooter.vue";
+import ScrollReveal from "scrollreveal";
+import { TweenLite } from "gsap/TweenLite";
 export default {
   name: "Index",
-  components:{CommonFooter},
+  components: { CommonFooter },
   data() {
     return {
       navList: [
@@ -372,7 +376,7 @@ export default {
         agent: 0,
         estate: 0
       },
-      totalData:{
+      totalData: {
         listing: 0,
         agent: 0,
         estate: 0
@@ -383,78 +387,87 @@ export default {
       articlesData: [],
       corpsData: [],
       cooperationArray,
-      sr:ScrollReveal(),
+      sr: ScrollReveal()
     };
   },
-  computed:{
-    listingNum(){
+  computed: {
+    listingNum() {
       return this.countData.listing.toFixed(0);
     },
-    estateNum(){
+    estateNum() {
       return this.countData.estate.toFixed(0);
     },
-    agentNum(){
+    agentNum() {
       return this.countData.agent.toFixed(0);
     }
   },
-  mounted() {  
+  mounted() {
     this.getCount();
     this.getAgents();
     this.getListings();
     this.getCorps();
     this.getArticles();
-    this.setScrollReveal();
+    // this.setScrollReveal();
   },
   methods: {
-    getOptions(beforeReveal=()=>{},afterReveal=()=>{}){
+    getOptions(beforeReveal = () => {}, afterReveal = () => {}) {
       let options = {
-        duration:500,
-        delay:100,
-        reset:true,
-        desktop:true,
-        easing:'linear',
-        opacity:0.8,
-        scale:0.9,
+        duration: 500,
+        delay: 100,
+        reset: true,
+        desktop: true,
+        opacity: 0.5,
+        scale: 0.8,
+        viewFactor: 0.1,
         beforeReveal,
-        afterReveal,
+        afterReveal
       };
       return options;
     },
-    setScrollReveal(){      
-      this.sr.reveal('.index-banner',this.getOptions())
-      this.sr.reveal('.index-data',this.getOptions(
-        ()=>{
-          this.countData= {listing: 0,agent: 0,estate: 0};
-        },
-        ()=>{
-          TweenLite.to(this.countData,2,{
-            listing:this.totalData.listing,
-            agent:this.totalData.agent,
-            estate:this.totalData.estate,
-          });
-        }
-      ))
-      this.sr.reveal('.index-banner-middleman',this.getOptions())
-      this.sr.reveal('.index-why-middleman',this.getOptions())
-      this.sr.reveal('.index-recommend',this.getOptions())
-      this.sr.reveal('.index-describe',this.getOptions())
-      this.sr.reveal('.index-reading',this.getOptions())
-      this.sr.reveal('.index-corps',this.getOptions())
-      this.sr.reveal('.index-morehouse',this.getOptions())
-      this.sr.reveal('.index-cooperation',this.getOptions())
-      this.sr.reveal('.index-corp-desc',this.getOptions())
+    setScrollReveal() {
+      this.sr.reveal(".index-banner", this.getOptions());
+      this.sr.reveal(
+        ".index-data",
+        this.getOptions(
+          () => {
+            this.countData = { listing: 0, agent: 0, estate: 0 };
+          },
+          () => {
+            TweenLite.to(this.countData, 2, {
+              listing: this.totalData.listing,
+              agent: this.totalData.agent,
+              estate: this.totalData.estate
+            });
+          }
+        )
+      );
+      this.sr.reveal(".index-banner-middleman", this.getOptions());
+      this.sr.reveal(".index-why-middleman", this.getOptions());
+      this.sr.reveal(".index-recommend", this.getOptions());
+      this.sr.reveal(".index-describe", this.getOptions());
+      this.sr.reveal(".index-reading", this.getOptions());
+      this.sr.reveal(".index-corps", this.getOptions());
+      this.sr.reveal(".index-morehouse", this.getOptions());
+      this.sr.reveal(".index-cooperation", this.getOptions());
+      this.sr.reveal(".index-corp-desc", this.getOptions());
+      this.sr.reveal(".index-recommend .recommend-item", {
+        reset:true,
+        interval:100
+      });
     },
     getCount() {
       this.$get(this.$api.INDEX_COUNT).then(resData => {
         this.totalData.listing = parseInt(resData.listing);
         this.totalData.agent = parseInt(resData.agent);
         this.totalData.estate = parseInt(resData.estate);
+        this.setScrollReveal();
       });
     },
     getAgents() {
       this.$get(this.$api.INDEX_AGENTS).then(resData => {
         for (let i = 0; i < resData.length; i += 4) {
           this.middlemanBanner.push(resData.slice(i, i + 4));
+          this.setScrollReveal();
         }
       });
     },
@@ -462,6 +475,7 @@ export default {
       this.$get(this.$api.INDEX_LISTINGS).then(resData => {
         for (let i = 0; i < resData.length; i += 7) {
           this.recommendData.push(resData.slice(i, i + 7));
+          this.setScrollReveal();
         }
       });
     },
@@ -470,6 +484,7 @@ export default {
         console.log("公司动态", resData);
         for (let i = 0; i < resData.length; i += 4) {
           this.corpsData.push(resData.slice(i, i + 4));
+          this.setScrollReveal();
         }
       });
     },
@@ -477,8 +492,9 @@ export default {
       this.$get(this.$api.INDEX_ARTICLES).then(resData => {
         console.log("相关阅读", resData);
         this.articlesData = resData;
+        this.setScrollReveal();
       });
-    },
+    }
   }
 };
 </script>
@@ -490,7 +506,7 @@ export default {
 @vw100: 100vw;
 //图片基本路径
 @image: "../../assets/image";
-.test{
+.test {
   visibility: hidden;
 }
 //头部
@@ -554,26 +570,27 @@ export default {
   padding: 6vw 0;
 
   .index-data-count {
-    .extraLarge;
+    .mostLarge;
     .themeText;
     .boldText;
     line-height: 6vw;
     position: relative;
     i {
       position: absolute;
-      right: -2vw;
+      right: -2.4vw;
       top: -1vw;
     }
   }
 
-  .el-button{
-    .medium;
+  .el-button {
+    .large;
     .boldText;
 
-    i{
-      position:relative;
+    i {
+      position: relative;
       .large;
       top: 4px;
+      margin-right: 12px;
     }
   }
 
@@ -593,7 +610,7 @@ export default {
   border-top: 1px solid #f0f0f0;
   .index-banner-middleman-title {
     .whiteText;
-    .large;
+    .extraLarge;
     .boldText;
     margin: 6vw 0;
     text-align: center;
@@ -708,10 +725,8 @@ export default {
     .flex;
     .primaryText;
     .boldText;
-    .large;
-    line-height: 48px;
+    .extraLarge;
     span {
-      height: 48px;
       border-bottom: 4px solid @themeColor;
     }
   }
@@ -743,7 +758,7 @@ export default {
     justify-content: center;
     text-align: center;
     a {
-      .base;
+      .medium;
       .boldText;
       color: @themeColor;
       border-bottom: 2px solid @themeColor;
@@ -764,14 +779,14 @@ export default {
   }
   .recommend-list {
     margin: 4vw auto;
-    width: 1200px;
+    // width: 1200px;
 
     .flex;
     .justifyCenter;
     flex-wrap: wrap;
     .recommend-item {
-      width: 280px;
-      height: 200px;
+      width: 20vw;
+      height: 14vw;
       margin: 8px 4px;
       position: relative;
       background-size: 100% 100%;
@@ -835,19 +850,37 @@ export default {
         height: 100%;
         box-sizing: border-box;
         padding: 12px;
-        font-size: 14px;
+        // font-size: 20px;
         color: @white;
         position: absolute;
         background-color: rgba(0, 0, 0, 0.5);
         left: 0;
         top: 0;
+        @media screen {
+
+          @media (min-width: 481px) and (max-width: 1279px) {
+            font-size: 12px;
+          }
+
+          @media (min-width: 1280px) and (max-width: 1439px) {
+            font-size: 14px;
+          }
+
+          @media (min-width: 1440px) and (max-width: 1679px) {
+            font-size: 18px;
+          }
+
+          @media (min-width: 1680px) {
+            font-size: 20px;
+          }
+        }
       }
     }
   }
 
   .recommend-button {
     .whiteText;
-    .base;
+    .medium;
     background-color: @themeColor;
     border-radius: 6px;
     padding: 8px 24px;
@@ -999,54 +1032,54 @@ export default {
 }
 
 //公司描述
-.index-corp-desc{
-  img{
+.index-corp-desc {
+  img {
     display: block;
   }
-  .desc-wrap{
+  .desc-wrap {
     background-color: #efefef;
     margin-top: -24px;
-    .desc-left{
+    .desc-left {
       float: left;
       width: 64%;
       box-sizing: border-box;
       padding: 24px 48px;
 
-      .desc-header{
+      .desc-header {
         .boldText;
         .medium;
         .primaryText;
         line-height: 3em;
       }
 
-      .desc-base{
+      .desc-base {
         .secondaryText;
         font-size: 14px;
       }
 
-      a{
+      a {
         color: #1cbb20;
         line-height: 3em;
       }
     }
 
-    .desc-right{
+    .desc-right {
       float: right;
       width: 36%;
       text-align: right;
       box-sizing: border-box;
-      padding:24px 48px;
-      .right-tab{
-        a{
-          color:#1cbb20;
+      padding: 24px 48px;
+      .right-tab {
+        a {
+          color: #1cbb20;
           padding: 0 8px;
         }
-        a+a{
-          border-left:1px solid #1cbb20;
+        a + a {
+          border-left: 1px solid #1cbb20;
         }
       }
 
-      .right-header{
+      .right-header {
         .boldText;
         .base;
         .primaryText;
@@ -1054,15 +1087,15 @@ export default {
         margin-top: 12px;
       }
 
-      p{
+      p {
         font-size: 14px;
         .secondaryText;
       }
 
-      .right-qrcode{
+      .right-qrcode {
         margin: 12px 0;
         .flex;
-        justify-content: flex-end
+        justify-content: flex-end;
       }
     }
   }
