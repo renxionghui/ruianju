@@ -39,7 +39,7 @@
         :body-style="{width:'12vw',height:'12vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
-          {{countData.listing}}
+          {{listingNum}}
           <i>+</i>
         </span>
         <span class="index-data-type">新增房源</span>
@@ -52,7 +52,7 @@
         :body-style="{width:'12vw',height:'12vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
-          {{countData.agent}}
+          {{agentNum}}
           <i>+</i>
         </span>
         <span class="index-data-type">新增经济</span>
@@ -65,7 +65,7 @@
         :body-style="{width:'12vw',height:'12vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
-          {{countData.estate}}
+          {{estateNum}}
           <i>+</i>
         </span>
         <span class="index-data-type">商业地产</span>
@@ -97,7 +97,7 @@
       </el-carousel>
     </div>
     <!-- 原因 -->
-    <div class="index-why-middleman">
+    <div class="index-why-middleman" >
       <div class="why-header">
         <span>为何</span>要找专业的海外置业顾问?
       </div>
@@ -128,7 +128,7 @@
       </div>
     </div>
     <!-- 推荐 -->
-    <div class="index-recommend">
+    <div class="index-recommend" >
       <div class="recommend-header">海外房产经纪推荐房源</div>
       <div class="recommend-list" v-if="recommendData.length>0">
         <div
@@ -181,7 +181,7 @@
       <span class="recommend-button">查看更多</span>
     </div>
     <!-- 描述 -->
-    <div class="index-describe">
+    <div class="index-describe" >
       <div class="describe-header">海外瑞安居 - 海外房展第一门户</div>
       <div
         class="describe-base"
@@ -191,7 +191,7 @@
       </div>
     </div>
     <!-- 更多房源 -->
-    <div class="index-morehouse">
+    <div class="index-morehouse" >
       <div class="common-title">更多房源</div>
       <div class="common-subtitle">商业地产，房产信托以及开发商新盘</div>
       <el-row  style="margin-top:4vw;">
@@ -219,7 +219,7 @@
       </el-row>
     </div>
     <!-- 相关阅读 -->
-    <div class="index-reading">
+    <div class="index-reading" >
       <div class="common-title">相关阅读</div>
       <div class="common-subtitle">100+实力媒体跟踪报道，13大行业资质权威服务保障</div>
       <el-row style="margin-top:4vw;">
@@ -240,7 +240,7 @@
       </el-row>
     </div>
     <!-- 公司动态 -->
-    <div class="index-corps">
+    <div class="index-corps" data-scroll-reveal>
       <div class="common-title">房地产经纪公司动态</div>
       <div class="common-subtitle">扫描微信二维码，关注房地产经纪公司动态</div>
       <el-carousel :interval="3000" height="300px" indicator-position="none">
@@ -304,19 +304,6 @@
       </div>
     </div>
 
-    <!-- <div class="index-footer">
-        <div class="footer-top">
-          <a href="">更多城市</a>
-          <a href="">关于我们</a>
-          <a href="">隐私条款</a>
-          <a href="">使用条款</a>
-        </div>
-        <div class="footer-botto">
-          ©海外瑞安居（北京）科技发展有限公司 版权所有|京ICP备17003593号
-        </div>
-        <img :src="require('../../assets/image/footer-logo.jpg')" height="64px" width="auto" alt="">
-    </div> -->
-
     <common-footer></common-footer>
   </div>
 </template>
@@ -337,6 +324,8 @@ import reading2 from "../../assets/image/reading2.png";
 import { log } from "util";
 import cooperationArray from "./cooperationArray";
 import CommonFooter from '../../components/CommonFooter.vue';
+import ScrollReveal from 'scrollreveal';
+import {TweenLite} from "gsap/TweenLite";
 export default {
   name: "Index",
   components:{CommonFooter},
@@ -383,51 +372,83 @@ export default {
         agent: 0,
         estate: 0
       },
+      totalData:{
+        listing: 0,
+        agent: 0,
+        estate: 0
+      },
       recommendData: [],
       recommendIndex: 0,
       recommendHoverIndex: -1,
       articlesData: [],
       corpsData: [],
-      cooperationArray
+      cooperationArray,
+      sr:ScrollReveal(),
     };
   },
-  mounted() {
+  computed:{
+    listingNum(){
+      return this.countData.listing.toFixed(0);
+    },
+    estateNum(){
+      return this.countData.estate.toFixed(0);
+    },
+    agentNum(){
+      return this.countData.agent.toFixed(0);
+    }
+  },
+  mounted() {  
     this.getCount();
     this.getAgents();
     this.getListings();
     this.getCorps();
     this.getArticles();
+    this.setScrollReveal();
   },
   methods: {
+    getOptions(beforeReveal=()=>{},afterReveal=()=>{}){
+      let options = {
+        duration:500,
+        delay:100,
+        reset:true,
+        desktop:true,
+        easing:'linear',
+        opacity:0.8,
+        scale:0.9,
+        beforeReveal,
+        afterReveal,
+      };
+      return options;
+    },
+    setScrollReveal(){      
+      this.sr.reveal('.index-banner',this.getOptions())
+      this.sr.reveal('.index-data',this.getOptions(
+        ()=>{
+          this.countData= {listing: 0,agent: 0,estate: 0};
+        },
+        ()=>{
+          TweenLite.to(this.countData,2,{
+            listing:this.totalData.listing,
+            agent:this.totalData.agent,
+            estate:this.totalData.estate,
+          });
+        }
+      ))
+      this.sr.reveal('.index-banner-middleman',this.getOptions())
+      this.sr.reveal('.index-why-middleman',this.getOptions())
+      this.sr.reveal('.index-recommend',this.getOptions())
+      this.sr.reveal('.index-describe',this.getOptions())
+      this.sr.reveal('.index-reading',this.getOptions())
+      this.sr.reveal('.index-corps',this.getOptions())
+      this.sr.reveal('.index-morehouse',this.getOptions())
+      this.sr.reveal('.index-cooperation',this.getOptions())
+      this.sr.reveal('.index-corp-desc',this.getOptions())
+    },
     getCount() {
       this.$get(this.$api.INDEX_COUNT).then(resData => {
-        let listing = parseInt(resData.listing);
-        let agent = parseInt(resData.agent);
-        let estate = parseInt(resData.estate);
-
-        let listingTimer = setInterval(() => {
-          this.countData.listing += 1000;
-          if (this.countData.listing >= listing) {
-            this.countData.listing = listing;
-            clearInterval(listingTimer);
-          }
-        }, 10);
-
-        let agentTimer = setInterval(() => {
-          this.countData.agent += 5;
-          if (this.countData.agent >= agent) {
-            this.countData.agent = agent;
-            clearInterval(agentTimer);
-          }
-        }, 100);
-
-        let estateTimer = setInterval(() => {
-          this.countData.estate += 1;
-          if (this.countData.estate >= estate) {
-            this.countData.estate = estate;
-            clearInterval(estateTimer);
-          }
-        }, 200);
+        this.totalData.listing = parseInt(resData.listing);
+        this.totalData.agent = parseInt(resData.agent);
+        this.totalData.estate = parseInt(resData.estate);
       });
     },
     getAgents() {
@@ -469,6 +490,9 @@ export default {
 @vw100: 100vw;
 //图片基本路径
 @image: "../../assets/image";
+.test{
+  visibility: hidden;
+}
 //头部
 .index-header {
   //导航

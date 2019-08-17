@@ -30,7 +30,7 @@
       <div class="banner-masker">
         <div class="agent-name">{{agentInfo.username}}</div>
         <div class="agent-corp">{{agentInfo.corp}}</div>
-        <div class="agent-visit">访问量：{{agentInfo.visit}}</div>
+        <div class="agent-visit">访问量：{{visitNum}}</div>
         <div class="agent-contact">
           <div class="contact-type" @click="showCTDialog=true">
             <span class="icon-contact banner-icon"></span>联系方式
@@ -127,12 +127,52 @@
       </div>
       <div class="personnal-desc">
         <div class="desc-title">
-          <span>关于</span>个人
+          <span>关于</span>
         </div>
         <div class="desc-text" v-if="agentInfo.selfintro">{{agentInfo.selfintro}}</div>
         <a v-if="agentInfo.selfintro" class="more">more>></a>
         <div class="desc-text" v-else>无</div>
       </div>
+    </div>
+
+    <!-- 联系方式 -->
+    <div class="agent-contact-wrap">
+      <div class="corp-logo">
+        <img :src="agentInfo.logo" alt="" width="100%" height="100%">
+      </div>
+      <div class="contact-detail">
+        <div class="detail-title">
+          <span>联系</span>方式
+        </div>
+        <div class="detail-name">
+          {{agentInfo.username}}
+        </div>
+        <div class="detail-corp">
+          {{agentInfo.corp}} | {{agentInfo.cityName}} 房产经纪
+        </div>
+        <div class="detail-phone">
+          <span><img class='detail-icon' :src="require('../../assets/image/icon-phone.svg')" alt=""></span>
+          <span>{{agentInfo.tel}}</span>
+        </div>
+        <div class="detail-email">
+          <span><img class='detail-icon' :src="require('../../assets/image/icon-email.svg')" alt=""></span>
+          <span>{{agentInfo.email}}</span>
+        </div>
+        <div class="detail-addr">
+          <span><img class='detail-icon' :src="require('../../assets/image/icon-location.svg')" alt=""></span>
+          <span>{{agentInfo.address}}</span>
+        </div>
+        <div class="detail-website">
+          <span><img class='detail-icon' :src="require('../../assets/image/icon-www.svg')" alt=""></span>
+          <span>{{agentInfo.website}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 免费注册 -->
+    <div class="agent-signin-wrap">
+      <span class='signin-text'>海外房产经纪人?</span>
+      <el-button type='primary'>免费注册</el-button>
     </div>
     <!-- 通用尾部 -->
     <CommonFooter></CommonFooter>
@@ -200,6 +240,8 @@ import banner from "../../assets/image/banner.png";
 import middleman from "../../assets/image/middleman.png";
 import qrcode from "../../assets/image/qrcode.png";
 import CommonFooter from '../../components/CommonFooter.vue';
+import {TweenLite} from "gsap/TweenLite";
+import ScrollReveal from 'scrollreveal';
 export default {
   name: "Middleman",
   components:{CommonFooter},
@@ -241,8 +283,13 @@ export default {
         custemail: "", //邮箱
         custmsg: "" //留言
       },
+      sr:ScrollReveal(),
       recommendData: [],
-      recommendHoverIndex: -1
+      recommendHoverIndex: -1,
+      visitData:{
+        visit:0,
+        totalVist:0
+      }
     };
   },
   computed: {
@@ -252,9 +299,43 @@ export default {
         this.serviceParams.custemail &&
         this.serviceParams.custmsg
       );
+    },
+    visitNum(){
+      return this.visitData.visit.toFixed(0);
     }
   },
   methods: {
+    getOptions(beforeReveal=()=>{},afterReveal=()=>{}){
+      let options = {
+        duration:500,
+        delay:100,
+        reset:true,
+        desktop:true,
+        easing:'linear',
+        distance:'-50px',
+        beforeReveal,
+        afterReveal,
+      };
+      return options;
+    },
+    setScrollReveal(){      
+      this.sr.reveal('.middleman-banner',this.getOptions(
+        ()=>{
+          this.visitData.visit = 0;
+        },
+        ()=>{
+          if(this.visitData.totalVisit>0){
+            TweenLite.to(this.visitData,2,{visit:this.visitData.totalVisit});
+          }
+        }
+      ))
+      this.sr.reveal('.middleman-detail .detail-title',this.getOptions())
+      this.sr.reveal('.middleman-recommend .recommend-title',this.getOptions())
+      this.sr.reveal('.agent-corp-wrap .desc-title',this.getOptions())
+      this.sr.reveal('.agent-personal-wrap .desc-title',this.getOptions())
+      this.sr.reveal('.agent-contact-wrap .detail-title',this.getOptions())
+      this.sr.reveal('.agent-signin-wrap .signin-text',this.getOptions())
+    },
     handleClose() {
       this.showCTDialog = false;
       this.showCSDialog = false;
@@ -263,6 +344,8 @@ export default {
       this.$get(this.$api.AGENT_BYID + "/" + this.agentId).then(resData => {
         console.log("经纪人信息", resData);
         this.agentInfo = resData;
+        this.visitData.totalVisit = parseInt(resData.visit);
+        TweenLite.to(this.visitData,2,{visit:this.visitData.totalVisit});
       });
     },
     getAgentListing() {
@@ -295,7 +378,7 @@ export default {
     console.log(window.location.href);
     this.getAgentById();
     this.getAgentListing();
-
+    this.setScrollReveal();
     //经纪人信息
     /*
 active: "1"  废弃
@@ -481,9 +564,10 @@ visit: 146  访问量
   .detail-title {
     .boldText;
     .extraLarge;
-    padding: 0 2vw 2vw;
+    
     span {
-      border-bottom: 4px solid @themeColor;
+      padding-bottom: 12px;
+      border-bottom: 6px solid @themeColor;
     }
   }
 
@@ -522,9 +606,9 @@ visit: 146  访问量
   .detail-descript {
     .regularText;
     .large;
-    padding: 2vw;
+    margin-top: 48px;
     span {
-      .textLinesEllipsis;
+      .textLinesEllipsis(9);
     }
 
     a {
@@ -754,6 +838,103 @@ visit: 146  访问量
       .themeText;
       .large;
     }
+  }
+}
+
+.agent-contact-wrap{
+  padding: 3vw 2vw;
+  display: flex;
+  justify-content: center;
+  .corp-logo{
+    margin: 2vw;
+    width: 36vw;
+    height: 24vw;
+  }
+
+  .contact-detail{
+    margin: 2vw;
+    width: 36vw;
+    height: 24vw;
+
+    .detail-title{
+      .extraLarge;
+      .boldText;
+      .primaryText;
+      span {
+        padding-bottom: 12px;
+        border-bottom: 6px solid @themeColor;
+      }
+    }
+
+    .detail-name{
+      margin-top: 48px;
+      .large;
+      .boldText;
+      .primaryText;
+    }
+
+    .detail-corp{
+      .large;
+      color:#A9854E;
+      .textOverflowEllipsis;
+      margin-bottom: 24px;
+    }
+
+    .detail-addr,.detail-phone,.detail-email,.detail-website{
+      .large;
+      .textOverflowEllipsis;
+      .regularText;
+
+      .detail-icon{
+        position: relative;
+        margin-right: 12px;
+        line-height: 1.5em;
+        top: 6px;
+        @media (max-width:480px){
+            width: 20px;
+            height:20px;
+        }
+
+        @media (min-width:481px) and (max-width:1279px){
+            width: 24px;
+            height:24px;
+        }
+
+        @media (min-width:1280px) and (max-width:1439px){
+            width: 28px;
+            height:28px;
+        }
+
+        @media (min-width:1440px) and (max-width:1679px) {
+            width: 32px;
+            height:32px;
+        }
+
+        @media (min-width:1680px){
+            width: 36px;
+            height:36px;
+        }
+      }
+    }
+  }
+}
+
+.agent-signin-wrap{
+  padding: 4vw;
+  .bgLight;
+  .flex;
+  .flexCenter;
+  flex-direction: column;
+  .signin-text{
+    .extraLarge;
+    .boldText;
+    margin: 2vw;
+  }
+
+  .el-button{
+    .medium;
+    font-weight: normal;
+    border-radius:12px;
   }
 }
 
