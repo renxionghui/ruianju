@@ -36,7 +36,7 @@
     <div class="index-data">
       <el-card
         shadow="hover"
-        :body-style="{width:'12vw',height:'12vw',display:'flex',flexDirection:'column',alignItems:'center'}"
+        :body-style="{width:'16vw',height:'16vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
           {{countData.listing}}
@@ -49,7 +49,7 @@
       </el-card>
       <el-card
         shadow="hover"
-        :body-style="{width:'12vw',height:'12vw',display:'flex',flexDirection:'column',alignItems:'center'}"
+        :body-style="{width:'16vw',height:'16vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
           {{countData.agent}}
@@ -62,7 +62,7 @@
       </el-card>
       <el-card
         shadow="hover"
-        :body-style="{width:'12vw',height:'12vw',display:'flex',flexDirection:'column',alignItems:'center'}"
+        :body-style="{width:'16vw',height:'16vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
           {{countData.estate}}
@@ -530,20 +530,32 @@ export default {
   padding: 6vw 0;
 
   .index-data-count {
-    .large;
+    .extraLarge;
     .themeText;
     .boldText;
-    line-height: 2em;
+    line-height: 6vw;
     position: relative;
     i {
       position: absolute;
-      right: -24px;
-      top: -12px;
+      right: -2vw;
+      top: -1vw;
+    }
+  }
+
+  .el-button{
+    .medium;
+    .boldText;
+
+    i{
+      position:relative;
+      .large;
+      top: 4px;
     }
   }
 
   .index-data-type {
-    .medium;
+    .large;
+    line-height: 4vw;
     .regularText;
     margin-bottom: 12px;
   }
