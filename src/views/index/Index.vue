@@ -124,7 +124,7 @@
         </div>
       </div>
       <div class="check-list">
-        <a href="/middleman.html">查看完整海外置业顾问名单>></a>
+        <a href="http://www.realtoraccess.com/web/agentlist/">查看完整海外置业顾问名单>></a>
       </div>
     </div>
     <!-- 推荐 -->
@@ -173,7 +173,12 @@
           class="recommend-item"
           style="display:flex;flex-direction:column;justify-content:center;align-items:center"
         >
-          <el-button icon="el-icon-plus" circle type="primary" style="font-weight:bold"></el-button>
+          <a
+            class="el-icon-plus publish-house"
+            href="http://webmainland.mikecrm.com/xxMXEHu"
+            target="_blank"
+            style="font-weight:bold"
+          ></a>
           <span style="color:#1CBB20;margin-top:12px;">发布房源</span>
         </div>
       </div>
@@ -243,12 +248,12 @@
     <div class="index-corps hidden" data-scroll-reveal>
       <div class="common-title">房地产经纪公司动态</div>
       <div class="common-subtitle">扫描微信二维码，关注房地产经纪公司动态</div>
-      <el-carousel :interval="3000" height="300px" indicator-position="none">
-        <el-carousel-item v-for="(item,i) of corpsData" :key="i">
+      <el-carousel :interval="3000" height="26vw" indicator-position="none">
+        <el-carousel-item v-for="(item,i) of corpsData" :key="i" class="carousel-item">
           <div class="index-corps-banner-item">
-            <div class="item-panel" v-for="(panelItem,index) of item" :key="index">
-              <div class="panel-logo" :style="{backgroundImage:panelItem.logo}">
-                <div class="panel-qrcode">
+            <div class="item-panel" v-for="(panelItem,index) of item" :key="index" @mouseover="corpHoverIndex=index" @mouseout="corpHoverIndex=-1">
+              <div class="panel-logo" :style="{backgroundImage:`url(${panelItem.logo})`}">
+                <div class="panel-qrcode" v-show="corpHoverIndex == index">
                   <img :src="panelItem.qr_code" alt />
                 </div>
               </div>
@@ -257,6 +262,8 @@
           </div>
         </el-carousel-item>
       </el-carousel>
+
+      <div class="divider"></div>
     </div>
 
     <!-- 媒体合作 -->
@@ -386,6 +393,7 @@ export default {
       recommendHoverIndex: -1,
       articlesData: [],
       corpsData: [],
+      corpHoverIndex:-1,
       cooperationArray,
       sr: ScrollReveal()
     };
@@ -451,8 +459,8 @@ export default {
       this.sr.reveal(".index-cooperation", this.getOptions());
       this.sr.reveal(".index-corp-desc", this.getOptions());
       this.sr.reveal(".index-recommend .recommend-item", {
-        reset:true,
-        interval:100
+        reset: true,
+        interval: 100
       });
     },
     getCount() {
@@ -857,7 +865,6 @@ export default {
         left: 0;
         top: 0;
         @media screen {
-
           @media (min-width: 481px) and (max-width: 1279px) {
             font-size: 12px;
           }
@@ -873,6 +880,16 @@ export default {
           @media (min-width: 1680px) {
             font-size: 20px;
           }
+        }
+      }
+
+      .publish-house {
+        .whiteText;
+        background-color: @themeColor;
+        padding: 24px;
+        border-radius: 50%;
+        &:hover {
+          opacity: 0.8;
         }
       }
     }
@@ -984,7 +1001,13 @@ export default {
 
 //公司动态
 .index-corps {
-  padding: 6vw 0;
+  padding-top: 6vw;
+  .divider {
+    width: 80%;
+    height: 1px;
+    background-color: #aaa;
+    margin: 2vw auto 0;
+  }
 
   .index-corps-banner-item {
     width: 80%;
@@ -992,7 +1015,36 @@ export default {
     .flex;
     justify-content: space-around;
     padding: 24px;
-    border-bottom: 1px solid rgb(217, 217, 217);
+
+    .item-panel {
+      width: 20vw;
+      height: 24vw;
+      .panel-logo{
+        width: 20vw;
+        height: 20vw;
+        background-size: 100% 100%;
+
+        .panel-qrcode{
+          width: 20vw;
+          height: 20vw;
+          box-sizing: border-box;
+          border: 4px solid @themeColor;
+          img{
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+
+
+      .panel-name{
+        .boldText;
+        .large;
+        .regularText;
+        text-align: center;
+        line-height: 2em;
+      }
+    }
   }
 }
 

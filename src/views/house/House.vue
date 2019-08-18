@@ -355,15 +355,15 @@ export default {
   },
   mounted() {
     //TODO 获取mls
-    this.mls = "r2263487";
-    this.city = "Mission";
+    let href = window.location.href;
+    this.mls = href.substring(href.lastIndexOf('/')+1)
     // this.commitEmail();
     this.getListingInfo();
-    this.getCrumbs();
+    // this.getCrumbs();
     this.getAgentListing();
     this.getRecommend();
     this.cityPrice();
-    this.getNearby();
+    // this.getNearby();
     this.newListings();
     this.initChart();
     // makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},{col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
@@ -533,6 +533,9 @@ export default {
           this.listingInfo.houseTypeInfo = `${resData.bedroom || 0}室${parseInt(
             resData.toilet
           )}卫`;
+          this.city = resData.cityname;
+          this.getCrumbs();
+          this.getNearby();
           this.$nextTick(() => {
             this.setDeatilSr();
           });

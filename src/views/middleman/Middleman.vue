@@ -365,7 +365,7 @@ export default {
     },
     getAgentListing() {
       this.$get(
-        `${this.$api.AGENT_LISTINGS}/?id=${this.agentId}&sort=${this.sortMethod}&page=1&page_size=4`
+        `${this.$api.AGENT_LISTINGS}/?id=${this.agentId}&sort=${this.sortMethod}`
       ).then(resData => {
         this.recommendData = resData.slice(0, 4);
         this.$nextTick(() => {
@@ -393,6 +393,8 @@ export default {
   },
   mounted() {
     console.log(window.location.href);
+    let href = window.location.href;
+    this.agentId = href.substring(href.lastIndexOf('/')+1)
     this.getAgentById();
     this.getAgentListing();
 
