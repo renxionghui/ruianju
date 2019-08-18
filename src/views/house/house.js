@@ -7,6 +7,7 @@ import '../../assets/css/element-theme.css';
 import axios from 'axios';
 import api from './api';
 import {Message} from 'element-ui';
+import '../../assets/css/icon.css'
 
 Vue.prototype.$api = api;
 Vue.prototype.$message = Message;

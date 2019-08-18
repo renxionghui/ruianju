@@ -4,6 +4,10 @@ export default {
     GET_CRUMBS:host+'/portal/get/crumbs/',
     COMMIT_EMAIL:host+'/portal/commit/email/',
     GET_AGENT_LISTING:host+'/portal/get/agent/of/listing/',
+    GET_RECOMMEND:host+'/portal/get/rcmd/listings/',
+    CITY_PRICE:host+'/portal/city/price/',
+    GET_NEARBY:host+'/portal/get/nearby/',
+    NEW_LISTINGS:host+'/portal/new/listings/'
 }
 
 /*

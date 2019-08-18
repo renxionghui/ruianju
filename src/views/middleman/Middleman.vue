@@ -365,7 +365,7 @@ export default {
     },
     getAgentListing() {
       this.$get(
-        `${this.$api.AGENT_LISTINGS}/?id=${this.agentId}&sort=${this.sortMethod}`
+        `${this.$api.AGENT_LISTINGS}/?id=${this.agentId}&sort=${this.sortMethod}&page=1&page_size=4`
       ).then(resData => {
         this.recommendData = resData.slice(0, 4);
         this.$nextTick(() => {

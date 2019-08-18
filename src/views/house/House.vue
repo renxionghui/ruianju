@@ -162,16 +162,104 @@
       </el-row>
 
       <!-- 推荐房源 -->
-      <el-row>
-        <el-col class="house-recommend" :md="21" :offset="3">
+      <el-row class="house-recommend">
+        <el-col :md="21" :offset="3">
           <div class="recommend-title">
             <span>推荐</span>房源
           </div>
         </el-col>
-      </el-row>
+        <el-col :span="18" :offset="3">
+          <div class="recommend-list">
+            <div
+              class="recommend-item"
+              v-for="(item,index) of recommendData"
+              :class='[index%2==0?"recommend-item-left":"recommend-item-right"]'
+              :key="index"
+              @mouseover="recommendHoverIndex = index"
+              @mouseout="recommendHoverIndex = -1"
+              :style="{backgroundImage:`url(${item.imgs[0]})`}"
+            >
+              <div class="item-detail" v-show="recommendHoverIndex == index">
+                <div class="item-detail-price">{{item.price}}</div>
+                <div class="item-detail-addr">{{item.listingname}}</div>
+                <div class="item-detail-cityname">{{item.cityname}}</div>
 
-      <!-- 走势图 -->
-      <div id="chartvisio1"></div>
+                <div class="item-detail-housetype">{{item.housetype}} | {{item.areas}}</div>
+                <div class="item-detail-roomcount">
+                  <span class="icon-furniture">{{parseInt(item.toilet)}}</span>
+                  <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
+                </div>
+
+                <div class="item-detail-viewcount" style="margin-top:8px;">
+                  <span style="margin-right:12px; line-height:24px;">{{item.datadate.slice(0,10)}}</span>
+                  <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
+                  <a :href="item.url" target="_blank">查看房源</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-bottom:2vw">
+            <span class="recommend-button" type="text" @click="handleViewMore">查看更多</span>
+          </div>
+        </el-col>
+      </el-row>
+      <!-- 房源分析 -->
+      <el-row class="house-chart">
+        <el-col :span="18" :offset="3">
+          <div class="chart-title">
+            <span>房源</span>分析
+          </div>
+          <div id="chart1"></div>
+          <div id="chart2"></div>
+          <div id="chart3"></div>
+          <div id="chart4"></div>
+        </el-col>
+      </el-row>
+      <el-row class="house-about">
+        <el-col :span="6" :offset="3" class="about-left">
+          <div class="about-title">城市价格</div>
+          <div class="about-list">
+            <div class="about-item" v-for="(item,index) in cityPriceList" :key="index">
+              <a :href="item.url" target="_blank">
+                <span>{{item.cityName }}</span>
+                <span>{{item.city}}</span>
+              </a>
+            </div>
+          </div>
+          <a href class="view-more">查看更多</a>
+        </el-col>
+        <el-col :span="6">
+          <div class="about-title">周边房产</div>
+          <div class="about-list">
+            <div class="about-item" v-for="(item,index) in nearbyList" :key="index">{{item[1]}}</div>
+          </div>
+          <a href class="view-more">查看更多</a>
+        </el-col>
+        <el-col :span="6" class="about-right">
+          <div class="about-title">区域新盘</div>
+          <div class="about-list">
+            <div
+              class="about-item"
+              v-for="(item,index) in newListingList"
+              :key="index"
+            >
+              <a :href="item.url" target="_blank">
+                <span>{{item.price}},</span>
+                <span>{{item.areas}},</span>
+                <span>{{item.bedroom}}室{{parseInt(item.toilet)}}卫</span>
+                <span>{{item.listingname}}</span>
+              </a>
+            </div>
+          </div>
+          <a href class="view-more">查看更多</a>
+        </el-col>
+      </el-row>
+      <!-- 免费注册 -->
+      <div class="agent-signin-wrap">
+        <span class="signin-text">海外房产经纪人?</span>
+        <el-button type="primary">免费注册</el-button>
+      </div>
+      <common-footer></common-footer>
     </div>
     <div class="house-imgs-wrap" v-show="!showHouseDetail">
       <div class="house-imgs-header">
@@ -183,12 +271,6 @@
         </div>
       </div>
     </div>
-    <!-- 免费注册 -->
-    <div class="agent-signin-wrap">
-      <span class="signin-text">海外房产经纪人?</span>
-      <el-button type="primary">免费注册</el-button>
-    </div>
-    <common-footer></common-footer>
   </div>
 </template>
 <script>
@@ -225,6 +307,8 @@ export default {
           url: "/"
         }
       ],
+      mls: "",
+      city: "",
       logoUrl: logo,
       houseViewUrl: houseView,
       houseViewBg: houseView,
@@ -236,9 +320,15 @@ export default {
       notEmail1: false,
       notEmail2: false,
       showHouseDetail: true,
-      listingInfo: {},
-      agentInfo: {},
-      appointment: {}
+      listingInfo: {}, //房源信息
+      agentInfo: {}, //经纪人信息
+      appointment: {}, //预约model
+      recommendData: null, //推荐房源
+      recommendHoverIndex: -1,
+      page: 1,
+      cityPriceList: null, //城市价格
+      nearbyList: null, //周边房产
+      newListingList: null //区域新盘
     };
   },
   computed: {
@@ -252,6 +342,9 @@ export default {
         this.$nextTick(() => {
           this.setDeatilSr();
           this.setAgentSr();
+          this.setRecommendSr();
+          this.setAboutLeftSr();
+          this.setAboutRightSr();
         });
       } else {
         this.$nextTick(() => {
@@ -262,10 +355,17 @@ export default {
   },
   mounted() {
     //TODO 获取mls
+    this.mls = "r2263487";
+    this.city = "Mission";
     // this.commitEmail();
     this.getListingInfo();
     this.getCrumbs();
     this.getAgentListing();
+    this.getRecommend();
+    this.cityPrice();
+    this.getNearby();
+    this.newListings();
+    this.initChart();
     // makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},{col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
   },
   methods: {
@@ -307,12 +407,46 @@ export default {
         origin: "left"
       });
     },
+    setRecommendSr() {
+      this.sr.reveal(".recommend-item-left", {
+        delay: 100,
+        distance: "-100%",
+        opacity: 0.5,
+        reset: true,
+        origin: "right"
+      });
+      this.sr.reveal(".recommend-item-right", {
+        delay: 100,
+        distance: "-100%",
+        opacity: 0.5,
+        reset: true,
+        origin: "left"
+      });
+    },
+    setAboutLeftSr(){
+      this.sr.reveal(".about-left", {
+        delay: 100,
+        distance: "-100%",
+        opacity: 0.5,
+        reset: true,
+        origin: "right"
+      });
+    },
+    setAboutRightSr(){
+      this.sr.reveal(".about-right", {
+        delay: 100,
+        distance: "-100%",
+        opacity: 0.5,
+        reset: true,
+        origin: "left"
+      });
+    },
     handleAppointment() {
       let isEmail = this.isEmail(this.appointment.email);
       if (isEmail) {
         let params = {
           userId: this.agentInfo.userid,
-          mls: "r2263487",
+          mls: this.mls,
           email: this.appointment.email,
           name: this.appointment.name,
           msg: this.appointment.desc || "我对这个房源有兴趣，想要了解更多资讯。"
@@ -321,9 +455,9 @@ export default {
         this.$post(this.$api.COMMIT_EMAIL, params).then(resData => {
           this.notEmail2 = false;
           this.$message.success("预约成功!");
-          this.appointment.name = '';
-          this.appointment.email = '';
-          this.appointment.desc = '';
+          this.appointment.name = "";
+          this.appointment.email = "";
+          this.appointment.desc = "";
         });
       } else {
         this.notEmail2 = true;
@@ -331,6 +465,10 @@ export default {
     },
     handleBack() {
       this.showHouseDetail = true;
+    },
+    handleViewMore() {
+      this.page++;
+      this.getRecommend();
     },
     isEmail(str) {
       let email = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
@@ -342,9 +480,8 @@ export default {
       if (isEmail) {
         this.notEmail1 = false;
         let params = {
-          //TODO
           userId: "michellevaughan@shaw.ca",
-          mls: "r2263487",
+          mls: this.mls,
           email: this.headerEmail
         };
         this.$post(this.$api.COMMIT_EMAIL, params).then(resData => {
@@ -359,7 +496,7 @@ export default {
     commitEmail() {
       let params = {
         userId: "michellevaughan@shaw.ca",
-        mls: "r2263487",
+        mls: this.mls,
         email: "xxx@xxx.com",
         name: "aaaa",
         msg: "消息"
@@ -368,9 +505,9 @@ export default {
         console.log("邮箱提交", resData);
       });
     },
+    //面包屑
     getCrumbs() {
-      let city = "Mission";
-      this.$get(`${this.$api.GET_CRUMBS}?city=${city}`).then(resData => {
+      this.$get(`${this.$api.GET_CRUMBS}?city=${this.city}`).then(resData => {
         console.log(resData);
         this.breadcrumb.push("全部");
         this.breadcrumb.push(resData.country);
@@ -380,36 +517,89 @@ export default {
         this.breadcrumb.push(resData.county);
       });
     },
+    //房源详情
     getListingInfo() {
-      let mls = "r2263487";
       //r2003524
-
-      this.$get(`${this.$api.GET_LISTING_INFO}?mls=${mls}`).then(resData => {
-        if (resData.imgs.length >= 2) {
-          this.houseViewUrl = resData.imgs[0];
-          this.houseViewBg = resData.imgs[1];
-        } else if (resData.imgs.length > 0) {
-          this.houseViewUrl = resData.imgs[0];
-          this.houseViewBg = resData.imgs[0];
+      this.$get(`${this.$api.GET_LISTING_INFO}?mls=${this.mls}`).then(
+        resData => {
+          if (resData.imgs.length >= 2) {
+            this.houseViewUrl = resData.imgs[0];
+            this.houseViewBg = resData.imgs[1];
+          } else if (resData.imgs.length > 0) {
+            this.houseViewUrl = resData.imgs[0];
+            this.houseViewBg = resData.imgs[0];
+          }
+          this.listingInfo = resData;
+          this.listingInfo.houseTypeInfo = `${resData.bedroom || 0}室${parseInt(
+            resData.toilet
+          )}卫`;
+          this.$nextTick(() => {
+            this.setDeatilSr();
+          });
+          console.log("房屋信息", resData);
         }
-        this.listingInfo = resData;
-        this.listingInfo.houseTypeInfo = `${resData.bedroom || 0}室${parseInt(
-          resData.toilet
-        )}卫`;
-        this.$nextTick(() => {
-          this.setDeatilSr();
-        });
-        console.log("房屋信息", resData);
+      );
+    },
+    //经纪人信息
+    getAgentListing() {
+      this.$get(`${this.$api.GET_AGENT_LISTING}?mls=${this.mls}`).then(
+        resData => {
+          console.log("经纪人信息", resData);
+          this.agentInfo = resData;
+          this.$nextTick(() => {
+            this.setAgentSr();
+          });
+        }
+      );
+    },
+    //推荐房源
+    getRecommend() {
+      this.$get(
+        `${this.$api.GET_RECOMMEND}?mls=${this.mls}&page=${this.page}&page_size=4`
+      ).then(resData => {
+        this.recommendData = resData;
+        if (resData.length == 0) {
+          this.page = 1;
+        }
+        if (this.page == 1) {
+          this.$nextTick(() => {
+            this.setRecommendSr();
+          });
+        }
       });
     },
-    getAgentListing() {
-      let mls = "r2263487";
-      this.$get(`${this.$api.GET_AGENT_LISTING}?mls=${mls}`).then(resData => {
-        console.log("经纪人信息", resData);
-        this.agentInfo = resData;
-        this.$nextTick(() => {
-          this.setAgentSr();
-        });
+    //房源分析
+    initChart() {
+      initChart(23, "chart1", 410, {});
+      initChart(24, "chart2", 410, {});
+      initChart(25, "chart3", 410, {});
+      initChart(26, "chart4", 410, {});
+    },
+    //城市价格
+    cityPrice() {
+      this.$get(`${this.$api.CITY_PRICE}`).then(resData => {
+        console.log("城市价格", resData);
+        this.cityPriceList = resData;
+        this.$nextTick(()=>{
+          this.setAboutLeftSr()
+        })
+      });
+    },
+    //周边房产
+    getNearby() {
+      this.$get(`${this.$api.GET_NEARBY}?city=${this.city}`).then(resData => {
+        console.log("周边房产", resData);
+        this.nearbyList = resData.nearby;
+      });
+    },
+    //区域新房
+    newListings() {
+      this.$get(`${this.$api.NEW_LISTINGS}?mls=${this.mls}`).then(resData => {
+        console.log("区域新盘", resData);
+        this.newListingList = resData;
+        this.$nextTick(()=>{
+          this.setAboutRightSr()
+        })
       });
     }
   }
@@ -486,6 +676,11 @@ export default {
       .primaryText;
       .base;
       .boldText;
+    }
+
+    .el-input,
+    .el-button {
+      .base;
     }
 
     .contact-qrcode {
@@ -596,7 +791,7 @@ export default {
 
     .descript-text {
       .small;
-      .regularText;
+      .primaryText;
 
       a {
         color: @themeColor;
@@ -666,11 +861,141 @@ export default {
       border-bottom: 4px solid @themeColor;
     }
   }
+  .recommend-list {
+    width: 100%;
+    .flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .recommend-item {
+      width: 48%;
+      height: 22vw;
+      margin: 24px 0;
+      position: relative;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+
+      .item-agent {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: transparent;
+        span {
+          background-color: @themeColor;
+          .whiteText;
+          .large;
+          .boldText;
+          padding: 4px 48px;
+          position: absolute;
+          top: 32px;
+          left: 0;
+        }
+      }
+
+      .item-detail {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 32px;
+        .medium;
+        color: @white;
+        line-height: 1.8em;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        left: 0;
+        top: 0;
+
+        .item-detail-price {
+          .extraLarge;
+          .boldText;
+        }
+
+        .item-detail-viewcount {
+          position: absolute;
+          bottom: 32px;
+          width: 100%;
+          line-height: 1.5em;
+          a {
+            .medium;
+            color: @white;
+            line-height: 1.5em;
+            position: absolute;
+            right: 48px;
+            border: 1px solid @white;
+            padding: 4px 24px;
+            border-radius: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  .recommend-button {
+    .large;
+    .themeText;
+    .boldText;
+    line-height: 2em;
+    border-bottom: 2px solid @themeColor;
+    border-radius: 0;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 
-#chartvisio1 {
-  width: 100%;
-  height: 500px;
+//房源分析
+.house-chart {
+  border-top: 1px solid @placeholderTextColor;
+  margin-bottom: 2vw;
+  .chart-title {
+    .extraLarge;
+    .boldText;
+    line-height: 2em;
+
+    span {
+      border-bottom: 4px solid @themeColor;
+    }
+  }
+
+  #chart1,
+  #chart2,
+  #chart3,
+  #chart4 {
+    width: 100%;
+    height: 500px;
+  }
+}
+
+//房产相关
+.house-about {
+  padding: 2vw 0;
+  border-top: 1px solid @placeholderTextColor;
+  .about-title {
+    .boldText;
+    .large;
+    line-height: 3em;
+  }
+
+  .about-list {
+    height: 19vw;
+    overflow: auto;
+    .about-item {
+      .textOverflowEllipsis;
+      .base;
+      color: #999;
+      a {
+        color: #999;
+      }
+    }
+  }
+
+  .view-more {
+    .themeText;
+    .boldText;
+    .medium;
+  }
 }
 
 //图片列表
