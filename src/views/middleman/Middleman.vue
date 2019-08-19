@@ -258,19 +258,19 @@ export default {
         },
         {
           text: "最新房源",
-          url: "/house.html"
+          url: "http://www.realtoraccess.com/web/m/listings/#/"
         },
         {
           text: "经济门户",
-          url: "/middleman.html"
+          url: "http://www.realtoraccess.com/web/agentlist/"
         },
         {
           text: "房价走势",
-          url: "/"
+          url: "http://www.realtoraccess.com/web/van/"
         },
         {
           text: "全球资讯",
-          url: "/"
+          url: "http://www.realtoraccess.com/news/list/"
         }
       ],
       logoUrl: logo,

@@ -183,7 +183,7 @@
         </div>
       </div>
 
-      <span class="recommend-button">查看更多</span>
+      <a href="http://www.realtoraccess.com/web/m/listings/#/" class="recommend-button">查看更多</a>
     </div>
     <!-- 描述 -->
     <div class="index-describe hidden">
@@ -192,7 +192,7 @@
         class="describe-base"
       >海外瑞安居(简称“瑞安居”，RealtorAccess)，面向全球华人买家和买家，提供最及时的房产投资资讯、最高 效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及 潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平 台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外 华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提 供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是 全球海外房产投资者进行海外房产置业投资的不二选择。</div>
       <div class="know-more">
-        <a href>了解更多>></a>
+        <a href="http://www.realtoraccess.com">了解更多>></a>
       </div>
     </div>
     <!-- 更多房源 -->
@@ -251,7 +251,13 @@
       <el-carousel :interval="3000" height="26vw" indicator-position="none">
         <el-carousel-item v-for="(item,i) of corpsData" :key="i" class="carousel-item">
           <div class="index-corps-banner-item">
-            <div class="item-panel" v-for="(panelItem,index) of item" :key="index" @mouseover="corpHoverIndex=index" @mouseout="corpHoverIndex=-1">
+            <div
+              class="item-panel"
+              v-for="(panelItem,index) of item"
+              :key="index"
+              @mouseover="corpHoverIndex=index"
+              @mouseout="corpHoverIndex=-1"
+            >
               <div class="panel-logo" :style="{backgroundImage:`url(${panelItem.logo})`}">
                 <div class="panel-qrcode" v-show="corpHoverIndex == index">
                   <img :src="panelItem.qr_code" alt />
@@ -306,7 +312,7 @@
           <div class="right-header">关注瑞安居微信公众平台</div>
           <p>客服专线 | 400 877 1896</p>
           <p>营业时间 | 周一至周日 | 9:00-17:00</p>
-          <p>客服邮箱 | clientservice@realtoraccess.com</p>
+          <p>客服邮箱 | info@realtoraccess.com</p>
           <div class="right-qrcode">
             <img :src="require('../../assets/image/qrcode.png')" width="96px" height="96px" alt />
           </div>
@@ -349,19 +355,19 @@ export default {
         },
         {
           text: "最新房源",
-          url: "/house.html"
+          url: "http://www.realtoraccess.com/web/m/listings/#/"
         },
         {
           text: "经济门户",
-          url: "/middleman.html"
+          url: "http://www.realtoraccess.com/web/agentlist/"
         },
         {
           text: "房价走势",
-          url: "/"
+          url: "http://www.realtoraccess.com/web/van/"
         },
         {
           text: "全球资讯",
-          url: "/"
+          url: "http://www.realtoraccess.com/news/list/"
         }
       ],
       logoUrl: logo,
@@ -393,7 +399,7 @@ export default {
       recommendHoverIndex: -1,
       articlesData: [],
       corpsData: [],
-      corpHoverIndex:-1,
+      corpHoverIndex: -1,
       cooperationArray,
       sr: ScrollReveal()
     };
@@ -977,6 +983,12 @@ export default {
   .reading-item {
     background-color: @white;
     padding-bottom: 24px;
+    img {
+      transition: all 0.5s;
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
 
     p {
       padding: 12px;
@@ -1019,25 +1031,24 @@ export default {
     .item-panel {
       width: 20vw;
       height: 24vw;
-      .panel-logo{
+      .panel-logo {
         width: 20vw;
         height: 20vw;
         background-size: 100% 100%;
 
-        .panel-qrcode{
+        .panel-qrcode {
           width: 20vw;
           height: 20vw;
           box-sizing: border-box;
           border: 4px solid @themeColor;
-          img{
+          img {
             width: 100%;
             height: 100%;
           }
         }
       }
 
-
-      .panel-name{
+      .panel-name {
         .boldText;
         .large;
         .regularText;

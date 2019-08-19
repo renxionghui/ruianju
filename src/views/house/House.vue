@@ -233,7 +233,7 @@
           <div class="about-list">
             <div class="about-item" v-for="(item,index) in nearbyList" :key="index">{{item[1]}}</div>
           </div>
-          <a href class="view-more">查看更多</a>
+          <a href='http://www.realtoraccess.com/web/houses/' class="view-more">查看更多</a>
         </el-col>
         <el-col :span="6" class="about-right">
           <div class="about-title">区域新盘</div>
@@ -257,7 +257,7 @@
       <!-- 免费注册 -->
       <div class="agent-signin-wrap">
         <span class="signin-text">海外房产经纪人?</span>
-        <el-button type="primary">免费注册</el-button>
+        <el-button type="primary"><a href="http://www.realtoraccess.com/register">免费注册</a></el-button>
       </div>
       <common-footer></common-footer>
     </div>
@@ -292,19 +292,19 @@ export default {
         },
         {
           text: "最新房源",
-          url: "/house.html"
+          url: "http://www.realtoraccess.com/web/m/listings/#/"
         },
         {
           text: "经济门户",
-          url: "/middleman.html"
+          url: "http://www.realtoraccess.com/web/agentlist/"
         },
         {
           text: "房价走势",
-          url: "/"
+          url: "http://www.realtoraccess.com/web/van/"
         },
         {
           text: "全球资讯",
-          url: "/"
+          url: "http://www.realtoraccess.com/news/list/"
         }
       ],
       mls: "",
@@ -1048,6 +1048,9 @@ export default {
     .medium;
     font-weight: normal;
     border-radius: 12px;
+    a{
+      .whiteText;
+    }
   }
 }
 </style>
