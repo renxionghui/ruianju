@@ -292,7 +292,7 @@ export default {
         },
         {
           text: "最新房源",
-          url: "http://www.realtoraccess.com/web/m/listings/#/"
+          url: "http://www.realtoraccess.com/web/houses/"
         },
         {
           text: "经济门户",

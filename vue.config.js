@@ -1,5 +1,6 @@
 module.exports = {
   lintOnSave: false,
+  assetsDir:'static/web',
   pages:{
     index:{
       entry:'src/views/index/index.js',
@@ -14,8 +15,8 @@ module.exports = {
     },
     middleman:{
       entry:'src/views/middleman/middleman.js',
-      template:'public/middleman.html',
-      filename:'middleman.html'
+      template:'public/agenthome.html',
+      filename:'agenthome.html'
     }
   }
 }

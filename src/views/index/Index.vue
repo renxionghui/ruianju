@@ -91,6 +91,7 @@
                 <img :src="middlemanItem.wechat" alt />
                 <span>{{middlemanItem.corp}}</span>
               </div>
+              <a :href="`/web/agent/${middlemanItem.uid}`" class="detail-link"></a>
             </div>
           </div>
         </el-carousel-item>
@@ -129,7 +130,13 @@
     </div>
     <!-- 推荐 -->
     <div class="index-recommend hidden">
-      <div class="recommend-header">海外房产经纪推荐房源</div>
+      <div class="recommend-header">
+        <span>海外房产经纪推荐房源</span>
+        <div class="refresh-recommend" @click='refreshRecommend'>
+          <img :src="require('../../assets/image/icon-refresh.svg')" alt />
+          <span>换一批</span>
+        </div>
+      </div>
       <div class="recommend-list" v-if="recommendData.length>0">
         <div
           class="recommend-item"
@@ -163,7 +170,7 @@
               <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
               <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
               <a
-                href
+                :href="`/web/listing1/${item.mls}`"
                 style="color:#fff;border:1px solid #fff;float:right;padding:4px 12px;border-radius:12px;font-size:14px;"
               >查看房源</a>
             </div>
@@ -355,7 +362,7 @@ export default {
         },
         {
           text: "最新房源",
-          url: "http://www.realtoraccess.com/web/m/listings/#/"
+          url: "http://www.realtoraccess.com/web/houses/"
         },
         {
           text: "经济门户",
@@ -401,7 +408,7 @@ export default {
       corpsData: [],
       corpHoverIndex: -1,
       cooperationArray,
-      sr: ScrollReveal()
+      sr: ScrollReveal(),
     };
   },
   computed: {
@@ -508,6 +515,12 @@ export default {
         this.articlesData = resData;
         this.setScrollReveal();
       });
+    },
+    refreshRecommend(){
+      this.recommendIndex++;
+      if(this.recommendIndex>=this.recommendData.length){
+        this.recommendIndex = 0;
+      }
     }
   }
 };
@@ -646,6 +659,18 @@ export default {
       padding: 12px;
       box-sizing: border-box;
       position: relative;
+      transition: all 0.3s;
+      cursor: pointer;
+      &:hover {
+        box-shadow: 2px 2px 2px #eee, -2px 2px 2px #eee;
+      }
+      .detail-link {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
       .middleman-photo {
         width: 160px;
         height: 160px;
@@ -790,6 +815,79 @@ export default {
   .recommend-header {
     .extraLarge;
     .boldText;
+    position: relative;
+    .refresh-recommend {
+      width: 320px;
+      position: absolute;
+      left: 105%;
+      bottom: 0;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+      @media screen {
+
+        @media (min-width: 481px) and (max-width: 1279px) {
+          height: 36px;
+          span {
+            float: left;
+            .themeText;
+            font-size: 20px;
+            line-height: 36px;
+          }
+          img {
+            float: left;
+            width: 36px;
+            height: 36px;
+          }
+        }
+
+        @media (min-width: 1280px) and (max-width: 1439px) {
+          height: 40px;
+          span {
+            float: left;
+            .themeText;
+            font-size: 24px;
+            line-height: 40px;
+          }
+          img {
+            float: left;
+            width: 40px;
+            height: 40px;
+          }
+        }
+
+        @media (min-width: 1440px) and (max-width: 1679px) {
+          height: 44px;
+          span {
+            float: left;
+            .themeText;
+            font-size: 28px;
+            line-height: 44px;
+          }
+          img {
+            float: left;
+            width: 44px;
+            height: 44px;
+          }
+        }
+
+        @media (min-width: 1680px) {
+          height: 48px;
+          span {
+            float: left;
+            .themeText;
+            font-size: 32px;
+            line-height: 48px;
+          }
+          img {
+            float: left;
+            width: 48px;
+            height: 48px;
+          }
+        }
+      }
+    }
   }
   .recommend-list {
     margin: 4vw auto;
