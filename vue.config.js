@@ -1,6 +1,7 @@
 module.exports = {
   lintOnSave: false,
   assetsDir:'static/web',
+  publicPath:process.env.NODE_ENV === 'production' ? 'http://www.realtoraccess.com' : '/',
   pages:{
     index:{
       entry:'src/views/index/index.js',
@@ -18,5 +19,17 @@ module.exports = {
       template:'public/agenthome.html',
       filename:'agenthome.html'
     }
-  }
+  },
+  devServer: {
+    // 设置请求代理
+    proxy: {
+        '/': {
+            target: 'http://www.realtoraccess.com',
+            ws: true,
+            changeOrigin: true
+        }
+    }
+  },
+  // 生产环境是否生成 sourceMap 文件
+  productionSourceMap: false
 }

@@ -9,7 +9,7 @@
         <div class="footer-botto">
           ©海外瑞安居（北京）科技发展有限公司 版权所有|京ICP备17003593号
         </div>
-        <img :src="require('../assets/image/footer-logo.jpg')" height="64px" width="auto" alt="">
+        <img v-lazy="require('../assets/image/footer-logo.jpg')" height="64px" width="auto" alt="">
     </div>
 </template>
 

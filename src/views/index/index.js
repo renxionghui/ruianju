@@ -7,6 +7,9 @@ import '../../assets/css/icon.css';
 import '../../assets/css/element-theme.css';
 import axios from 'axios';
 import api from './api';
+import VueLazyLoad from 'vue-lazyload'
+
+Vue.use(VueLazyLoad,{attempt:3})
 
 Vue.prototype.$api = api;
 Vue.prototype.$get = (url)=>{

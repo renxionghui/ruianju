@@ -179,6 +179,7 @@
               @mouseout="recommendHoverIndex = -1"
               :style="{backgroundImage:`url(${item.imgs[0]})`}"
             >
+              <transition name="el-fade-in-linear">
               <div class="item-detail" v-show="recommendHoverIndex == index">
                 <div class="item-detail-price">{{item.price}}</div>
                 <div class="item-detail-addr">{{item.listingname}}</div>
@@ -196,6 +197,7 @@
                   <a :href="item.url" target="_blank">查看房源</a>
                 </div>
               </div>
+              </transition>
             </div>
           </div>
           <div style="text-align:center;margin-bottom:2vw">
@@ -209,12 +211,19 @@
           <div class="chart-title">
             <span>房源</span>分析
           </div>
-          <div id="chart1"></div>
-          <div id="chart2"></div>
-          <div id="chart3"></div>
-          <div id="chart4"></div>
+          <div class='chart-list' v-show='showHouseChart'>
+            <div id="chart1"></div>
+            <div id="chart2"></div>
+            <div id="chart3"></div>
+            <div id="chart4"></div>
+          </div>
+          
         </el-col>
+
+
       </el-row>
+
+      <!-- 城市价格 周边房产 区域新盘 -->
       <el-row class="house-about">
         <el-col :span="6" :offset="3" class="about-left">
           <div class="about-title">城市价格</div>
@@ -295,7 +304,7 @@ export default {
           url: "http://www.realtoraccess.com/web/houses/"
         },
         {
-          text: "经济门户",
+          text: "经纪门户",
           url: "http://www.realtoraccess.com/web/agentlist/"
         },
         {
@@ -328,7 +337,8 @@ export default {
       page: 1,
       cityPriceList: null, //城市价格
       nearbyList: null, //周边房产
-      newListingList: null //区域新盘
+      newListingList: null, //区域新盘
+      showHouseChart:true,
     };
   },
   computed: {
@@ -356,6 +366,7 @@ export default {
   mounted() {
     //TODO 获取mls
     let href = window.location.href;
+    href = href.substr(0,href.length-1);
     this.mls = href.substring(href.lastIndexOf('/')+1)
     // this.commitEmail();
     this.getListingInfo();
@@ -876,7 +887,7 @@ export default {
       position: relative;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-
+      box-shadow: 5px 5px 5px #aaa;
       .item-agent {
         width: 100%;
         height: 100%;

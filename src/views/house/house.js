@@ -8,6 +8,9 @@ import axios from 'axios';
 import api from './api';
 import {Message} from 'element-ui';
 import '../../assets/css/icon.css'
+import VueLazyLoad from 'vue-lazyload'
+
+Vue.use(VueLazyLoad)
 
 Vue.prototype.$api = api;
 Vue.prototype.$message = Message;

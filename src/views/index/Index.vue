@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <el-row class="index-header" align="middle" type="flex">
       <el-col :md="3" :sm="4" :xs="8" :offset="3" style="display:flex;align-items:center">
-        <el-image :src="logoUrl" style="width:100%;height:auto"></el-image>
+        <el-image :src="logoUrl" style="width:100%;height:auto" @load='headerImageLoad'></el-image>
       </el-col>
       <el-col :md="10" :sm="8" :offset="8" class="hidden-sm-and-down">
         <a
@@ -39,12 +39,14 @@
         :body-style="{width:'16vw',height:'16vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
-          {{listingNum}}
+          <a href="http://www.realtoraccess.com/web/van/" class="index-data-num">{{listingNum}}</a>
           <i>+</i>
         </span>
         <span class="index-data-type">新增房源</span>
         <el-button type="primary">
-          <i class="icon-home"></i>查找房源
+          <a href="http://www.realtoraccess.com/web/m/listings/#/">
+            <i class="icon-home"></i><span>查找房源</span>
+          </a>
         </el-button>
       </el-card>
       <el-card
@@ -52,12 +54,14 @@
         :body-style="{width:'16vw',height:'16vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
-          {{agentNum}}
+          <a href="http://www.realtoraccess.com/web/agentlist/" class="index-data-num">{{agentNum}}</a>
           <i>+</i>
         </span>
-        <span class="index-data-type">新增经济</span>
+        <span class="index-data-type">新增经纪</span>
         <el-button type="primary">
-          <i class="icon-organization"></i>查找经纪
+          <a href="http://www.realtoraccess.com/web/agentlist/">
+            <i class="icon-organization"></i><span>查找经纪</span>
+          </a>
         </el-button>
       </el-card>
       <el-card
@@ -65,33 +69,36 @@
         :body-style="{width:'16vw',height:'16vw',display:'flex',flexDirection:'column',alignItems:'center'}"
       >
         <span class="index-data-count">
-          {{estateNum}}
+          <a href class="index-data-num">{{estateNum}}</a>
           <i>+</i>
         </span>
         <span class="index-data-type">商业地产</span>
         <el-button type="primary">
-          <i class="icon-house"></i>查找项目
+          <a href>
+            <i class="icon-house"></i><span>查找项目</span>
+          </a>
         </el-button>
       </el-card>
     </div>
     <!-- 经纪人轮播图 -->
-    <div class="index-banner-middleman hidden">
+    <div class="index-banner-middleman">
       <div class="index-banner-middleman-title">专业的海外置业顾问</div>
       <el-carousel :interval="3000" height="400px">
         <el-carousel-item v-for="(item,i) of middlemanBanner" :key="i">
           <div class="index-banner-middleman-item">
             <div class="middleman-detail" v-for="(middlemanItem,index) of item" :key="index">
-              <img :src="middlemanItem.img" alt class="middleman-photo" />
+              <img v-lazy="middlemanItem.img" alt class="middleman-photo" />
               <span class="middleman-auth" v-if="middlemanItem.auth==1">认证经纪</span>
-              <span class="middleman-username">{{middlemanItem.username}}</span>
+              <span class="middleman-username" >{{middlemanItem.username || '\ueaaa'}}</span>
               <span class="middleman-usercity">{{middlemanItem.usercity}} | 经纪</span>
-              <span class="middleman-note">{{middlemanItem.note}}</span>
+              <span class="middleman-note" >{{middlemanItem.note || '\ueaaa'}}</span>
               <div class="middleman-divider"></div>
               <div class="middleman-corp">
                 <img :src="middlemanItem.wechat" alt />
                 <span>{{middlemanItem.corp}}</span>
               </div>
-              <a :href="`/web/agent/${middlemanItem.uid}`" class="detail-link"></a>
+              <a :href="`/web/agent/${middlemanItem.uid}/`" class="detail-link"></a>
+              <!-- <a :href="`/agenthome.html/${middlemanItem.uid}/`" class="detail-link"></a> -->
             </div>
           </div>
         </el-carousel-item>
@@ -104,23 +111,23 @@
       </div>
       <div class="why-reason">
         <div class="reason-item">
-          <img :src="avator1" alt />
+          <img v-lazy="avator1" alt />
           <p>文案专家</p>
         </div>
         <div class="reason-item">
-          <img :src="avator2" alt />
+          <img v-lazy="avator2" alt />
           <p>市场营销</p>
         </div>
         <div class="reason-item">
-          <img :src="avator3" alt />
+          <img v-lazy="avator3" alt />
           <p>挂牌定价</p>
         </div>
         <div class="reason-item">
-          <img :src="avator4" alt />
+          <img v-lazy="avator4" alt />
           <p>谈判专家</p>
         </div>
         <div class="reason-item">
-          <img :src="avator5" alt />
+          <img v-lazy="avator5" alt />
           <p>省时省力</p>
         </div>
       </div>
@@ -129,11 +136,11 @@
       </div>
     </div>
     <!-- 推荐 -->
-    <div class="index-recommend hidden">
+    <div class="index-recommend">
       <div class="recommend-header">
         <span>海外房产经纪推荐房源</span>
-        <div class="refresh-recommend" @click='refreshRecommend'>
-          <img :src="require('../../assets/image/icon-refresh.svg')" alt />
+        <div class="refresh-recommend" @click="refreshRecommend">
+          <img v-lazy="require('../../assets/image/icon-refresh.svg')" alt />
           <span>换一批</span>
         </div>
       </div>
@@ -144,16 +151,16 @@
           :key="index"
           @mouseover="recommendHoverIndex = index"
           @mouseout="recommendHoverIndex = -1"
-          :style="{backgroundImage:`url(${item.img})`}"
-        >
+          :style='{backgroundImage:`url(${item.img})`}'>
           <div class="item-agent" v-show="recommendHoverIndex != index && recommendHoverIndex!=7">
             <img :src="item.head" alt />
             <div>
               <p>{{item.username}}</p>
               <p>{{item.from}}</p>
             </div>
-            <span v-if="item.listingtype == 'saled'">已售</span>
+            <span v-if="item.listingtype">{{item.listingtype}}</span>
           </div>
+          <transition name="el-fade-in-linear">
           <div class="item-detail" v-show="recommendHoverIndex == index && recommendHoverIndex!=7">
             <div class="item-detail-price" style="font-size:28px;">{{item.price}}</div>
             <div class="item-detail-addr">{{item.addr}}</div>
@@ -170,15 +177,20 @@
               <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
               <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
               <a
-                :href="`/web/listing1/${item.mls}`"
+                :href="item.mls.startsWith('r')?`/web/listing1/${item.mls}`:item.htmlid"
                 style="color:#fff;border:1px solid #fff;float:right;padding:4px 12px;border-radius:12px;font-size:14px;"
               >查看房源</a>
+              <!-- <a
+                :href="item.mls.startsWith('r')?`/house.html/${item.mls}/`:item.htmlid"
+                style="color:#fff;border:1px solid #fff;float:right;padding:4px 12px;border-radius:12px;font-size:14px;"
+              >查看房源</a> -->
             </div>
           </div>
+          </transition>
         </div>
         <div
           class="recommend-item"
-          style="display:flex;flex-direction:column;justify-content:center;align-items:center"
+          style="display:flex;flex-direction:column;justify-content:center;align-items:center;float:left;"
         >
           <a
             class="el-icon-plus publish-house"
@@ -193,58 +205,58 @@
       <a href="http://www.realtoraccess.com/web/m/listings/#/" class="recommend-button">查看更多</a>
     </div>
     <!-- 描述 -->
-    <div class="index-describe hidden">
+    <div class="index-describe" v-lazy:background-image="require('../../assets/image/mh_bg.png')">
       <div class="describe-header">海外瑞安居 - 海外房展第一门户</div>
       <div
         class="describe-base"
-      >海外瑞安居(简称“瑞安居”，RealtorAccess)，面向全球华人买家和买家，提供最及时的房产投资资讯、最高 效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及 潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平 台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外 华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提 供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是 全球海外房产投资者进行海外房产置业投资的不二选择。</div>
+      >海外瑞安居（简称“瑞安居”，RealtorAccess），面向全球华人买家和卖家，提供最及时的房产投资资讯、最高效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是全球海外房产投资者进行海外房产置业投资的不二选择。</div>
       <div class="know-more">
         <a href="http://www.realtoraccess.com">了解更多>></a>
       </div>
     </div>
     <!-- 更多房源 -->
-    <div class="index-morehouse hidden">
+    <div class="index-morehouse">
       <div class="common-title">更多房源</div>
       <div class="common-subtitle">商业地产，房产信托以及开发商新盘</div>
       <el-row style="margin-top:4vw;">
         <el-col :span="8" style="position:relative">
-          <img :src="house1" alt style="width:100%;height:auto" />
+          <img v-lazy='house1' alt style="width:100%;height:auto" />
           <div class="morehouse-descript">
             <div class="morehouse-title">商业地产</div>
-            <a href class="morehouse-link">了解更多</a>
+            <a href='http://www.realtoraccess.com' class="morehouse-link">了解更多</a>
           </div>
         </el-col>
         <el-col :span="8" style="position:relative">
-          <img :src="house2" alt style="width:100%;height:auto" />
+          <img v-lazy='house2' alt style="width:100%;height:auto" />
           <div class="morehouse-descript">
             <div class="morehouse-title">房产信托</div>
-            <a href class="morehouse-link">了解更多</a>
+            <a href='http://www.realtoraccess.com' class="morehouse-link">了解更多</a>
           </div>
         </el-col>
         <el-col :span="8" style="position:relative">
-          <img :src="house3" alt style="width:100%;height:auto" />
+          <img v-lazy='house3' alt style="width:100%;height:auto" />
           <div class="morehouse-descript">
             <div class="morehouse-title">开发商新盘</div>
-            <a href class="morehouse-link">了解更多</a>
+            <a href='http://www.realtoraccess.com' class="morehouse-link">了解更多</a>
           </div>
         </el-col>
       </el-row>
     </div>
     <!-- 相关阅读 -->
-    <div class="index-reading hidden">
+    <div class="index-reading">
       <div class="common-title">相关阅读</div>
       <div class="common-subtitle">100+实力媒体跟踪报道，13大行业资质权威服务保障</div>
       <el-row style="margin-top:4vw;">
         <el-col :span="8" :offset="3">
           <el-card :body-style="{padding:'0px'}" shadow="hover" class="reading-item">
-            <img :src="reading1" alt style="width:100%;height:auto" />
+            <img :src='reading1' alt style="width:100%;height:auto" />
             <p v-if="articlesData.length>1">{{articlesData[0].title}}</p>
             <a v-if="articlesData.length>1" :href="articlesData[0].url">查看更多</a>
           </el-card>
         </el-col>
         <el-col :span="8" :offset="2">
           <el-card :body-style="{padding:'0px'}" shadow="hover" class="reading-item">
-            <img :src="reading2" alt style="width:100%;height:auto" />
+            <img :src='reading2' alt style="width:100%;height:auto" />
             <p v-if="articlesData.length>1">{{articlesData[1].title}}</p>
             <a v-if="articlesData.length>1" :href="articlesData[1].url">查看更多</a>
           </el-card>
@@ -252,7 +264,7 @@
       </el-row>
     </div>
     <!-- 公司动态 -->
-    <div class="index-corps hidden" data-scroll-reveal>
+    <div class="index-corps" data-scroll-reveal>
       <div class="common-title">房地产经纪公司动态</div>
       <div class="common-subtitle">扫描微信二维码，关注房地产经纪公司动态</div>
       <el-carousel :interval="3000" height="26vw" indicator-position="none">
@@ -266,9 +278,11 @@
               @mouseout="corpHoverIndex=-1"
             >
               <div class="panel-logo" :style="{backgroundImage:`url(${panelItem.logo})`}">
+                <transition name="el-fade-in-linear">
                 <div class="panel-qrcode" v-show="corpHoverIndex == index">
                   <img :src="panelItem.qr_code" alt />
                 </div>
+                </transition>
               </div>
               <p class="panel-name">{{panelItem.name}}</p>
             </div>
@@ -280,7 +294,7 @@
     </div>
 
     <!-- 媒体合作 -->
-    <div class="index-cooperation hidden">
+    <div class="index-cooperation">
       <div class="common-title">媒体合作</div>
       <div class="index-cooperation-list">
         <a
@@ -289,22 +303,22 @@
           :href="item.url"
           :key="index"
         >
-          <div class="item-logo" :style="{backgroundImage:`url(${item.logo})`}"></div>
+          <div class="item-logo" v-lazy:background-image='item.logo'></div>
           <div class="item-name">{{item.name}}</div>
         </a>
       </div>
     </div>
 
     <!-- 公司简介 -->
-    <div class="index-corp-desc hidden">
-      <img :src="require('../../assets/image/corp_bg.png')" width="100%" height="auto" alt />
+    <div class="index-corp-desc">
+      <img v-lazy="require('../../assets/image/corp_bg.png')" width="100%" height="auto" alt />
 
       <div class="desc-wrap">
         <div class="desc-left">
           <div class="desc-header">海外瑞安居 - 海外房展第一门户</div>
           <div
             class="desc-base"
-          >海外瑞安居(简称“瑞安居”，RealtorAccess)，面向全球华人买家和买家，提供最及时的房产投资资讯、最高 效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及 潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平 台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外 华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提 供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是 全球海外房产投资者进行海外房产置业投资的不二选择。</div>
+          >海外瑞安居（简称“瑞安居”，RealtorAccess），面向全球华人买家和卖家，提供最及时的房产投资资讯、最高效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是全球海外房产投资者进行海外房产置业投资的不二选择。</div>
           <div class="know-more">
             <a href>点击了解更多详情>></a>
           </div>
@@ -321,7 +335,7 @@
           <p>营业时间 | 周一至周日 | 9:00-17:00</p>
           <p>客服邮箱 | info@realtoraccess.com</p>
           <div class="right-qrcode">
-            <img :src="require('../../assets/image/qrcode.png')" width="96px" height="96px" alt />
+            <img v-lazy="require('../../assets/image/qrcode.png')" width="96px" height="96px" alt />
           </div>
         </div>
         <div style="clear:both"></div>
@@ -333,13 +347,12 @@
 </template>
 <script>
 import logo from "../../assets/image/logo.png";
-import banner from "../../assets/image/banner.png";
+import banner from "../../assets/image/banner.jpg";
 import avator1 from "../../assets/image/avator-1.png";
 import avator2 from "../../assets/image/avator-2.png";
 import avator3 from "../../assets/image/avator-3.png";
 import avator4 from "../../assets/image/avator-4.png";
 import avator5 from "../../assets/image/avator-5.png";
-import recommend from "../../assets/image/recommend.png";
 import house1 from "../../assets/image/house1.png";
 import house2 from "../../assets/image/house2.png";
 import house3 from "../../assets/image/house3.png";
@@ -350,6 +363,7 @@ import cooperationArray from "./cooperationArray";
 import CommonFooter from "../../components/CommonFooter.vue";
 import ScrollReveal from "scrollreveal";
 import { TweenLite } from "gsap/TweenLite";
+import {Loading} from 'element-ui';
 export default {
   name: "Index",
   components: { CommonFooter },
@@ -365,7 +379,7 @@ export default {
           url: "http://www.realtoraccess.com/web/houses/"
         },
         {
-          text: "经济门户",
+          text: "经纪门户",
           url: "http://www.realtoraccess.com/web/agentlist/"
         },
         {
@@ -379,7 +393,6 @@ export default {
       ],
       logoUrl: logo,
       bannerUrl: banner,
-      recommendUrl: recommend,
       avator1,
       avator2,
       avator3,
@@ -409,6 +422,13 @@ export default {
       corpHoverIndex: -1,
       cooperationArray,
       sr: ScrollReveal(),
+      loading:null,
+      isHeaderLoad:false,
+      isCountLoad:false,
+      isAgentsLoad:false,
+      isListingsLoad:false,
+      isCorpsLoad:false,
+      isArticlesLoad:false
     };
   },
   computed: {
@@ -420,9 +440,24 @@ export default {
     },
     agentNum() {
       return this.countData.agent.toFixed(0);
+    },
+    isLoad(){
+      return this.isHeaderLoad && this.isCountLoad && this.isAgentsLoad && this.isListingsLoad &&this.isCorpsLoad &&this.isArticlesLoad;
+    }
+  },
+  watch:{
+    isLoad(n){
+      if(n){
+        this.loading.close();
+      }
     }
   },
   mounted() {
+    this.loading = Loading.service({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading'
+    })
     this.getCount();
     this.getAgents();
     this.getListings();
@@ -431,6 +466,9 @@ export default {
     // this.setScrollReveal();
   },
   methods: {
+    headerImageLoad(){
+      this.isHeaderLoad = true;
+    },
     getOptions(beforeReveal = () => {}, afterReveal = () => {}) {
       let options = {
         duration: 500,
@@ -479,9 +517,11 @@ export default {
     getCount() {
       this.$get(this.$api.INDEX_COUNT).then(resData => {
         this.totalData.listing = parseInt(resData.listing);
+        // this.totalData.listing = 1680;
         this.totalData.agent = parseInt(resData.agent);
         this.totalData.estate = parseInt(resData.estate);
         this.setScrollReveal();
+        this.isCountLoad = true;
       });
     },
     getAgents() {
@@ -490,6 +530,7 @@ export default {
           this.middlemanBanner.push(resData.slice(i, i + 4));
           this.setScrollReveal();
         }
+        this.isAgentsLoad = true;
       });
     },
     getListings() {
@@ -498,6 +539,7 @@ export default {
           this.recommendData.push(resData.slice(i, i + 7));
           this.setScrollReveal();
         }
+        this.isListingsLoad = true;
       });
     },
     getCorps() {
@@ -507,6 +549,7 @@ export default {
           this.corpsData.push(resData.slice(i, i + 4));
           this.setScrollReveal();
         }
+        this.isCorpsLoad = true;
       });
     },
     getArticles() {
@@ -514,11 +557,12 @@ export default {
         console.log("相关阅读", resData);
         this.articlesData = resData;
         this.setScrollReveal();
+        this.isArticlesLoad = true;
       });
     },
-    refreshRecommend(){
+    refreshRecommend() {
       this.recommendIndex++;
-      if(this.recommendIndex>=this.recommendData.length){
+      if (this.recommendIndex >= this.recommendData.length) {
         this.recommendIndex = 0;
       }
     }
@@ -533,9 +577,7 @@ export default {
 @vw100: 100vw;
 //图片基本路径
 @image: "../../assets/image";
-.test {
-  visibility: hidden;
-}
+
 //头部
 .index-header {
   //导航
@@ -596,6 +638,13 @@ export default {
   justify-content: space-around;
   padding: 6vw 0;
 
+  .index-data-num {
+    .themeText;
+    &:hover{
+      opacity: .8;
+    }
+  }
+
   .index-data-count {
     .mostLarge;
     .themeText;
@@ -612,12 +661,33 @@ export default {
   .el-button {
     .large;
     .boldText;
-
-    i {
+    a {
+      .whiteText;
       position: relative;
-      .large;
-      top: 4px;
-      margin-right: 12px;
+      top: -6px;
+      i {
+        position: relative;
+        .extraLarge;
+
+        @media screen {
+          @media (min-width: 100px) and (max-width: 1279px) {
+            top:8px;
+            right:8px;
+          }
+          @media (min-width: 1280px) and (max-width: 1439px) {
+            top:6px;
+            right:6px;
+          }
+          @media (min-width: 1440px) and (max-width: 1679px) {
+            top:8px;
+            right:8px;
+          }
+          @media (min-width: 1680px) {
+            top:8px;
+            right:8px;
+          }
+        }
+      }
     }
   }
 
@@ -630,7 +700,7 @@ export default {
 }
 //经纪人banner
 .index-banner-middleman {
-  background-image: url("../../assets/image/reading2.png");
+  background-image: url('../../assets/image/reading2.png');
   background-repeat: no-repeat;
   background-position-y: top;
   background-size: 100% auto;
@@ -781,6 +851,10 @@ export default {
         width: 100%;
         height: auto;
         border-radius: 50%;
+        transition: all .5s;
+        &:hover{
+          transform: scale(1.1);
+        }
       }
 
       p {
@@ -826,7 +900,6 @@ export default {
         opacity: 0.8;
       }
       @media screen {
-
         @media (min-width: 481px) and (max-width: 1279px) {
           height: 36px;
           span {
@@ -914,7 +987,7 @@ export default {
         left: 0;
         top: 0;
         background-color: transparent;
-
+        box-shadow: 5px 5px 10px #aaa;
         img {
           height: 48px;
           width: 48px;
@@ -1015,7 +1088,7 @@ export default {
 //介绍
 .index-describe {
   .bgLight;
-  background-image: url("../../assets/image/mh_bg.png");
+  // background-image: url("../../assets/image/mh_bg.png");
   background-position: center center;
   background-repeat: no-repeat;
   padding: 6vw 8vw;
@@ -1026,7 +1099,7 @@ export default {
   }
 
   .describe-base {
-    .base;
+    .medium;
     .regularText;
 
     margin: 24px 0;
@@ -1035,7 +1108,7 @@ export default {
   .know-more {
     a {
       color: @themeColor;
-      .base;
+      .medium;
       .boldText;
     }
   }
@@ -1127,16 +1200,16 @@ export default {
     padding: 24px;
 
     .item-panel {
-      width: 20vw;
+      width: 18vw;
       height: 24vw;
       .panel-logo {
-        width: 20vw;
-        height: 20vw;
+        width: 18vw;
+        height: 18vw;
         background-size: 100% 100%;
 
         .panel-qrcode {
-          width: 20vw;
-          height: 20vw;
+          width: 18vw;
+          height: 18vw;
           box-sizing: border-box;
           border: 4px solid @themeColor;
           img {
@@ -1208,14 +1281,14 @@ export default {
 
       .desc-header {
         .boldText;
-        .medium;
+        .large;
         .primaryText;
         line-height: 3em;
       }
 
       .desc-base {
         .secondaryText;
-        font-size: 14px;
+        .base;
       }
 
       a {
@@ -1320,5 +1393,14 @@ export default {
 .index-corps .el-carousel__arrow {
   background-color: #1cbb20 !important;
   color: #fff !important;
+}
+
+.el-loading-spinner i{
+  font-size: 96px;
+}
+
+.el-loading-spinner .el-loading-text{
+  font-size: 48px !important;
+  font-weight: bolder;
 }
 </style>

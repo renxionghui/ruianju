@@ -74,6 +74,7 @@
           <div class="item-agent" v-show="recommendHoverIndex != index">
             <span v-if="item.salestatus == 'yes'">已售</span>
           </div>
+          <transition name="el-fade-in-linear">
           <div class="item-detail" v-show="recommendHoverIndex == index">
             <div class="item-detail-price">{{item.price}}</div>
             <div class="item-detail-addr">{{item.address}}</div>
@@ -91,6 +92,7 @@
               <a :href="item.url" target="_blank">查看房源</a>
             </div>
           </div>
+          </transition>
         </div>
       </div>
       <div style="text-align:center">
@@ -240,7 +242,7 @@
 </template>
 <script>
 import logo from "../../assets/image/logo.png";
-import banner from "../../assets/image/banner.png";
+import banner from "../../assets/image/banner.jpg";
 import middleman from "../../assets/image/middleman.png";
 import qrcode from "../../assets/image/qrcode.png";
 import CommonFooter from "../../components/CommonFooter.vue";
@@ -261,7 +263,7 @@ export default {
           url: "http://www.realtoraccess.com/web/houses/"
         },
         {
-          text: "经济门户",
+          text: "经纪门户",
           url: "http://www.realtoraccess.com/web/agentlist/"
         },
         {
@@ -394,6 +396,7 @@ export default {
   mounted() {
     console.log(window.location.href);
     let href = window.location.href;
+    href = href.substr(0,href.length-1);
     this.agentId = href.substring(href.lastIndexOf('/')+1)
     this.getAgentById();
     this.getAgentListing();
@@ -688,7 +691,7 @@ visit: 146  访问量
       position: relative;
       background-size: 100% 100%;
       background-repeat: no-repeat;
-
+      box-shadow: 5px 5px 5px #aaa;
       .item-agent {
         width: 100%;
         height: 100%;
@@ -696,6 +699,8 @@ visit: 146  访问量
         left: 0;
         top: 0;
         background-color: transparent;
+
+        
         span {
           background-color: @themeColor;
           .whiteText;
@@ -720,7 +725,7 @@ visit: 146  访问量
         background-color: rgba(0, 0, 0, 0.5);
         left: 0;
         top: 0;
-
+        
         .item-detail-price {
           .extraLarge;
           .boldText;
