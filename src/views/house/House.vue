@@ -180,23 +180,26 @@
               :style="{backgroundImage:`url(${item.imgs[0]})`}"
             >
               <transition name="el-fade-in-linear">
-              <div class="item-detail" v-show="recommendHoverIndex == index">
-                <div class="item-detail-price">{{item.price}}</div>
-                <div class="item-detail-addr">{{item.listingname}}</div>
-                <div class="item-detail-cityname">{{item.cityname}}</div>
+                <div class="item-detail" v-show="recommendHoverIndex == index">
+                  <div class="item-detail-price">{{item.price}}</div>
+                  <div class="item-detail-addr">{{item.listingname}}</div>
+                  <div class="item-detail-cityname">{{item.cityname}}</div>
 
-                <div class="item-detail-housetype">{{item.housetype}} | {{item.areas}}</div>
-                <div class="item-detail-roomcount">
-                  <span class="icon-furniture">{{parseInt(item.toilet)}}</span>
-                  <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
-                </div>
+                  <div class="item-detail-housetype">{{item.housetype}} | {{item.areas}}</div>
+                  <div class="item-detail-roomcount">
+                    <span class="icon-furniture">{{parseInt(item.toilet)}}</span>
+                    <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
+                  </div>
 
-                <div class="item-detail-viewcount" style="margin-top:8px;">
-                  <span style="margin-right:12px; line-height:24px;">{{item.datadate.slice(0,10)}}</span>
-                  <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
-                  <a :href="item.url" target="_blank">查看房源</a>
+                  <div class="item-detail-viewcount" style="margin-top:8px;">
+                    <span style="margin-right:12px; line-height:24px;">{{item.datadate.slice(0,10)}}</span>
+                    <span
+                      style="margin-right:12px; line-height:24px;"
+                      class="icon-eye"
+                    >{{item.visit}}</span>
+                    <a :href="`/web/listing1/${item.listingid}`">查看房源</a>
+                  </div>
                 </div>
-              </div>
               </transition>
             </div>
           </div>
@@ -205,22 +208,78 @@
           </div>
         </el-col>
       </el-row>
+
+
+      <!-- 房源详情 -->
+      <el-row class="house-info">
+        <el-col :span="18" :offset="3">
+          <div class="info-title">
+            <span>房源</span>详情
+          </div>
+          <el-row class="info-detail">
+            <el-col :md=12 class='bg-light detail-item'>
+              <span>MLS：<i>{{listingInfo.listingid}}</i></span>
+            </el-col>
+            <el-col :md=12 class='bg-light detail-item'>
+              <span>房屋风格：<i>{{listingInfo.housestyle}}</i></span>
+            </el-col>
+            <el-col :md=12 class='detail-item'>
+              <span>售价：<i>{{listingInfo.price}}</i></span>
+            </el-col>
+            <el-col :md=12 class='detail-item'>
+              <span>房屋类型：<i>{{listingInfo.housetype}}</i></span>
+            </el-col>
+            <el-col :md=12 class='bg-light detail-item'>
+              <span>室内面积：<i>{{listingInfo.areas}}</i></span>
+            </el-col>
+            <el-col :md=12 class='bg-light detail-item'>
+              <span>地下室：<i>{{listingInfo.basement||'无'}}</i></span>
+            </el-col>
+            <el-col :md=12 class='detail-item'>
+              <span>土地面积：<i>{{listingInfo.parking}}</i></span>
+            </el-col>
+            <el-col :md=12 class='detail-item'>
+             <span> 建筑年代：<i>{{listingInfo.builddate}}</i></span>
+            </el-col>
+            <el-col :md=12 class='bg-light detail-item'>
+              <span>卧室：<i>{{listingInfo.bedroom}}</i></span>
+            </el-col>
+            <el-col :md=12 class='bg-light detail-item'>
+              <span>地产公司：<i>{{listingInfo.corp}}</i></span>
+            </el-col>
+            <el-col :md=12 class='detail-item'>
+              <span>卫生间：<i>{{listingInfo.toilet}}</i></span>
+            </el-col>
+            <el-col :md=12 class='detail-item'>
+              <span>便利设施：<i>{{listingInfo.goodat}}</i></span>
+            </el-col>
+            <el-col :md=24 class='bg-light detail-item'>
+              <span>地税：<i>{{listingInfo.tax}}</i></span>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
       <!-- 房源分析 -->
       <el-row class="house-chart">
         <el-col :span="18" :offset="3">
           <div class="chart-title">
-            <span>房源</span>分析
+            <div class="chart-text">
+              <span>房源</span>分析
+            </div>
+            <div class="chart-toggle" >
+              <i @click='showHouseChart=!showHouseChart' :class="showHouseChart?'el-icon-minus':'el-icon-plus'"></i>
+            </div>
           </div>
-          <div class='chart-list' v-show='showHouseChart'>
-            <div id="chart1"></div>
+          
+          <div id="chart1"></div>
+          <el-collapse-transition>
+          <div class="chart-list" v-show="showHouseChart">
             <div id="chart2"></div>
             <div id="chart3"></div>
             <div id="chart4"></div>
           </div>
-          
+          </el-collapse-transition>
         </el-col>
-
-
       </el-row>
 
       <!-- 城市价格 周边房产 区域新盘 -->
@@ -242,16 +301,12 @@
           <div class="about-list">
             <div class="about-item" v-for="(item,index) in nearbyList" :key="index">{{item[1]}}</div>
           </div>
-          <a href='http://www.realtoraccess.com/web/houses/' class="view-more">查看更多</a>
+          <a href="http://www.realtoraccess.com/web/houses/" class="view-more">查看更多</a>
         </el-col>
         <el-col :span="6" class="about-right">
           <div class="about-title">区域新盘</div>
           <div class="about-list">
-            <div
-              class="about-item"
-              v-for="(item,index) in newListingList"
-              :key="index"
-            >
+            <div class="about-item" v-for="(item,index) in newListingList" :key="index">
               <a :href="item.url" target="_blank">
                 <span>{{item.price}},</span>
                 <span>{{item.areas}},</span>
@@ -260,13 +315,15 @@
               </a>
             </div>
           </div>
-          <a href class="view-more">查看更多</a>
+          <a href="http://www.realtoraccess.com/web/m/listings/#/" class="view-more">查看更多</a>
         </el-col>
       </el-row>
       <!-- 免费注册 -->
       <div class="agent-signin-wrap">
         <span class="signin-text">海外房产经纪人?</span>
-        <el-button type="primary"><a href="http://www.realtoraccess.com/register">免费注册</a></el-button>
+        <el-button type="primary">
+          <a href="http://www.realtoraccess.com/register">免费注册</a>
+        </el-button>
       </div>
       <common-footer></common-footer>
     </div>
@@ -289,6 +346,7 @@ import qrcode from "../../assets/image/qrcode.png";
 import middleman from "../../assets/image/middleman.png";
 import CommonFooter from "../../components/CommonFooter.vue";
 import ScrollReveal from "scrollreveal";
+import { setTimeout } from 'timers';
 export default {
   name: "House",
   components: { CommonFooter },
@@ -300,7 +358,7 @@ export default {
           url: "/"
         },
         {
-          text: "最新房源",
+          text: "海外房源",
           url: "http://www.realtoraccess.com/web/houses/"
         },
         {
@@ -338,7 +396,7 @@ export default {
       cityPriceList: null, //城市价格
       nearbyList: null, //周边房产
       newListingList: null, //区域新盘
-      showHouseChart:true,
+      showHouseChart: true
     };
   },
   computed: {
@@ -364,10 +422,14 @@ export default {
     }
   },
   mounted() {
-    //TODO 获取mls
+    //获取mls
     let href = window.location.href;
-    href = href.substr(0,href.length-1);
-    this.mls = href.substring(href.lastIndexOf('/')+1)
+    if (href.lastIndexOf("/") == href.length - 1) {
+      href = href.substr(0, href.length - 1);
+    }
+    this.mls = href.substring(href.lastIndexOf("/") + 1);
+    //TODO
+    // this.mls = "r2003524";
     // this.commitEmail();
     this.getListingInfo();
     // this.getCrumbs();
@@ -378,6 +440,9 @@ export default {
     this.newListings();
     this.initChart();
     // makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},{col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
+    setTimeout(()=>{
+      this.showHouseChart = false;
+    },200);
   },
   methods: {
     setImgSr() {
@@ -434,23 +499,23 @@ export default {
         origin: "left"
       });
     },
-    setAboutLeftSr(){
-      this.sr.reveal(".about-left", {
-        delay: 100,
-        distance: "-100%",
-        opacity: 0.5,
-        reset: true,
-        origin: "right"
-      });
+    setAboutLeftSr() {
+      // this.sr.reveal(".about-left", {
+      //   delay: 100,
+      //   distance: "-100%",
+      //   opacity: 0.5,
+      //   reset: true,
+      //   origin: "right"
+      // });
     },
-    setAboutRightSr(){
-      this.sr.reveal(".about-right", {
-        delay: 100,
-        distance: "-100%",
-        opacity: 0.5,
-        reset: true,
-        origin: "left"
-      });
+    setAboutRightSr() {
+      // this.sr.reveal(".about-right", {
+      //   delay: 100,
+      //   distance: "-100%",
+      //   opacity: 0.5,
+      //   reset: true,
+      //   origin: "left"
+      // });
     },
     handleAppointment() {
       let isEmail = this.isEmail(this.appointment.email);
@@ -462,7 +527,6 @@ export default {
           name: this.appointment.name,
           msg: this.appointment.desc || "我对这个房源有兴趣，想要了解更多资讯。"
         };
-        debugger;
         this.$post(this.$api.COMMIT_EMAIL, params).then(resData => {
           this.notEmail2 = false;
           this.$message.success("预约成功!");
@@ -544,6 +608,16 @@ export default {
           this.listingInfo.houseTypeInfo = `${resData.bedroom || 0}室${parseInt(
             resData.toilet
           )}卫`;
+          wxImgUrl = this.houseViewUrl;
+          try {
+            let metas = document.querySelectorAll("meta");
+            metas[2].content = `${this.listingInfo.listingname}房产,${this.listingInfo.bedroom}室${this.listingInfo.toilet}卫房价${this.listingInfo.price},${this.listingInfo.areas}房产`;
+            metas[3].content = `${this.listingInfo.listingname},MLS#：${this.listingInfo.listingid}，户型：${this.listingInfo.bedroom}室${this.listingInfo.toilet}卫，室内面积：${this.listingInfo.areas},土地面积：${this.listingInfo.parking}.房屋类型：${this.listingInfo.hosuetype}，地产公司：${this.listingInfo.corp}`;
+            let title = document.querySelector("title");
+            title.innerHTML = `【${this.listingInfo.listingname}_${this.listingInfo.houseTypeInfo}_${this.listingInfo.areas}】-海外瑞安居RealtorAccess.com`;
+          } catch (error) {
+            console.log(error);
+          }
           this.city = resData.cityname;
           this.getCrumbs();
           this.getNearby();
@@ -594,9 +668,9 @@ export default {
       this.$get(`${this.$api.CITY_PRICE}`).then(resData => {
         console.log("城市价格", resData);
         this.cityPriceList = resData;
-        this.$nextTick(()=>{
-          this.setAboutLeftSr()
-        })
+        this.$nextTick(() => {
+          this.setAboutLeftSr();
+        });
       });
     },
     //周边房产
@@ -611,9 +685,9 @@ export default {
       this.$get(`${this.$api.NEW_LISTINGS}?mls=${this.mls}`).then(resData => {
         console.log("区域新盘", resData);
         this.newListingList = resData;
-        this.$nextTick(()=>{
-          this.setAboutRightSr()
-        })
+        this.$nextTick(() => {
+          this.setAboutRightSr();
+        });
       });
     }
   }
@@ -959,17 +1033,58 @@ export default {
   }
 }
 
-//房源分析
-.house-chart {
-  border-top: 1px solid @placeholderTextColor;
-  margin-bottom: 2vw;
-  .chart-title {
+//房源详情
+.house-info{
+
+  .info-title{
+    border-top: 1px solid @placeholderTextColor;
     .extraLarge;
     .boldText;
     line-height: 2em;
 
     span {
       border-bottom: 4px solid @themeColor;
+    }
+  }
+  .info-detail{
+    margin-bottom: 24px;
+    .bg-light{
+      .bgLight;
+    }
+    .detail-item{
+      .medium;
+      line-height: 2.4em;
+      span{
+        margin-left: 12px;
+        i{
+          .boldText;
+        }
+      }
+    }
+  }
+  
+}
+
+//房源分析
+.house-chart {
+  
+  margin-bottom: 2vw;
+  .chart-title {
+    border-top: 1px solid @placeholderTextColor;
+    .extraLarge;
+    .boldText;
+    line-height: 2em;
+    display: flex;
+    .chart-text {
+      flex-grow: 1;
+      span {
+        border-bottom: 4px solid @themeColor;
+      }
+    }
+
+    .chart-toggle {
+      .themeText;
+      font-weight: 900;
     }
   }
 
@@ -993,11 +1108,34 @@ export default {
   }
 
   .about-list {
-    height: 19vw;
-    overflow: auto;
+    // height: 19vw;
+    @media screen {
+        @media (max-width:480px){
+            font-size: 40px;
+        }
+
+        @media (min-width:481px) and (max-width:1279px){
+            height: 252px;
+        }
+
+        @media (min-width:1280px) and (max-width:1439px){
+            height: 288px;
+        }
+
+        @media (min-width:1440px) and (max-width:1679px) {
+            height: 324px;
+        }
+
+        @media (min-width:1680px){
+            height: 360px;
+        }
+    }
+    overflow-y: hidden;
+    margin-bottom: 24px;
     .about-item {
       .textOverflowEllipsis;
       .base;
+      line-height: 1.5em;
       color: #999;
       a {
         color: #999;
@@ -1059,7 +1197,7 @@ export default {
     .medium;
     font-weight: normal;
     border-radius: 12px;
-    a{
+    a {
       .whiteText;
     }
   }

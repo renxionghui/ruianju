@@ -9,6 +9,8 @@ import api from './api';
 import {Message} from 'element-ui';
 import '../../assets/css/icon.css'
 import VueLazyLoad from 'vue-lazyload'
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
+Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.use(VueLazyLoad)
 

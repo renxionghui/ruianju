@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <el-row class="index-header" align="middle" type="flex">
       <el-col :md="3" :sm="4" :xs="8" :offset="3" style="display:flex;align-items:center">
-        <el-image :src="logoUrl" style="width:100%;height:auto" @load='headerImageLoad'></el-image>
+        <el-image :src="logoUrl" style="width:100%;height:auto" @load="headerImageLoad"></el-image>
       </el-col>
       <el-col :md="10" :sm="8" :offset="8" class="hidden-sm-and-down">
         <a
@@ -45,7 +45,8 @@
         <span class="index-data-type">新增房源</span>
         <el-button type="primary">
           <a href="http://www.realtoraccess.com/web/m/listings/#/">
-            <i class="icon-home"></i><span>查找房源</span>
+            <i class="icon-home"></i>
+            <span>查找房源</span>
           </a>
         </el-button>
       </el-card>
@@ -60,7 +61,8 @@
         <span class="index-data-type">新增经纪</span>
         <el-button type="primary">
           <a href="http://www.realtoraccess.com/web/agentlist/">
-            <i class="icon-organization"></i><span>查找经纪</span>
+            <i class="icon-organization"></i>
+            <span>查找经纪</span>
           </a>
         </el-button>
       </el-card>
@@ -75,7 +77,8 @@
         <span class="index-data-type">商业地产</span>
         <el-button type="primary">
           <a href>
-            <i class="icon-house"></i><span>查找项目</span>
+            <i class="icon-house"></i>
+            <span>查找项目</span>
           </a>
         </el-button>
       </el-card>
@@ -89,9 +92,9 @@
             <div class="middleman-detail" v-for="(middlemanItem,index) of item" :key="index">
               <img v-lazy="middlemanItem.img" alt class="middleman-photo" />
               <span class="middleman-auth" v-if="middlemanItem.auth==1">认证经纪</span>
-              <span class="middleman-username" >{{middlemanItem.username || '\ueaaa'}}</span>
+              <span class="middleman-username">{{middlemanItem.username || '\ueaaa'}}</span>
               <span class="middleman-usercity">{{middlemanItem.usercity}} | 经纪</span>
-              <span class="middleman-note" >{{middlemanItem.note || '\ueaaa'}}</span>
+              <span class="middleman-note">{{middlemanItem.note || '\ueaaa'}}</span>
               <div class="middleman-divider"></div>
               <div class="middleman-corp">
                 <img :src="middlemanItem.wechat" alt />
@@ -151,7 +154,8 @@
           :key="index"
           @mouseover="recommendHoverIndex = index"
           @mouseout="recommendHoverIndex = -1"
-          :style='{backgroundImage:`url(${item.img})`}'>
+          :style="{backgroundImage:`url(${item.img})`}"
+        >
           <div class="item-agent" v-show="recommendHoverIndex != index && recommendHoverIndex!=7">
             <img :src="item.head" alt />
             <div>
@@ -161,31 +165,34 @@
             <span v-if="item.listingtype">{{item.listingtype}}</span>
           </div>
           <transition name="el-fade-in-linear">
-          <div class="item-detail" v-show="recommendHoverIndex == index && recommendHoverIndex!=7">
-            <div class="item-detail-price" style="font-size:28px;">{{item.price}}</div>
-            <div class="item-detail-addr">{{item.addr}}</div>
-            <div class="item-detail-cityname">{{item.cityname}}</div>
+            <div
+              class="item-detail"
+              v-show="recommendHoverIndex == index && recommendHoverIndex!=7"
+            >
+              <div class="item-detail-price" style="font-size:28px;">{{item.price}}</div>
+              <div class="item-detail-addr">{{item.addr}}</div>
+              <div class="item-detail-cityname">{{item.cityname}}</div>
 
-            <div class="item-detail-housetype">{{item.housetype}}</div>
-            <div class="item-detail-areas">{{item.areas}}</div>
-            <div class="item-detail-roomcount">
-              <span class="icon-furniture">{{item.bashroom}}</span>
-              <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
-            </div>
+              <div class="item-detail-housetype">{{item.housetype}}</div>
+              <div class="item-detail-areas">{{item.areas}}</div>
+              <div class="item-detail-roomcount">
+                <span class="icon-furniture">{{item.bashroom}}</span>
+                <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
+              </div>
 
-            <div class="item-detail-viewcount" style="margin-top:8px;">
-              <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
-              <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
-              <a
-                :href="item.mls.startsWith('r')?`/web/listing1/${item.mls}`:item.htmlid"
-                style="color:#fff;border:1px solid #fff;float:right;padding:4px 12px;border-radius:12px;font-size:14px;"
-              >查看房源</a>
-              <!-- <a
+              <div class="item-detail-viewcount" style="margin-top:8px;">
+                <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
+                <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
+                <a
+                  :href="!item.mls.startsWith('r')||item.mls.length<8?item.htmlid:`/web/listing1/${item.mls}`"
+                  style="color:#fff;border:1px solid #fff;float:right;padding:4px 12px;border-radius:12px;font-size:14px;"
+                >查看房源</a>
+                <!-- <a
                 :href="item.mls.startsWith('r')?`/house.html/${item.mls}/`:item.htmlid"
                 style="color:#fff;border:1px solid #fff;float:right;padding:4px 12px;border-radius:12px;font-size:14px;"
-              >查看房源</a> -->
+                >查看房源</a>-->
+              </div>
             </div>
-          </div>
           </transition>
         </div>
         <div
@@ -217,27 +224,27 @@
     <!-- 更多房源 -->
     <div class="index-morehouse">
       <div class="common-title">更多房源</div>
-      <div class="common-subtitle">商业地产，房产信托以及开发商新盘</div>
+      <div class="common-subtitle">商业地产，移民地产以及开发商新盘</div>
       <el-row style="margin-top:4vw;">
         <el-col :span="8" style="position:relative">
-          <img v-lazy='house1' alt style="width:100%;height:auto" />
+          <img v-lazy="house1" alt style="width:100%;height:auto" />
           <div class="morehouse-descript">
             <div class="morehouse-title">商业地产</div>
-            <a href='http://www.realtoraccess.com' class="morehouse-link">了解更多</a>
+            <a href="http://www.realtoraccess.com" class="morehouse-link">了解更多</a>
           </div>
         </el-col>
         <el-col :span="8" style="position:relative">
-          <img v-lazy='house2' alt style="width:100%;height:auto" />
+          <img v-lazy="house2" alt style="width:100%;height:auto" />
           <div class="morehouse-descript">
-            <div class="morehouse-title">房产信托</div>
-            <a href='http://www.realtoraccess.com' class="morehouse-link">了解更多</a>
+            <div class="morehouse-title">移民地产</div>
+            <a href="http://www.realtoraccess.com" class="morehouse-link">了解更多</a>
           </div>
         </el-col>
         <el-col :span="8" style="position:relative">
-          <img v-lazy='house3' alt style="width:100%;height:auto" />
+          <img v-lazy="house3" alt style="width:100%;height:auto" />
           <div class="morehouse-descript">
             <div class="morehouse-title">开发商新盘</div>
-            <a href='http://www.realtoraccess.com' class="morehouse-link">了解更多</a>
+            <a href="http://www.realtoraccess.com" class="morehouse-link">了解更多</a>
           </div>
         </el-col>
       </el-row>
@@ -249,14 +256,14 @@
       <el-row style="margin-top:4vw;">
         <el-col :span="8" :offset="3">
           <el-card :body-style="{padding:'0px'}" shadow="hover" class="reading-item">
-            <img :src='reading1' alt style="width:100%;height:auto" />
+            <img :src="reading1" alt style="width:100%;height:auto" />
             <p v-if="articlesData.length>1">{{articlesData[0].title}}</p>
             <a v-if="articlesData.length>1" :href="articlesData[0].url">查看更多</a>
           </el-card>
         </el-col>
         <el-col :span="8" :offset="2">
           <el-card :body-style="{padding:'0px'}" shadow="hover" class="reading-item">
-            <img :src='reading2' alt style="width:100%;height:auto" />
+            <img :src="reading2" alt style="width:100%;height:auto" />
             <p v-if="articlesData.length>1">{{articlesData[1].title}}</p>
             <a v-if="articlesData.length>1" :href="articlesData[1].url">查看更多</a>
           </el-card>
@@ -279,9 +286,9 @@
             >
               <div class="panel-logo" :style="{backgroundImage:`url(${panelItem.logo})`}">
                 <transition name="el-fade-in-linear">
-                <div class="panel-qrcode" v-show="corpHoverIndex == index">
-                  <img :src="panelItem.qr_code" alt />
-                </div>
+                  <div class="panel-qrcode" v-show="corpHoverIndex == index">
+                    <img :src="panelItem.qr_code" alt />
+                  </div>
                 </transition>
               </div>
               <p class="panel-name">{{panelItem.name}}</p>
@@ -303,7 +310,7 @@
           :href="item.url"
           :key="index"
         >
-          <div class="item-logo" v-lazy:background-image='item.logo'></div>
+          <div class="item-logo" v-lazy:background-image="item.logo"></div>
           <div class="item-name">{{item.name}}</div>
         </a>
       </div>
@@ -363,7 +370,7 @@ import cooperationArray from "./cooperationArray";
 import CommonFooter from "../../components/CommonFooter.vue";
 import ScrollReveal from "scrollreveal";
 import { TweenLite } from "gsap/TweenLite";
-import {Loading} from 'element-ui';
+import { Loading } from "element-ui";
 export default {
   name: "Index",
   components: { CommonFooter },
@@ -375,12 +382,14 @@ export default {
           url: "/"
         },
         {
-          text: "最新房源",
+          text: "海外房源",
           url: "http://www.realtoraccess.com/web/houses/"
+          // url: "/house.html"
         },
         {
           text: "经纪门户",
           url: "http://www.realtoraccess.com/web/agentlist/"
+          // url: "/agenthome.html"
         },
         {
           text: "房价走势",
@@ -422,13 +431,13 @@ export default {
       corpHoverIndex: -1,
       cooperationArray,
       sr: ScrollReveal(),
-      loading:null,
-      isHeaderLoad:false,
-      isCountLoad:false,
-      isAgentsLoad:false,
-      isListingsLoad:false,
-      isCorpsLoad:false,
-      isArticlesLoad:false
+      loading: null,
+      isHeaderLoad: false,
+      isCountLoad: false,
+      isAgentsLoad: false,
+      isListingsLoad: false,
+      isCorpsLoad: false,
+      isArticlesLoad: false
     };
   },
   computed: {
@@ -441,23 +450,31 @@ export default {
     agentNum() {
       return this.countData.agent.toFixed(0);
     },
-    isLoad(){
-      return this.isHeaderLoad && this.isCountLoad && this.isAgentsLoad && this.isListingsLoad &&this.isCorpsLoad &&this.isArticlesLoad;
+    isLoad() {
+      return (
+        this.isHeaderLoad &&
+        this.isCountLoad &&
+        this.isAgentsLoad &&
+        this.isListingsLoad &&
+        this.isCorpsLoad &&
+        this.isArticlesLoad
+      );
     }
   },
-  watch:{
-    isLoad(n){
-      if(n){
+  watch: {
+    isLoad(n) {
+      if (n) {
         this.loading.close();
       }
     }
   },
   mounted() {
+    wxImgUrl = 'http://www.realtoraccess.com/static/web/img/share-index.png';
     this.loading = Loading.service({
       lock: true,
-      text: 'Loading',
-      spinner: 'el-icon-loading'
-    })
+      text: "Loading",
+      spinner: "el-icon-loading"
+    });
     this.getCount();
     this.getAgents();
     this.getListings();
@@ -466,7 +483,7 @@ export default {
     // this.setScrollReveal();
   },
   methods: {
-    headerImageLoad(){
+    headerImageLoad() {
       this.isHeaderLoad = true;
     },
     getOptions(beforeReveal = () => {}, afterReveal = () => {}) {
@@ -617,16 +634,58 @@ export default {
     height: 100%;
 
     .en-text {
-      .mostLarge;
       .whiteText;
-      .boldText;
+      font-weight: 800;
+      text-shadow: 10px 10px 30px rgba(0, 0, 0, 0.5),
+        -10px -10px 30px rgba(0, 0, 0, 0.5);
       line-height: 2em;
+      @media screen {
+        @media (max-width: 480px) {
+          font-size: 40px;
+        }
+        @media (min-width: 1000px) and (max-width: 1279px) {
+          font-size: 72px;
+        }
+
+        @media (min-width: 1280px) and (max-width: 1439px) {
+          font-size: 84px;
+        }
+
+        @media (min-width: 1440px) and (max-width: 1679px) {
+          font-size: 96px;
+        }
+
+        @media (min-width: 1680px) {
+          font-size: 108px;
+        }
+      }
     }
 
     .zh-text {
-      .extraLarge;
       .whiteText;
       line-height: 2em;
+      text-shadow: 10px 10px 16px rgba(0, 0, 0, 0.5),
+        -10px -10px 16px rgba(0, 0, 0, 0.5);
+        @media screen {
+        @media (max-width: 480px) {
+          font-size: 40px;
+        }
+        @media (min-width: 1000px) and (max-width: 1279px) {
+          font-size: 64px;
+        }
+
+        @media (min-width: 1280px) and (max-width: 1439px) {
+          font-size: 72px;
+        }
+
+        @media (min-width: 1440px) and (max-width: 1679px) {
+          font-size: 84px;
+        }
+
+        @media (min-width: 1680px) {
+          font-size: 96px;
+        }
+      }
     }
   }
 }
@@ -640,8 +699,8 @@ export default {
 
   .index-data-num {
     .themeText;
-    &:hover{
-      opacity: .8;
+    &:hover {
+      opacity: 0.8;
     }
   }
 
@@ -671,20 +730,20 @@ export default {
 
         @media screen {
           @media (min-width: 100px) and (max-width: 1279px) {
-            top:8px;
-            right:8px;
+            top: 8px;
+            right: 8px;
           }
           @media (min-width: 1280px) and (max-width: 1439px) {
-            top:6px;
-            right:6px;
+            top: 6px;
+            right: 6px;
           }
           @media (min-width: 1440px) and (max-width: 1679px) {
-            top:8px;
-            right:8px;
+            top: 8px;
+            right: 8px;
           }
           @media (min-width: 1680px) {
-            top:8px;
-            right:8px;
+            top: 8px;
+            right: 8px;
           }
         }
       }
@@ -700,7 +759,7 @@ export default {
 }
 //经纪人banner
 .index-banner-middleman {
-  background-image: url('../../assets/image/reading2.png');
+  background-image: url("../../assets/image/reading2.png");
   background-repeat: no-repeat;
   background-position-y: top;
   background-size: 100% auto;
@@ -747,6 +806,7 @@ export default {
         background-repeat: no-repeat;
         background-position: center;
         border-radius: 50%;
+        object-fit: cover;
       }
 
       .middleman-auth {
@@ -851,8 +911,8 @@ export default {
         width: 100%;
         height: auto;
         border-radius: 50%;
-        transition: all .5s;
-        &:hover{
+        transition: all 0.5s;
+        &:hover {
           transform: scale(1.1);
         }
       }
@@ -1395,11 +1455,11 @@ export default {
   color: #fff !important;
 }
 
-.el-loading-spinner i{
+.el-loading-spinner i {
   font-size: 96px;
 }
 
-.el-loading-spinner .el-loading-text{
+.el-loading-spinner .el-loading-text {
   font-size: 48px !important;
   font-weight: bolder;
 }

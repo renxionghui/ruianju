@@ -21,11 +21,12 @@ module.exports = {
     }
   },
   devServer: {
+    disableHostCheck: true,
     // 设置请求代理
     proxy: {
         '/': {
             target: 'http://www.realtoraccess.com',
-            ws: true,
+            ws: false,
             changeOrigin: true
         }
     }

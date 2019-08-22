@@ -75,23 +75,23 @@
             <span v-if="item.salestatus == 'yes'">已售</span>
           </div>
           <transition name="el-fade-in-linear">
-          <div class="item-detail" v-show="recommendHoverIndex == index">
-            <div class="item-detail-price">{{item.price}}</div>
-            <div class="item-detail-addr">{{item.address}}</div>
-            <div class="item-detail-cityname">{{item.cityname}}</div>
+            <div class="item-detail" v-show="recommendHoverIndex == index">
+              <div class="item-detail-price">{{item.price}}</div>
+              <div class="item-detail-addr">{{item.address}}</div>
+              <div class="item-detail-cityname">{{item.cityname}}</div>
 
-            <div class="item-detail-housetype">{{item.housetype}} | {{item.areas}}</div>
-            <div class="item-detail-roomcount">
-              <span class="icon-furniture">{{item.bashroom}}</span>
-              <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
-            </div>
+              <div class="item-detail-housetype">{{item.housetype}} | {{item.areas}}</div>
+              <div class="item-detail-roomcount">
+                <span class="icon-furniture">{{item.bashroom}}</span>
+                <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
+              </div>
 
-            <div class="item-detail-viewcount" style="margin-top:8px;">
-              <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
-              <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
-              <a :href="item.url" target="_blank">查看房源</a>
+              <div class="item-detail-viewcount" style="margin-top:8px;">
+                <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
+                <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
+                <a :href="item.url" target="_blank">查看房源</a>
+              </div>
             </div>
-          </div>
           </transition>
         </div>
       </div>
@@ -259,7 +259,7 @@ export default {
           url: "/"
         },
         {
-          text: "最新房源",
+          text: "海外房源",
           url: "http://www.realtoraccess.com/web/houses/"
         },
         {
@@ -317,7 +317,7 @@ export default {
         delay: 100,
         reset: true,
         desktop: true,
-        distance:'-100px',
+        distance: "-100px",
         viewFactor: 0.1,
         beforeReveal,
         afterReveal
@@ -347,8 +347,8 @@ export default {
       this.sr.reveal(".agent-contact-wrap", this.getOptions());
       this.sr.reveal(".agent-signin-wrap", this.getOptions());
       this.sr.reveal(".middleman-recommend .recommend-item", {
-        reset:true,
-        interval:160
+        reset: true,
+        interval: 160
       });
     },
     handleClose() {
@@ -359,6 +359,16 @@ export default {
       this.$get(this.$api.AGENT_BYID + "/" + this.agentId).then(resData => {
         this.agentInfo = resData;
         this.visitData.totalVisit = parseInt(resData.visit);
+        try {
+          let metas = document.querySelectorAll("meta");
+          metas[2].content = `${resData.username},${resData.username}房产经纪人,${resData.corp}${resData.username},${resData.note}`;
+          metas[3].content = `${resData.username}是${resData.corp}的房产经纪人,${resData.note},${resData.username}是经过瑞安居认证的可信赖的房产经纪人,更多${resData.username}的信誉信息和正在经纪的海外房产信息就来海外瑞安居。`;
+          let title = document.querySelector("title");
+          title.innerHTML = `【${resData.username}房产经纪人_${resData.corp}_${resData.note}】-海外瑞安居RealtorAccess.com`;
+        } catch (error) {
+          console.log(error);
+        }
+        wxImgUrl = this.agentInfo.head2;
         TweenLite.to(this.visitData, 2, { visit: this.visitData.totalVisit });
         this.$nextTick(() => {
           this.setScrollReveal();
@@ -394,10 +404,12 @@ export default {
     }
   },
   mounted() {
-    console.log(window.location.href);
     let href = window.location.href;
-    href = href.substr(0,href.length-1);
-    this.agentId = href.substring(href.lastIndexOf('/')+1)
+    if (href.lastIndexOf("/") == href.length - 1) {
+      href = href.substr(0, href.length - 1);
+    }
+    this.agentId = href.substring(href.lastIndexOf("/") + 1);
+    // this.agentId = 2;
     this.getAgentById();
     this.getAgentListing();
 
@@ -700,7 +712,6 @@ visit: 146  访问量
         top: 0;
         background-color: transparent;
 
-        
         span {
           background-color: @themeColor;
           .whiteText;
@@ -725,7 +736,7 @@ visit: 146  访问量
         background-color: rgba(0, 0, 0, 0.5);
         left: 0;
         top: 0;
-        
+
         .item-detail-price {
           .extraLarge;
           .boldText;
