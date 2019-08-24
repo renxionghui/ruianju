@@ -8,6 +8,8 @@ import api from './api';
 import '../../assets/css/icon.css'
 import '../../assets/css/element-theme.css';
 import { Message } from 'element-ui';
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
+Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.prototype.$api = api;
 Vue.prototype.$message = Message;

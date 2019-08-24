@@ -1,11 +1,11 @@
 <template>
   <div id="index">
     <!-- 头部 -->
-    <el-row class="index-header" align="middle" type="flex">
+    <!-- <el-row class="index-header" align="middle" type="flex">
       <el-col :md="3" :sm="4" :xs="8" :offset="3" style="display:flex;align-items:center">
         <el-image :src="logoUrl" style="width:100%;height:auto" @load="headerImageLoad"></el-image>
       </el-col>
-      <el-col :md="10" :sm="8" :offset="8" class="hidden-sm-and-down">
+      <el-col :md="10" :sm="17" :offset="8">
         <a
           v-for="(item,index) of navList"
           :key="index"
@@ -13,24 +13,17 @@
           class="nav-item"
         >{{item.text}}</a>
       </el-col>
-      <el-col class="hidden-sm-and-up show-more" :xs="2" :offset="12">
-        <el-dropdown placement="bottom-end" trigger="click">
-          <i class="el-icon-more"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(item,index) of navList" :key="index">
-              <a :key="index" :href="item.url" class="dropdown-item">{{item.text}}</a>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-col>
-    </el-row>
+    </el-row> -->
+    <div class='index-header'>
+      <common-header></common-header>
+    </div>
     <!-- 大轮播图 -->
     <div class="index-banner">
-      <el-image :src="bannerUrl" style="width:100%;height:auto"></el-image>
-      <div class="index-banner-desc">
+      <el-image :src="require('../../assets/image/banner_bg.png')" @load="headerImageLoad" style="width:101%;height:100%;position:absolute;margin-left:-1vw"></el-image>
+      <!-- <div class="index-banner-desc">
         <span class="en-text">REALTOR ACCESS</span>
         <span class="zh-text">海外房展第一门户</span>
-      </div>
+      </div> -->
     </div>
     <!-- 数据 -->
     <div class="index-data">
@@ -85,8 +78,8 @@
     </div>
     <!-- 经纪人轮播图 -->
     <div class="index-banner-middleman">
-      <div class="index-banner-middleman-title">专业的海外置业顾问</div>
-      <el-carousel :interval="3000" height="400px">
+      <div class="index-banner-middleman-title  font-title">专业的海外置业顾问</div>
+      <el-carousel :interval="3000" height="400px" arrow="always">
         <el-carousel-item v-for="(item,i) of middlemanBanner" :key="i">
           <div class="index-banner-middleman-item">
             <div class="middleman-detail" v-for="(middlemanItem,index) of item" :key="index">
@@ -141,7 +134,7 @@
     <!-- 推荐 -->
     <div class="index-recommend">
       <div class="recommend-header">
-        <span>海外房产经纪推荐房源</span>
+        <span class="font-title">海外房产经纪推荐房源</span>
         <div class="refresh-recommend" @click="refreshRecommend">
           <img v-lazy="require('../../assets/image/icon-refresh.svg')" alt />
           <span>换一批</span>
@@ -208,12 +201,14 @@
           <span style="color:#1CBB20;margin-top:12px;">发布房源</span>
         </div>
       </div>
-
-      <a href="http://www.realtoraccess.com/web/m/listings/#/" class="recommend-button">查看更多</a>
+      <div style="text-align:center">
+        <a href="http://www.realtoraccess.com/web/m/listings/#/" class="recommend-button">查看更多</a>
+      </div>
+      
     </div>
     <!-- 描述 -->
     <div class="index-describe" v-lazy:background-image="require('../../assets/image/mh_bg.png')">
-      <div class="describe-header">海外瑞安居 - 海外房展第一门户</div>
+      <div class="describe-header font-title">海外瑞安居 - 海外房展第一门户</div>
       <div
         class="describe-base"
       >海外瑞安居（简称“瑞安居”，RealtorAccess），面向全球华人买家和卖家，提供最及时的房产投资资讯、最高效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是全球海外房产投资者进行海外房产置业投资的不二选择。</div>
@@ -223,7 +218,7 @@
     </div>
     <!-- 更多房源 -->
     <div class="index-morehouse">
-      <div class="common-title">更多房源</div>
+      <div class="common-title font-title"><span>更多房源</span></div>
       <div class="common-subtitle">商业地产，移民地产以及开发商新盘</div>
       <el-row style="margin-top:4vw;">
         <el-col :span="8" style="position:relative">
@@ -251,7 +246,7 @@
     </div>
     <!-- 相关阅读 -->
     <div class="index-reading">
-      <div class="common-title">相关阅读</div>
+      <div class="common-title font-title"><span>相关阅读</span></div>
       <div class="common-subtitle">100+实力媒体跟踪报道，13大行业资质权威服务保障</div>
       <el-row style="margin-top:4vw;">
         <el-col :span="8" :offset="3">
@@ -272,7 +267,7 @@
     </div>
     <!-- 公司动态 -->
     <div class="index-corps" data-scroll-reveal>
-      <div class="common-title">房地产经纪公司动态</div>
+      <div class="common-title font-title"><span>房地产经纪公司动态</span></div>
       <div class="common-subtitle">扫描微信二维码，关注房地产经纪公司动态</div>
       <el-carousel :interval="3000" height="26vw" indicator-position="none">
         <el-carousel-item v-for="(item,i) of corpsData" :key="i" class="carousel-item">
@@ -302,7 +297,7 @@
 
     <!-- 媒体合作 -->
     <div class="index-cooperation">
-      <div class="common-title">媒体合作</div>
+      <div class="common-title font-title"><span>媒体合作</span></div>
       <div class="index-cooperation-list">
         <a
           class="index-cooperation-item"
@@ -322,7 +317,7 @@
 
       <div class="desc-wrap">
         <div class="desc-left">
-          <div class="desc-header">海外瑞安居 - 海外房展第一门户</div>
+          <div class="desc-header font-title">海外瑞安居 - 海外房展第一门户</div>
           <div
             class="desc-base"
           >海外瑞安居（简称“瑞安居”，RealtorAccess），面向全球华人买家和卖家，提供最及时的房产投资资讯、最高效的房源推广展示以及最专业的房产经纪人推荐。除MLS房源信息外，更汇集了学区房、楼花暗盘、商业地产以及潜力投资房源信息，让全球华人可以查询海外主要城市房价、实时跟踪海外房源价格走势，确保房产投资回报。平台集成视频、3D、户型图以及房源照片等房源详情信息，通过地图方式全面动态展示最新公众开放日信息。海外华人卖家选择海外瑞安居进行线上挂盘，平台将为您匹配最专业的房产经纪人，无论您身在何方，都有专人为您提供专属定制营销推广服务，您的房产挂牌信息可直达海外房产投资的潜力买家，实现快速高效售房。海外瑞安居是全球海外房产投资者进行海外房产置业投资的不二选择。</div>
@@ -367,13 +362,14 @@ import reading1 from "../../assets/image/reading1.png";
 import reading2 from "../../assets/image/reading2.png";
 import { log } from "util";
 import cooperationArray from "./cooperationArray";
+import CommonHeader from '../../components/CommonHeader';
 import CommonFooter from "../../components/CommonFooter.vue";
 import ScrollReveal from "scrollreveal";
 import { TweenLite } from "gsap/TweenLite";
 import { Loading } from "element-ui";
 export default {
   name: "Index",
-  components: { CommonFooter },
+  components: { CommonFooter,CommonHeader },
   data() {
     return {
       navList: [
@@ -383,8 +379,8 @@ export default {
         },
         {
           text: "海外房源",
-          url: "http://www.realtoraccess.com/web/houses/"
-          // url: "/house.html"
+          // url: "http://www.realtoraccess.com/web/houses/"
+          url: "/house.html"
         },
         {
           text: "经纪门户",
@@ -459,6 +455,7 @@ export default {
         this.isCorpsLoad &&
         this.isArticlesLoad
       );
+      // return false;
     }
   },
   watch: {
@@ -472,7 +469,7 @@ export default {
     wxImgUrl = 'http://www.realtoraccess.com/static/web/img/share-index.png';
     this.loading = Loading.service({
       lock: true,
-      text: "Loading",
+      text: " ",
       spinner: "el-icon-loading"
     });
     this.getCount();
@@ -588,37 +585,16 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../assets/css/base.less");
-// #index {
-//   width: 100vw;
-// }
+#index {
+  background-color:#fff;
+}
 @vw100: 100vw;
 //图片基本路径
 @image: "../../assets/image";
 
-//头部
-.index-header {
-  //导航
-  .nav-item {
-    .primaryText;
-    line-height: 100%;
-    .medium;
-    &:nth-child(1) {
-      border-bottom: 2px solid @themeColor;
-    }
-    & + .nav-item {
-      margin-left: 24px;
-    }
-  }
-
-  .dropdown-item {
-    .primaryText;
-  }
-
-  .show-more {
-    .regularText;
-  }
+.index-header{
+  padding: 0 12vw;
 }
-
 .index-banner {
   height: @vw100 / 2.4;
   position: relative;
@@ -643,7 +619,7 @@ export default {
         @media (max-width: 480px) {
           font-size: 40px;
         }
-        @media (min-width: 1000px) and (max-width: 1279px) {
+        @media (min-width: 900px) and (max-width: 1279px) {
           font-size: 72px;
         }
 
@@ -670,7 +646,7 @@ export default {
         @media (max-width: 480px) {
           font-size: 40px;
         }
-        @media (min-width: 1000px) and (max-width: 1279px) {
+        @media (min-width: 900px) and (max-width: 1279px) {
           font-size: 64px;
         }
 
@@ -733,6 +709,10 @@ export default {
             top: 8px;
             right: 8px;
           }
+          @media (min-width: 900px) and (max-width: 1279px) {
+            top: 4px;
+            right: 4px;
+          }
           @media (min-width: 1280px) and (max-width: 1439px) {
             top: 6px;
             right: 6px;
@@ -762,7 +742,8 @@ export default {
   background-image: url("../../assets/image/reading2.png");
   background-repeat: no-repeat;
   background-position-y: top;
-  background-size: 100% auto;
+  background-size: cover;
+  .bgLight;
   border-top: 1px solid #f0f0f0;
   .index-banner-middleman-title {
     .whiteText;
@@ -784,7 +765,15 @@ export default {
       flex-direction: column;
       border-top: 3px solid @themeColor;
       background-color: @white;
-      width: 240px;
+      @media screen {
+        @media (min-width:980px) and (max-width:1279px){
+            width: 200px;
+        }
+
+        @media (min-width:1280px) and (max-width:1679px) {
+           width: 240px;
+        }
+    }
       padding: 12px;
       box-sizing: border-box;
       position: relative;
@@ -888,7 +877,7 @@ export default {
 //为何顾问
 .index-why-middleman {
   .bgLight;
-  padding: 4vw 12vw;
+  padding: 4vw 8vw;
 
   .why-header {
     .flex;
@@ -905,7 +894,7 @@ export default {
     justify-content: space-between;
 
     .reason-item {
-      width: 10%;
+      width: 12vw;
 
       img {
         width: 100%;
@@ -918,7 +907,7 @@ export default {
       }
 
       p {
-        .base;
+        .medium;
         .regularText;
         line-height: 32px;
         text-align: center;
@@ -942,25 +931,38 @@ export default {
 //推荐
 .index-recommend {
   padding: 4vw 0;
-  .flex;
-  flex-direction: column;
-  .flexCenter;
-
   .recommend-header {
     .extraLarge;
+    text-align: center;
     .boldText;
     position: relative;
     .refresh-recommend {
-      width: 320px;
+      // width: 320px;
       position: absolute;
-      left: 105%;
+      left: 80%;
       bottom: 0;
+
       cursor: pointer;
       &:hover {
         opacity: 0.8;
       }
       @media screen {
         @media (min-width: 481px) and (max-width: 1279px) {
+          height: 36px;
+          span {
+            float: left;
+            .themeText;
+            font-size: 20px;
+            line-height: 36px;
+          }
+          img {
+            float: left;
+            width: 36px;
+            height: 36px;
+          }
+        }
+
+        @media (min-width: 900px) and (max-width: 1279px) {
           height: 36px;
           span {
             float: left;
@@ -1030,8 +1032,17 @@ export default {
     .justifyCenter;
     flex-wrap: wrap;
     .recommend-item {
-      width: 20vw;
-      height: 14vw;
+      @media screen {
+        @media (max-width: 1279px){
+          width: 40vw;
+          height: 24vw;
+        }
+        @media (min-width:1280px){
+            width: 20vw;
+            height: 14vw;
+        }
+      }
+      
       margin: 8px 4px;
       position: relative;
       background-size: 100% 100%;
@@ -1102,12 +1113,12 @@ export default {
         left: 0;
         top: 0;
         @media screen {
-          @media (min-width: 481px) and (max-width: 1279px) {
-            font-size: 12px;
+          @media (min-width: 900px) and (max-width: 1279px) {
+            font-size: 14px;
           }
 
           @media (min-width: 1280px) and (max-width: 1439px) {
-            font-size: 14px;
+            font-size: 16px;
           }
 
           @media (min-width: 1440px) and (max-width: 1679px) {
@@ -1398,22 +1409,29 @@ export default {
 .common-title {
   .extraLarge;
   .boldText;
-  .flex;
-  justify-content: center;
-  align-items: center;
-  &::before {
+  text-align: center;
+  span{
+    position: relative;
+  }
+  span::before {
     content: "";
     width: 48px;
     height: 4px;
-    margin-right: 12px;
+    left: -52px;
+    top: 50%;
+    margin-top: -2px;
+    position: absolute;
     background-color: @black;
   }
 
-  &::after {
+  span::after {
     content: "";
     width: 48px;
     height: 4px;
-    margin-left: 12px;
+    right: -52px;
+    top: 50%;
+    margin-top: -2px;
+    position: absolute;
     background-color: @black;
   }
 }
@@ -1457,10 +1475,14 @@ export default {
 
 .el-loading-spinner i {
   font-size: 96px;
+  color: gray !important;
 }
 
 .el-loading-spinner .el-loading-text {
-  font-size: 48px !important;
-  font-weight: bolder;
+  height: 39px;
+  background-image: url('../../assets/image/loading-bg.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
 }
+
 </style>

@@ -1,35 +1,15 @@
 <template>
   <div id="middleman">
     <!-- 头部 -->
-    <el-row class="middleman-header" align="middle" type="flex">
-      <el-col :md="3" :sm="4" :xs="8" :offset="3" style="display:flex;align-items:center">
-        <el-image :src="logoUrl" style="width:100%;height:auto"></el-image>
-      </el-col>
-      <el-col :md="10" :sm="8" :offset="8" class="hidden-sm-and-down">
-        <a
-          v-for="(item,index) of navList"
-          :key="index"
-          :href="item.url"
-          class="nav-item"
-        >{{item.text}}</a>
-      </el-col>
-      <el-col class="hidden-sm-and-up show-more" :xs="2" :offset="12">
-        <el-dropdown placement="bottom-end" trigger="click">
-          <i class="el-icon-more"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(item,index) of navList" :key="index">
-              <a :key="index" :href="item.url" class="dropdown-item">{{item.text}}</a>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-col>
-    </el-row>
+    <div class="middleman-header">
+      <common-header :nav-index="2"></common-header>
+    </div>
     <!-- 大轮播图 -->
     <div class="middleman-banner">
       <img :src="bannerUrl" />
       <div class="banner-masker">
         <div class="agent-name">{{agentInfo.username}}</div>
-        <div class="agent-corp">{{agentInfo.corp}}</div>
+        <div class="agent-corp">{{agentInfo.note}} | {{agentInfo.corp}}</div>
         <div class="agent-visit">访问量：{{visitNum}}</div>
         <div class="agent-contact">
           <div class="contact-type" @click="showCTDialog=true">
@@ -40,28 +20,44 @@
           </div>
         </div>
       </div>
+      <div class="banner-share">
+        <a href>
+          <img :src="require('../../assets/image/icon-facebook-white.svg')" alt />
+        </a>
+        <a href>
+          <img :src="require('../../assets/image/icon-wechat-white.svg')" alt />
+        </a>
+        <a href>
+          <img :src="require('../../assets/image/icon-weibo-white.svg')" alt />
+        </a>
+      </div>
     </div>
 
     <!-- 经纪人详情 -->
-    <el-row class="middleman-detail">
-      <el-col :md="12" :xs="24" style="text-align:center;" class="agent-head">
-        <img :src="agentInfo.head2" alt width="60%" height="auto" />
+    <div class="middleman-detail">
+      <div class="agent-head">
+        <img :src="agentInfo.head2" alt class="agent-photo" />
         <span class="agent-auth" v-if="agentInfo.auth">认证经纪</span>
-      </el-col>
-      <el-col :md="12" :xs="24">
-        <div class="detail-title">
+      </div>
+      <div class="detail-descript">
+        <div class="detail-title font-title">
           <span>个人</span>介绍
         </div>
-        <div class="detail-descript">
-          <span>{{agentInfo.selfintro}}</span>
-          <a :href="`http://${agentInfo.website}`" target="_blank">more>></a>
+
+        <div style="margin-top:2.4vw">
+          <el-collapse-transition>
+            <span v-if="showAgentMore">{{agentInfo.selfintro}}</span>
+            <span v-else class="descript-text">{{agentInfo.selfintro}}</span>
+          </el-collapse-transition>
         </div>
-      </el-col>
-    </el-row>
+
+        <span class="more" @click="showAgentMore=!showAgentMore">{{showAgentMore?'收起':'详情'}}>></span>
+      </div>
+    </div>
 
     <!-- 推荐房源 -->
     <div class="middleman-recommend">
-      <div :span="24" class="recommend-title">推荐房源</div>
+      <div :span="24" class="recommend-title font-title">推荐房源</div>
       <div class="recommend-list" v-if="recommendData.length>0">
         <div
           class="recommend-item"
@@ -69,10 +65,9 @@
           :key="index"
           @mouseover="recommendHoverIndex = index"
           @mouseout="recommendHoverIndex = -1"
-          :style="{backgroundImage:`url(${item.img})`}"
-        >
+          :style="{backgroundImage:`url(${item.img})`}">
           <div class="item-agent" v-show="recommendHoverIndex != index">
-            <span v-if="item.salestatus == 'yes'">已售</span>
+            <span v-if="item.listingtype">{{item.listingtype}}</span>
           </div>
           <transition name="el-fade-in-linear">
             <div class="item-detail" v-show="recommendHoverIndex == index">
@@ -89,32 +84,59 @@
               <div class="item-detail-viewcount" style="margin-top:8px;">
                 <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
                 <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
-                <a :href="item.url" target="_blank">查看房源</a>
+                <a :href="`/web/listing1/${item.listingid}`">查看房源</a>
               </div>
             </div>
           </transition>
         </div>
       </div>
+      <div v-else class="recommend-list">
+        <div
+          class="recommend-item"
+          :style="{backgroundImage:`url(${require('../../assets/image/default-house.jpg')}`}">
+          <div class="item-agent">
+            <span >敬请期待</span>
+          </div>
+        </div>
+        <div
+          class="recommend-item"
+          :style="{backgroundImage:`url(${require('../../assets/image/default-house.jpg')}`}">
+          <div class="item-agent">
+            <span >敬请期待</span>
+          </div>
+        </div>
+      </div>
       <div style="text-align:center">
-        <a class="recommend-button">查看更多</a>
+        <span class="recommend-button">查看更多</span>
       </div>
     </div>
 
     <!-- 公司介绍 -->
     <div class="agent-corp-wrap">
-      <div class="corp-video">
-        <div class="button-play" @click="palyVideo">
-          <img :src="require('../../assets/image/icon-play.svg')" alt width="100%" height="100%" />
-          <video :src="agentInfo.corpVideo" v-if="agentInfo.corpVideo" width="0" height="0"></video>
+      <div class="corp-video" @mouseover="showPlayButton=true" @mouseout="showPlayButton = false;">
+        <div class="button-play" @click="playVideo" v-show="showPlayButton">
+          <img :src="iconPlayButton" alt width="100%" height="100%" />
+        </div>
+        <div class="video-wrap">
+          <video
+            :src="agentInfo.corpVideo"
+            v-if="agentInfo.corpVideo"
+            width="100%"
+            height="100%"
+            style="object-fit:fill"
+          ></video>
+          <img :src="require('../../assets/image/default-house.jpg')" v-else alt />
         </div>
       </div>
       <div class="corp-desc">
-        <div class="desc-title">
+        <div class="desc-title font-title">
           <span>公司</span>简介
         </div>
-        <div class="desc-text" v-if="agentInfo.corpintro">{{agentInfo.corpintro}}</div>
-        <a v-if="agentInfo.corpintro" class="more">more>></a>
-        <div class="desc-text" v-else>无</div>
+        <div style="margin-top:2.4vw">
+          <div v-if="showCorpMore">{{agentInfo.corpintro}}</div>
+          <div class="desc-text" v-else>{{agentInfo.corpintro}}</div>
+        </div>
+        <span class="more" @click="showCorpMore=!showCorpMore">{{showCorpMore?'收起':'详情'}}>></span>
       </div>
     </div>
 
@@ -128,22 +150,25 @@
         </el-carousel>
       </div>
       <div class="personnal-desc">
-        <div class="desc-title">
+        <div class="desc-title font-title">
           <span>关于</span>
         </div>
-        <div class="desc-text" v-if="agentInfo.selfintro">{{agentInfo.selfintro}}</div>
-        <a v-if="agentInfo.selfintro" class="more">more>></a>
-        <div class="desc-text" v-else>无</div>
+        <div style="margin-top:2.4vw">
+          <div v-if="showAboutMore" class="desc-text-more">{{agentInfo.selfintro}}</div>
+          <div v-else class="desc-text">{{agentInfo.selfintro}}</div>
+        </div>
+
+        <span class="more" @click="showAboutMore=!showAboutMore">{{showAboutMore?'收起':'详情'}}>></span>
       </div>
     </div>
 
     <!-- 联系方式 -->
     <div class="agent-contact-wrap">
       <div class="corp-logo">
-        <img :src="agentInfo.logo" alt width="100%" height="100%" />
+        <img :src="agentInfo.logo" alt width="100%" height="auto" />
       </div>
       <div class="contact-detail">
-        <div class="detail-title">
+        <div class="detail-title font-title">
           <span>联系</span>方式
         </div>
         <div class="detail-name">{{agentInfo.username}}</div>
@@ -175,9 +200,15 @@
       </div>
     </div>
 
+    <div class="fix-qrcode" v-show="showQrcode">
+      <span class="el-icon-close qrcode-close" @click="showQrcode=false"></span>
+      <img :src="agentInfo.qrcode" alt />
+      <p style="text-align:center">扫一扫添加好友</p>
+    </div>
+
     <!-- 免费注册 -->
     <div class="agent-signin-wrap">
-      <span class="signin-text">海外房产经纪人?</span>
+      <span class="signin-text font-title">海外房产经纪人?</span>
       <el-button type="primary">免费注册</el-button>
     </div>
     <!-- 通用尾部 -->
@@ -195,7 +226,7 @@
         </el-col>
         <el-col :span="14" class="contact-info">
           <p class="name">{{agentInfo.username}}</p>
-          <p class="company">{{agentInfo.corpintro_cn||'地产经纪'}} | {{agentInfo.cityName}}</p>
+          <p class="company">{{agentInfo.note||'地产经纪'}} | {{agentInfo.cityName}}</p>
           <p class="contact-method">电话 | {{agentInfo.tel}}</p>
           <p class="contact-method">邮箱 | {{agentInfo.email}}</p>
           <p class="contact-method">地址 | {{agentInfo.address}}</p>
@@ -245,42 +276,23 @@ import logo from "../../assets/image/logo.png";
 import banner from "../../assets/image/banner.jpg";
 import middleman from "../../assets/image/middleman.png";
 import qrcode from "../../assets/image/qrcode.png";
+import CommonHeader from "../../components/CommonHeader";
 import CommonFooter from "../../components/CommonFooter.vue";
+import playIcon from "../../assets/image/icon-play.svg";
+import pauseIcon from "../../assets/image/icon-pause.svg";
 import { TweenLite } from "gsap/TweenLite";
 import ScrollReveal from "scrollreveal";
 export default {
   name: "Middleman",
-  components: { CommonFooter },
+  components: { CommonHeader, CommonFooter },
   data() {
     return {
-      navList: [
-        {
-          text: "首页",
-          url: "/"
-        },
-        {
-          text: "海外房源",
-          url: "http://www.realtoraccess.com/web/houses/"
-        },
-        {
-          text: "经纪门户",
-          url: "http://www.realtoraccess.com/web/agentlist/"
-        },
-        {
-          text: "房价走势",
-          url: "http://www.realtoraccess.com/web/van/"
-        },
-        {
-          text: "全球资讯",
-          url: "http://www.realtoraccess.com/news/list/"
-        }
-      ],
       logoUrl: logo,
       bannerUrl: banner,
       middlemanUrl: middleman,
       qrcodeUrl: qrcode,
       showCTDialog: false,
-      showCSDialog: false,
+      showCSDialog: true,
       agentInfo: {},
       agentId: 222,
       sortMethod: "date",
@@ -295,7 +307,14 @@ export default {
       visitData: {
         visit: 0,
         totalVist: 0
-      }
+      },
+      showPlayButton: true,
+      iconPlayButton: playIcon,
+      video: null,
+      showQrcode: true,
+      showAgentMore: false,
+      showCorpMore: false,
+      showAboutMore: false
     };
   },
   computed: {
@@ -341,7 +360,9 @@ export default {
         )
       );
       this.sr.reveal(".middleman-detail", this.getOptions());
-      this.sr.reveal(".middleman-recommend", this.getOptions());
+      this.sr.reveal(".middleman-recommend", this.getOptions(()=>{
+        this.showCSDialog = true;
+      }));
       this.sr.reveal(".agent-corp-wrap", this.getOptions());
       this.sr.reveal(".agent-personal-wrap", this.getOptions());
       this.sr.reveal(".agent-contact-wrap", this.getOptions());
@@ -358,6 +379,8 @@ export default {
     getAgentById() {
       this.$get(this.$api.AGENT_BYID + "/" + this.agentId).then(resData => {
         this.agentInfo = resData;
+        console.log(this.agentInfo);
+        this.agentInfo.username = this.agentInfo.username.toUpperCase();
         this.visitData.totalVisit = parseInt(resData.visit);
         try {
           let metas = document.querySelectorAll("meta");
@@ -372,6 +395,10 @@ export default {
         TweenLite.to(this.visitData, 2, { visit: this.visitData.totalVisit });
         this.$nextTick(() => {
           this.setScrollReveal();
+          if (this.agentInfo.corpVideo) {
+            this.video = document.querySelector("video");
+            console.log(this.video);
+          }
         });
       });
     },
@@ -396,10 +423,22 @@ export default {
         this.$message({ type: "success", message: "发送成功" });
       });
     },
-    palyVideo() {
-      if (this.agentInfo.cropVideo) {
-        let video = document.querySelector("video");
-        video.play();
+    playVideo() {
+      if (this.agentInfo.corpVideo) {
+        this.video.addEventListener("play", () => {
+          this.iconPlayButton = pauseIcon;
+        });
+        this.video.addEventListener("ended", () => {
+          this.iconPlayButton = playIcon;
+          this.showPlayButton = true;
+        });
+        if (this.video.paused) {
+          this.video.play();
+          this.iconPlayButton = pauseIcon;
+        } else {
+          this.video.pause();
+          this.iconPlayButton = playIcon;
+        }
       }
     }
   },
@@ -498,32 +537,14 @@ visit: 146  访问量
 @import url("../../assets/css/base.less");
 #middleman {
   // width: 100vw;
+  background-color: #fff;
 }
 @vw100: 100vw;
 //图片基本路径
 @image: "../../assets/image";
 //头部
 .middleman-header {
-  //导航
-  .nav-item {
-    .primaryText;
-    .medium;
-    line-height: 100%;
-    &:nth-child(3) {
-      border-bottom: 2px solid @themeColor;
-    }
-    & + .nav-item {
-      margin-left: 24px;
-    }
-  }
-
-  .dropdown-item {
-    .primaryText;
-  }
-
-  .show-more {
-    .regularText;
-  }
+  padding: 0 12vw;
 }
 
 .middleman-banner {
@@ -533,7 +554,25 @@ visit: 146  访问量
     height: auto;
     display: block;
   }
+  .banner-share {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: 48px;
+    right: 64px;
+    img {
+      padding: 0.8vw;
+      border: 3px solid #fff;
+      width: 2.4vw;
+      height: 2.4vw;
+      margin: 1vw;
+      border-radius: 1.2vw;
 
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
   .banner-masker {
     position: absolute;
     .flex;
@@ -553,7 +592,7 @@ visit: 146  访问量
     }
     //公司
     .agent-corp {
-      .large;
+      font-size: 22px;
       .whiteText;
       line-height: 3em;
     }
@@ -593,41 +632,39 @@ visit: 146  访问量
 }
 
 .middleman-detail {
-  margin: 4vw 0;
-
-  .detail-title {
-    .boldText;
-    .extraLarge;
-
-    span {
-      padding-bottom: 12px;
-      border-bottom: 6px solid @themeColor;
-    }
-  }
+  padding: 3vw 2vw;
+  display: flex;
+  justify-content: center;
 
   .agent-head {
     position: relative;
+    width: 36vw;
+    margin: 2vw;
+    .agent-photo {
+      width: 90%;
+      height: 90%;
+    }
     .agent-auth {
       background-color: @themeColor;
-      border-radius: 32px;
+      border-radius: 1.6vw;
       border-color: 1px solid @white;
-      font-size: 32px;
+      font-size: 1.6vw;
       position: absolute;
-      padding: 0 26px 0 64px;
-      height: 48px;
-      line-height: 48px;
-      bottom: 10%;
-      left: 22%;
+      padding: 0 1.3vw 0 3.2vw;
+      height: 2.4vw;
+      line-height: 2.4vw;
+      bottom: 20%;
+      left: 6%;
       box-sizing: border-box;
       color: @white;
       &::before {
         content: "V";
         border-radius: 50%;
         border: 2px solid @white;
-        width: 48px;
-        height: 48px;
+        width: 2.4vw;
+        height: 2.4vw;
         text-align: center;
-        line-height: 48px;
+        line-height: 2.4vw;
         .boldText;
         box-sizing: border-box;
         top: 0;
@@ -640,13 +677,23 @@ visit: 146  访问量
   .detail-descript {
     .regularText;
     .large;
-    margin-top: 48px;
-    span {
-      .textLinesEllipsis(9);
+    width: 36vw;
+    margin: 2vw;
+    .detail-title {
+      .boldText;
+      .extraLarge;
+      span {
+        padding-bottom: 12px;
+        border-bottom: 6px solid @themeColor;
+      }
     }
-
-    a {
+    .descript-text {
+      .textLinesEllipsis(9);
+      // margin-top: 2.4vw;
+    }
+    .more {
       color: @themeColor;
+      cursor: pointer;
       &:hover {
         opacity: 0.8;
       }
@@ -659,7 +706,7 @@ visit: 146  访问量
 
   .recommend-title {
     .boldText;
-    .mostLarge;
+    .extraLarge;
     text-align: center;
     line-height: 3em;
   }
@@ -767,6 +814,10 @@ visit: 146  访问量
     .themeText;
     border-bottom: 1px solid @themeColor;
     line-height: 4em;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 
@@ -779,28 +830,39 @@ visit: 146  访问量
     .flexCenter;
     margin: 2vw;
     flex-direction: column;
-    background-image: url("../../assets/image/default-house.jpg");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 36vw;
     height: 24vw;
+    position: relative;
     .button-play {
-      width: 6vw;
-      height: 6vw;
+      width: 2vw;
+      height: 2vw;
+      padding: 2vw;
       background-color: #fff;
       border-radius: 50%;
       transition: all 0.3s;
+      position: absolute;
+      z-index: 2;
       &:hover {
         transform: scale(1.1);
         opacity: 0.8;
       }
+    }
+    .video-wrap {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      top: 0;
+      left: 0;
     }
   }
 
   .corp-desc {
     margin: 2vw;
     width: 36vw;
-    height: 24vw;
+    .large;
     .desc-title {
       .extraLarge;
       .boldText;
@@ -813,12 +875,15 @@ visit: 146  访问量
 
     .desc-text {
       .large;
-      margin-top: 48px;
       .textLinesEllipsis(7);
     }
     .more {
+      cursor: pointer;
       .themeText;
       .large;
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 }
@@ -853,7 +918,7 @@ visit: 146  访问量
   .personnal-desc {
     margin: 2vw;
     width: 36vw;
-    height: 24vw;
+    .large;
     .desc-title {
       .extraLarge;
       .boldText;
@@ -866,12 +931,15 @@ visit: 146  访问量
 
     .desc-text {
       .large;
-      margin-top: 48px;
       .textLinesEllipsis(7);
     }
     .more {
+      cursor: pointer;
       .themeText;
       .large;
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 }
@@ -902,7 +970,7 @@ visit: 146  访问量
     }
 
     .detail-name {
-      margin-top: 48px;
+      margin-top: 2.4vw;
       .large;
       .boldText;
       .primaryText;
@@ -973,6 +1041,36 @@ visit: 146  访问量
     .medium;
     font-weight: normal;
     border-radius: 12px;
+  }
+}
+
+.fix-qrcode {
+  padding: 1vw;
+  position: fixed;
+  width: 12vw;
+  z-index: 11;
+  font-size: 1.2vw;
+  background-color: #fff;
+  border-radius: 1.2vw;
+  .themeText;
+  top: 50%;
+  left: 0;
+  margin-top: -6vw;
+  img {
+    width: 12vw;
+    height: 12vw;
+  }
+  .qrcode-close {
+    font-size: 1.4vw;
+    .boldText;
+    position: absolute;
+    .themeText;
+    left: 0.6vw;
+    top: 0.6vw;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 

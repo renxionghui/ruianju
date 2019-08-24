@@ -1,34 +1,14 @@
 <template>
   <div id="house">
-    <div class="house-detail-wrap" v-show="showHouseDetail">
+    <div  v-show="showHouseDetail">
+      <div class="house-detail-wrap">
       <!-- 头部 -->
-      <el-row class="index-header" align="middle" type="flex">
-        <el-col :md="3" :sm="4" :xs="8" :offset="3" style="display:flex;align-items:center">
-          <el-image :src="logoUrl" style="width:100%;height:auto"></el-image>
-        </el-col>
-        <el-col :md="10" :sm="8" :offset="8" class="hidden-sm-and-down">
-          <a
-            v-for="(item,index) of navList"
-            :key="index"
-            :href="item.url"
-            class="nav-item"
-          >{{item.text}}</a>
-        </el-col>
-        <el-col class="hidden-sm-and-up show-more" :xs="2" :offset="12">
-          <el-dropdown placement="bottom-end" trigger="click">
-            <i class="el-icon-more"></i>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="(item,index) of navList" :key="index">
-                <a :key="index" :href="item.url" class="dropdown-item">{{item.text}}</a>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-col>
-      </el-row>
-
+      <div>
+        <common-header :nav-index='1'></common-header>
+      </div>
       <!-- 面包屑 -->
       <el-row type="flex" justify="center" class="house-view">
-        <el-col :span="18">
+        <el-col>
           <div class="house-view-breadcrumb">
             <el-breadcrumb separator="/">
               <el-breadcrumb-item v-for="(item,index) of breadcrumb" :key="index">{{item}}</el-breadcrumb-item>
@@ -38,15 +18,15 @@
       </el-row>
       <!-- 联系方式 -->
       <el-row type="flex" justify="center">
-        <el-col :span="18">
+        <el-col>
           <el-row type="flex">
-            <el-col :span="14" class="house-view-img hidden">
-              <img :src="houseViewUrl" alt style="width:100%;height:auto;display:block" />
+            <el-col :span="14" class="house-view-img">
+              <img :src="houseViewUrl" alt style="width:100%;height:100%;display:block" />
             </el-col>
             <el-col
               :span="10"
               :style="{height:'auto',backgroundImage:`url(${houseViewBg})`}"
-              class="house-view-bg hidden"
+              class="house-view-bg"
             >
               <div class="house-view-cover">
                 <div class="house-view-contact">
@@ -80,8 +60,8 @@
       </el-row>
 
       <!-- 房屋详情 -->
-      <el-row class="house-detail">
-        <el-col :md="14" :offset="3" class="house-detail-left hidden">
+      <div class="house-detail">
+        <div class="house-detail-left">
           <div class="house-detial-price">
             <div class="detail-title">{{listingInfo.price}}</div>
             <p class="detail-house-type">
@@ -103,7 +83,7 @@
             <div class="house-share">
               <span>分享到:</span>
               <div class="share-icons">
-                <img :src="require('../../assets/image/icon-share-facebook.svg')" alt />
+                <a :href="facebookShareUrl"><img :src="require('../../assets/image/icon-share-facebook.svg')" alt /></a>
                 <img :src="require('../../assets/image/icon-share-weibo.svg')" alt />
                 <img :src="require('../../assets/image/icon-share-wechat.svg')" alt />
               </div>
@@ -111,7 +91,7 @@
           </div>
 
           <div class="house-detail-descript">
-            <div class="detail-title">
+            <div class="detail-title font-title">
               <span>房屋</span>描述
             </div>
             <div class="descript-text">
@@ -119,11 +99,11 @@
               <a href>查看更多>></a>
             </div>
           </div>
-        </el-col>
-        <el-col :md="7" class="house-detail-right hidden">
+        </div>
+        <div class="house-detail-right">
           <el-card :body-style="{backgroundColor:'#f0f0f0'}" shadow="hover">
             <div class="appointment-contact">
-              <img :src="agentInfo.head" alt style="width:30%;height:auto" />
+              <a :href="`/web/agent/${agentInfo.id}`"><img :src="agentInfo.head" class="middleman-head"  alt style="width:100%;height:auto"  /></a>
               <span class="middleman-name">{{agentInfo.username}}</span>
               <span class="middleman-company">{{agentInfo.corp}} | {{agentInfo.city}}</span>
               <span class="middleman-phone">{{agentInfo.tel}}</span>
@@ -158,17 +138,17 @@
               </div>
             </div>
           </el-card>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
 
       <!-- 推荐房源 -->
       <el-row class="house-recommend">
-        <el-col :md="21" :offset="3">
-          <div class="recommend-title">
+        <el-col>
+          <div class="recommend-title font-title">
             <span>推荐</span>房源
           </div>
         </el-col>
-        <el-col :span="18" :offset="3">
+        <el-col>
           <div class="recommend-list">
             <div
               class="recommend-item"
@@ -212,48 +192,48 @@
 
       <!-- 房源详情 -->
       <el-row class="house-info">
-        <el-col :span="18" :offset="3">
-          <div class="info-title">
+        <el-col >
+          <div class="info-title font-title">
             <span>房源</span>详情
           </div>
           <el-row class="info-detail">
-            <el-col :md=12 class='bg-light detail-item'>
+            <el-col :span=12 class='bg-light detail-item'>
               <span>MLS：<i>{{listingInfo.listingid}}</i></span>
             </el-col>
-            <el-col :md=12 class='bg-light detail-item'>
+            <el-col :span=12 class='bg-light detail-item'>
               <span>房屋风格：<i>{{listingInfo.housestyle}}</i></span>
             </el-col>
-            <el-col :md=12 class='detail-item'>
+            <el-col :span=12 class='detail-item'>
               <span>售价：<i>{{listingInfo.price}}</i></span>
             </el-col>
-            <el-col :md=12 class='detail-item'>
+            <el-col :span=12 class='detail-item'>
               <span>房屋类型：<i>{{listingInfo.housetype}}</i></span>
             </el-col>
-            <el-col :md=12 class='bg-light detail-item'>
+            <el-col :span=12 class='bg-light detail-item'>
               <span>室内面积：<i>{{listingInfo.areas}}</i></span>
             </el-col>
-            <el-col :md=12 class='bg-light detail-item'>
+            <el-col :span=12 class='bg-light detail-item'>
               <span>地下室：<i>{{listingInfo.basement||'无'}}</i></span>
             </el-col>
-            <el-col :md=12 class='detail-item'>
+            <el-col :span=12 class='detail-item'>
               <span>土地面积：<i>{{listingInfo.parking}}</i></span>
             </el-col>
-            <el-col :md=12 class='detail-item'>
+            <el-col :span=12 class='detail-item'>
              <span> 建筑年代：<i>{{listingInfo.builddate}}</i></span>
             </el-col>
-            <el-col :md=12 class='bg-light detail-item'>
+            <el-col :span=12 class='bg-light detail-item'>
               <span>卧室：<i>{{listingInfo.bedroom}}</i></span>
             </el-col>
-            <el-col :md=12 class='bg-light detail-item'>
+            <el-col :span=12 class='bg-light detail-item'>
               <span>地产公司：<i>{{listingInfo.corp}}</i></span>
             </el-col>
-            <el-col :md=12 class='detail-item'>
+            <el-col :span=12 class='detail-item'>
               <span>卫生间：<i>{{listingInfo.toilet}}</i></span>
             </el-col>
-            <el-col :md=12 class='detail-item'>
+            <el-col :span=12 class='detail-item'>
               <span>便利设施：<i>{{listingInfo.goodat}}</i></span>
             </el-col>
-            <el-col :md=24 class='bg-light detail-item'>
+            <el-col :span=24 class='bg-light detail-item'>
               <span>地税：<i>{{listingInfo.tax}}</i></span>
             </el-col>
           </el-row>
@@ -261,9 +241,9 @@
       </el-row>
       <!-- 房源分析 -->
       <el-row class="house-chart">
-        <el-col :span="18" :offset="3">
+        <el-col >
           <div class="chart-title">
-            <div class="chart-text">
+            <div class="chart-text font-title">
               <span>房源</span>分析
             </div>
             <div class="chart-toggle" >
@@ -273,7 +253,7 @@
           
           <div id="chart1"></div>
           <el-collapse-transition>
-          <div class="chart-list" v-show="showHouseChart">
+          <div class="chart-list" style="width:100%" v-show="showHouseChart">
             <div id="chart2"></div>
             <div id="chart3"></div>
             <div id="chart4"></div>
@@ -284,49 +264,51 @@
 
       <!-- 城市价格 周边房产 区域新盘 -->
       <el-row class="house-about">
-        <el-col :span="6" :offset="3" class="about-left">
+        <el-col :span="8" class="about-left">
           <div class="about-title">城市价格</div>
           <div class="about-list">
             <div class="about-item" v-for="(item,index) in cityPriceList" :key="index">
               <a :href="item.url" target="_blank">
-                <span>{{item.cityName }}</span>
-                <span>{{item.city}}</span>
+                <span> {{item.cityName}} </span> 
+                <span>  {{item.city}} </span>
               </a>
             </div>
           </div>
           <a href class="view-more">查看更多</a>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <div class="about-title">周边房产</div>
           <div class="about-list">
             <div class="about-item" v-for="(item,index) in nearbyList" :key="index">{{item[1]}}</div>
           </div>
           <a href="http://www.realtoraccess.com/web/houses/" class="view-more">查看更多</a>
         </el-col>
-        <el-col :span="6" class="about-right">
+        <el-col :span="8" class="about-right">
           <div class="about-title">区域新盘</div>
           <div class="about-list">
             <div class="about-item" v-for="(item,index) in newListingList" :key="index">
               <a :href="item.url" target="_blank">
-                <span>{{item.price}},</span>
-                <span>{{item.areas}},</span>
-                <span>{{item.bedroom}}室{{parseInt(item.toilet)}}卫</span>
-                <span>{{item.listingname}}</span>
+                <span>{{item.price}}, </span>
+                <span>{{item.areas}}, </span>
+                <span>{{item.bedroom}}室{{parseInt(item.toilet)}}卫 </span>
+                <span>{{item.listingname}} </span>
               </a>
             </div>
           </div>
           <a href="http://www.realtoraccess.com/web/m/listings/#/" class="view-more">查看更多</a>
         </el-col>
       </el-row>
-      <!-- 免费注册 -->
+    </div>
+            <!-- 免费注册 -->
       <div class="agent-signin-wrap">
-        <span class="signin-text">海外房产经纪人?</span>
+        <span class="signin-text font-title">海外房产经纪人?</span>
         <el-button type="primary">
           <a href="http://www.realtoraccess.com/register">免费注册</a>
         </el-button>
       </div>
       <common-footer></common-footer>
     </div>
+    
     <div class="house-imgs-wrap" v-show="!showHouseDetail">
       <div class="house-imgs-header">
         <span class="el-icon-back back-button" @click="handleBack"></span>
@@ -344,12 +326,13 @@ import logo from "../../assets/image/logo.png";
 import houseView from "../../assets/image/house-view.jpeg";
 import qrcode from "../../assets/image/qrcode.png";
 import middleman from "../../assets/image/middleman.png";
+import CommonHeader from '../../components/CommonHeader.vue';
 import CommonFooter from "../../components/CommonFooter.vue";
 import ScrollReveal from "scrollreveal";
 import { setTimeout } from 'timers';
 export default {
   name: "House",
-  components: { CommonFooter },
+  components: { CommonHeader,CommonFooter },
   data() {
     return {
       navList: [
@@ -396,7 +379,8 @@ export default {
       cityPriceList: null, //城市价格
       nearbyList: null, //周边房产
       newListingList: null, //区域新盘
-      showHouseChart: true
+      showHouseChart: false,
+      facebookShareUrl:''
     };
   },
   computed: {
@@ -429,7 +413,7 @@ export default {
     }
     this.mls = href.substring(href.lastIndexOf("/") + 1);
     //TODO
-    // this.mls = "r2003524";
+    // this.mls = "r2305677";
     // this.commitEmail();
     this.getListingInfo();
     // this.getCrumbs();
@@ -440,9 +424,9 @@ export default {
     this.newListings();
     this.initChart();
     // makeChart('chartvisio1', 286, [{col:'datadate', opt:'gte', val:'2019-02'+'周'},{col:'countyid',opt: 'eq', val: 'NorthVancouver'}]);
-    setTimeout(()=>{
-      this.showHouseChart = false;
-    },200);
+    // setTimeout(()=>{
+    //   this.showHouseChart = false;
+    // },200);
   },
   methods: {
     setImgSr() {
@@ -478,7 +462,6 @@ export default {
       this.sr.reveal(".house-detail-right", {
         delay: 100,
         distance: "-100%",
-        opacity: 0.5,
         reset: true,
         origin: "left"
       });
@@ -700,29 +683,11 @@ export default {
 #house {
   width: 100%;
   overflow-x: hidden;
+  background-color:#fff;
 }
-//头部
-.index-header {
-  //导航
-  .nav-item {
-    .primaryText;
-    line-height: 100%;
-    .medium;
-    &:nth-child(2) {
-      border-bottom: 2px solid @themeColor;
-    }
-    & + .nav-item {
-      margin-left: 24px;
-    }
-  }
 
-  .dropdown-item {
-    .primaryText;
-  }
-
-  .show-more {
-    .regularText;
-  }
+.house-detail-wrap{
+  padding:0 12vw;
 }
 
 //房屋浏览
@@ -812,7 +777,17 @@ export default {
 // 房屋详情
 .house-detail {
   margin: 2vw 0;
-
+  position:relative;
+  z-index: 2;
+  .house-detail-left{
+    width:52vw;
+  }
+  .house-detail-right{
+    width:34vw;
+    position: absolute;
+    left: 53vw;
+    top: 0;
+  }
   .detail-title {
     .extraLarge;
     .boldText;
@@ -893,6 +868,15 @@ export default {
   .flex;
   .flexCenter;
   flex-direction: column;
+  a{
+    width: 30%;
+    .middleman-head{
+      transition: all .5s;
+      &:hover{
+        transform: scale(1.05);
+      }
+    }
+  }
 
   span {
     line-height: 1.5rem;
@@ -1053,6 +1037,7 @@ export default {
     }
     .detail-item{
       .medium;
+      .textOverflowEllipsis;
       line-height: 2.4em;
       span{
         margin-left: 12px;
