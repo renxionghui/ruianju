@@ -465,7 +465,7 @@ export default {
       href = href.substr(0, href.length - 1);
     }
     this.agentId = href.substring(href.lastIndexOf("/") + 1);
-    this.agentId = 13;
+    // this.agentId = 13;
     this.getAgentById();
     this.getAgentListing();
 
