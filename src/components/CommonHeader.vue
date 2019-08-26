@@ -33,13 +33,13 @@ export default {
         },
         {
           text: "海外房源",
-          url: "http://www.realtoraccess.com/web/houses/"
-          // url: "/house.html"
+          // url: "http://www.realtoraccess.com/web/houses/"
+          url: "/house.html"
         },
         {
           text: "经纪门户",
-          url: "http://www.realtoraccess.com/web/agentlist/"
-          // url: "/agenthome.html"
+          // url: "http://www.realtoraccess.com/web/agentlist/"
+          url: "/agenthome.html"
         },
         {
           text: "房价走势",

@@ -13,17 +13,21 @@
           class="nav-item"
         >{{item.text}}</a>
       </el-col>
-    </el-row> -->
-    <div class='index-header'>
+    </el-row>-->
+    <div class="index-header">
       <common-header></common-header>
     </div>
     <!-- 大轮播图 -->
     <div class="index-banner">
-      <el-image :src="require('../../assets/image/banner_bg.png')" @load="headerImageLoad" style="width:101%;height:100%;position:absolute;margin-left:-1vw"></el-image>
+      <el-image
+        :src="require('../../assets/image/banner_bg.png')"
+        @load="headerImageLoad"
+        style="width:101%;height:100%;position:absolute;margin-left:-1vw"
+      ></el-image>
       <!-- <div class="index-banner-desc">
         <span class="en-text">REALTOR ACCESS</span>
         <span class="zh-text">海外房展第一门户</span>
-      </div> -->
+      </div>-->
     </div>
     <!-- 数据 -->
     <div class="index-data">
@@ -78,7 +82,7 @@
     </div>
     <!-- 经纪人轮播图 -->
     <div class="index-banner-middleman">
-      <div class="index-banner-middleman-title  font-title">专业的海外置业顾问</div>
+      <div class="index-banner-middleman-title font-title" style="color:#fff !important;">专业的海外置业顾问</div>
       <el-carousel :interval="3000" height="400px" arrow="always">
         <el-carousel-item v-for="(item,i) of middlemanBanner" :key="i">
           <div class="index-banner-middleman-item">
@@ -162,7 +166,10 @@
               class="item-detail"
               v-show="recommendHoverIndex == index && recommendHoverIndex!=7"
             >
-              <div class="item-detail-price" style="font-size:28px;">{{item.price}}</div>
+              <div
+                class="item-detail-price"
+                style="font-size:2.8vw;line-height:1.2em"
+              >{{item.price}}</div>
               <div class="item-detail-addr">{{item.addr}}</div>
               <div class="item-detail-cityname">{{item.cityname}}</div>
 
@@ -173,12 +180,12 @@
                 <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
               </div>
 
-              <div class="item-detail-viewcount" style="margin-top:8px;">
-                <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
-                <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
+              <div class="item-detail-viewcount" style="margin-top:0.4vw;">
+                <span style="margin-right:0.6vw; ">{{item.date}}</span>
+                <span style="margin-right:0.6vw; " class="icon-eye">{{item.visit}}</span>
                 <a
                   :href="!item.mls.startsWith('r')||item.mls.length<8?item.htmlid:`/web/listing1/${item.mls}`"
-                  style="color:#fff;border:1px solid #fff;float:right;padding:4px 12px;border-radius:12px;font-size:14px;"
+                  class="item-detail-checkhouse"
                 >查看房源</a>
                 <!-- <a
                 :href="item.mls.startsWith('r')?`/house.html/${item.mls}/`:item.htmlid"
@@ -204,7 +211,6 @@
       <div style="text-align:center">
         <a href="http://www.realtoraccess.com/web/m/listings/#/" class="recommend-button">查看更多</a>
       </div>
-      
     </div>
     <!-- 描述 -->
     <div class="index-describe" v-lazy:background-image="require('../../assets/image/mh_bg.png')">
@@ -218,7 +224,9 @@
     </div>
     <!-- 更多房源 -->
     <div class="index-morehouse">
-      <div class="common-title font-title"><span>更多房源</span></div>
+      <div class="common-title font-title">
+        <span>更多房源</span>
+      </div>
       <div class="common-subtitle">商业地产，移民地产以及开发商新盘</div>
       <el-row style="margin-top:4vw;">
         <el-col :span="8" style="position:relative">
@@ -246,7 +254,9 @@
     </div>
     <!-- 相关阅读 -->
     <div class="index-reading">
-      <div class="common-title font-title"><span>相关阅读</span></div>
+      <div class="common-title font-title">
+        <span>相关阅读</span>
+      </div>
       <div class="common-subtitle">100+实力媒体跟踪报道，13大行业资质权威服务保障</div>
       <el-row style="margin-top:4vw;">
         <el-col :span="8" :offset="3">
@@ -267,7 +277,9 @@
     </div>
     <!-- 公司动态 -->
     <div class="index-corps" data-scroll-reveal>
-      <div class="common-title font-title"><span>房地产经纪公司动态</span></div>
+      <div class="common-title font-title">
+        <span>房地产经纪公司动态</span>
+      </div>
       <div class="common-subtitle">扫描微信二维码，关注房地产经纪公司动态</div>
       <el-carousel :interval="3000" height="26vw" indicator-position="none">
         <el-carousel-item v-for="(item,i) of corpsData" :key="i" class="carousel-item">
@@ -297,7 +309,9 @@
 
     <!-- 媒体合作 -->
     <div class="index-cooperation">
-      <div class="common-title font-title"><span>媒体合作</span></div>
+      <div class="common-title font-title">
+        <span>媒体合作</span>
+      </div>
       <div class="index-cooperation-list">
         <a
           class="index-cooperation-item"
@@ -362,14 +376,14 @@ import reading1 from "../../assets/image/reading1.png";
 import reading2 from "../../assets/image/reading2.png";
 import { log } from "util";
 import cooperationArray from "./cooperationArray";
-import CommonHeader from '../../components/CommonHeader';
+import CommonHeader from "../../components/CommonHeader";
 import CommonFooter from "../../components/CommonFooter.vue";
 import ScrollReveal from "scrollreveal";
 import { TweenLite } from "gsap/TweenLite";
 import { Loading } from "element-ui";
 export default {
   name: "Index",
-  components: { CommonFooter,CommonHeader },
+  components: { CommonFooter, CommonHeader },
   data() {
     return {
       navList: [
@@ -466,7 +480,7 @@ export default {
     }
   },
   mounted() {
-    wxImgUrl = 'http://www.realtoraccess.com/static/web/img/share-index.png';
+    wxImgUrl = "http://www.realtoraccess.com/static/web/img/share-index.png";
     this.loading = Loading.service({
       lock: true,
       text: " ",
@@ -586,13 +600,13 @@ export default {
 <style lang="less" scoped>
 @import url("../../assets/css/base.less");
 #index {
-  background-color:#fff;
+  background-color: #fff;
 }
 @vw100: 100vw;
 //图片基本路径
 @image: "../../assets/image";
 
-.index-header{
+.index-header {
   padding: 0 12vw;
 }
 .index-banner {
@@ -642,7 +656,7 @@ export default {
       line-height: 2em;
       text-shadow: 10px 10px 16px rgba(0, 0, 0, 0.5),
         -10px -10px 16px rgba(0, 0, 0, 0.5);
-        @media screen {
+      @media screen {
         @media (max-width: 480px) {
           font-size: 40px;
         }
@@ -739,9 +753,10 @@ export default {
 }
 //经纪人banner
 .index-banner-middleman {
-  background-image: url("../../assets/image/reading2.png");
+  background-image: url("../../assets/image/agent-banner-bg.jpg");
   background-repeat: no-repeat;
   background-position-y: top;
+  background-position-x: center;
   background-size: cover;
   .bgLight;
   border-top: 1px solid #f0f0f0;
@@ -766,14 +781,14 @@ export default {
       border-top: 3px solid @themeColor;
       background-color: @white;
       @media screen {
-        @media (min-width:980px) and (max-width:1279px){
-            width: 200px;
+        @media (min-width: 980px) and (max-width: 1279px) {
+          width: 200px;
         }
 
-        @media (min-width:1280px) and (max-width:1679px) {
-           width: 240px;
+        @media (min-width: 1280px) and (max-width: 1679px) {
+          width: 240px;
         }
-    }
+      }
       padding: 12px;
       box-sizing: border-box;
       position: relative;
@@ -1033,16 +1048,16 @@ export default {
     flex-wrap: wrap;
     .recommend-item {
       @media screen {
-        @media (max-width: 1279px){
+        @media (max-width: 1279px) {
           width: 40vw;
           height: 24vw;
         }
-        @media (min-width:1280px){
-            width: 20vw;
-            height: 14vw;
+        @media (min-width: 1280px) {
+          width: 20vw;
+          height: 16vw;
         }
       }
-      
+
       margin: 8px 4px;
       position: relative;
       background-size: 100% 100%;
@@ -1106,27 +1121,46 @@ export default {
         height: 100%;
         box-sizing: border-box;
         padding: 12px;
-        // font-size: 20px;
+        font-size: 1.2vw;
+        line-height: 1.2em;
         color: @white;
         position: absolute;
         background-color: rgba(0, 0, 0, 0.5);
         left: 0;
         top: 0;
         @media screen {
-          @media (min-width: 900px) and (max-width: 1279px) {
-            font-size: 14px;
+          @media (min-width: 980px) and (max-width: 1279px) {
+            font-size: 2vw;
+            line-height: 1.5em;
           }
 
-          @media (min-width: 1280px) and (max-width: 1439px) {
-            font-size: 16px;
+          @media (min-width: 1280px) and (max-width: 1679px) {
+            font-size: 1.2vw;
+            line-height: 1.3em;
           }
+        }
+        .item-detail-viewcount {
+          height: 2.2vw;
+          line-height: 2.2vw;
 
-          @media (min-width: 1440px) and (max-width: 1679px) {
-            font-size: 18px;
-          }
+          // background: red;
+          .item-detail-checkhouse {
+            color: #fff;
+            height: 2.2vw;
+            border: 1px solid #fff;
+            // background: green;
+            padding: 0 1.2vw;
+            border-radius: 0.4vw;
+            float: right;
+            @media screen {
+              @media (min-width: 980px) and (max-width: 1279px) {
+                font-size: 1.6vw;
+              }
 
-          @media (min-width: 1680px) {
-            font-size: 20px;
+              @media (min-width: 1280px) and (max-width: 1679px) {
+                font-size: 1.2vw;
+              }
+            }
           }
         }
       }
@@ -1410,7 +1444,7 @@ export default {
   .extraLarge;
   .boldText;
   text-align: center;
-  span{
+  span {
     position: relative;
   }
   span::before {
@@ -1480,9 +1514,8 @@ export default {
 
 .el-loading-spinner .el-loading-text {
   height: 39px;
-  background-image: url('../../assets/image/loading-bg.svg');
+  background-image: url("../../assets/image/loading-bg.svg");
   background-repeat: no-repeat;
   background-position: center center;
 }
-
 </style>

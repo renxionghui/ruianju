@@ -94,10 +94,13 @@
             <div class="detail-title font-title">
               <span>房屋</span>描述
             </div>
-            <div class="descript-text">
-              {{listingInfo.intro}}
-              <a href>查看更多>></a>
+            <div v-if="showHouseMore">
+              {{listingInfo.intro}}      
             </div>
+            <div v-else class="descript-text">
+              {{listingInfo.intro}}      
+            </div>
+            <span class="house-more" @click='showHouseMore=!showHouseMore'>{{showHouseMore?'收起':'详情'}}>></span>
           </div>
         </div>
         <div class="house-detail-right">
@@ -157,7 +160,7 @@
               :key="index"
               @mouseover="recommendHoverIndex = index"
               @mouseout="recommendHoverIndex = -1"
-              :style="{backgroundImage:`url(${item.imgs[0]})`}"
+              :style="{backgroundImage:`url('${item.imgs[0]}')`}"
             >
               <transition name="el-fade-in-linear">
                 <div class="item-detail" v-show="recommendHoverIndex == index">
@@ -254,9 +257,9 @@
           <div id="chart1"></div>
           <el-collapse-transition>
           <div class="chart-list" style="width:100%" v-show="showHouseChart">
-            <div id="chart2"></div>
-            <div id="chart3"></div>
-            <div id="chart4"></div>
+            <div id="chart2" ></div>
+            <div id="chart3" ></div>
+            <div id="chart4" ></div>
           </div>
           </el-collapse-transition>
         </el-col>
@@ -335,28 +338,6 @@ export default {
   components: { CommonHeader,CommonFooter },
   data() {
     return {
-      navList: [
-        {
-          text: "首页",
-          url: "/"
-        },
-        {
-          text: "海外房源",
-          url: "http://www.realtoraccess.com/web/houses/"
-        },
-        {
-          text: "经纪门户",
-          url: "http://www.realtoraccess.com/web/agentlist/"
-        },
-        {
-          text: "房价走势",
-          url: "http://www.realtoraccess.com/web/van/"
-        },
-        {
-          text: "全球资讯",
-          url: "http://www.realtoraccess.com/news/list/"
-        }
-      ],
       mls: "",
       city: "",
       logoUrl: logo,
@@ -373,6 +354,7 @@ export default {
       listingInfo: {}, //房源信息
       agentInfo: {}, //经纪人信息
       appointment: {}, //预约model
+      allRecommendData:[],
       recommendData: null, //推荐房源
       recommendHoverIndex: -1,
       page: 1,
@@ -380,7 +362,8 @@ export default {
       nearbyList: null, //周边房产
       newListingList: null, //区域新盘
       showHouseChart: false,
-      facebookShareUrl:''
+      facebookShareUrl:'',
+      showHouseMore:false
     };
   },
   computed: {
@@ -403,6 +386,9 @@ export default {
           this.setImgSr();
         });
       }
+    },
+    showHouseChart(n){
+      this.initChart();
     }
   },
   mounted() {
@@ -525,8 +511,12 @@ export default {
       this.showHouseDetail = true;
     },
     handleViewMore() {
-      this.page++;
-      this.getRecommend();
+      if(this.allRecommendData.length-this.recommendData.length==1){
+        this.recommendData.push(this.allRecommendData[this.recommendData.length-1]);
+      }else if(this.allRecommendData.length-this.recommendData.length>=2){
+        this.recommendData.push(this.allRecommendData[this.recommendData.length-1]);
+        this.recommendData.push(this.allRecommendData[this.recommendData.length]);
+      }
     },
     isEmail(str) {
       let email = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
@@ -626,9 +616,10 @@ export default {
     //推荐房源
     getRecommend() {
       this.$get(
-        `${this.$api.GET_RECOMMEND}?mls=${this.mls}&page=${this.page}&page_size=4`
+        `${this.$api.GET_RECOMMEND}?mls=${this.mls}&page=${this.page}&page_size=10`
       ).then(resData => {
-        this.recommendData = resData;
+        this.recommendData = resData.slice(0,2);
+        this.allRecommendData = resData;
         if (resData.length == 0) {
           this.page = 1;
         }
@@ -851,15 +842,19 @@ export default {
   .house-detail-descript {
     border-top: 1px solid @placeholderTextColor;
     margin: 2vw 0;
-
+    .base;
     .descript-text {
-      .small;
-      .primaryText;
-
-      a {
-        color: @themeColor;
-      }
+      .primaryText;  
+      .textLinesEllipsis(7)
     }
+
+    .house-more {
+        color: @themeColor;
+        cursor: pointer;
+        &:hover{
+          opacity: .8;
+        }
+      }
   }
 }
 

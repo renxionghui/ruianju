@@ -9,7 +9,7 @@
       <img :src="bannerUrl" />
       <div class="banner-masker">
         <div class="agent-name">{{agentInfo.username}}</div>
-        <div class="agent-corp">{{agentInfo.note}} | {{agentInfo.corp}}</div>
+        <div class="agent-corp">{{agentInfo.note||'海外房产投资估价'}} | {{agentInfo.corp|| '大温专业房产经纪人'}}</div>
         <div class="agent-visit">访问量：{{visitNum}}</div>
         <div class="agent-contact">
           <div class="contact-type" @click="showCTDialog=true">
@@ -46,8 +46,8 @@
 
         <div style="margin-top:2.4vw">
           <el-collapse-transition>
-            <span v-if="showAgentMore">{{agentInfo.selfintro}}</span>
-            <span v-else class="descript-text">{{agentInfo.selfintro}}</span>
+            <span v-if="showAgentMore">{{agentInfo.selfintro||normalAgentDesc}}</span>
+            <span v-else class="descript-text">{{agentInfo.selfintro||normalAgentDesc}}</span>
           </el-collapse-transition>
         </div>
 
@@ -65,7 +65,7 @@
           :key="index"
           @mouseover="recommendHoverIndex = index"
           @mouseout="recommendHoverIndex = -1"
-          :style="{backgroundImage:`url(${item.img})`}">
+          :style="{backgroundImage:`url('${item.img}')`}">
           <div class="item-agent" v-show="recommendHoverIndex != index">
             <span v-if="item.listingtype">{{item.listingtype}}</span>
           </div>
@@ -107,7 +107,7 @@
         </div>
       </div>
       <div style="text-align:center">
-        <span class="recommend-button">查看更多</span>
+        <span class="recommend-button" @click='handleCheckMore'>查看更多</span>
       </div>
     </div>
 
@@ -125,7 +125,7 @@
             height="100%"
             style="object-fit:fill"
           ></video>
-          <img :src="require('../../assets/image/default-house.jpg')" v-else alt />
+          <img :src="require('../../assets/image/default-house.jpg')" v-else alt width="100%" height="100%"/>
         </div>
       </div>
       <div class="corp-desc">
@@ -165,14 +165,14 @@
     <!-- 联系方式 -->
     <div class="agent-contact-wrap">
       <div class="corp-logo">
-        <img :src="agentInfo.logo" alt width="100%" height="auto" />
+        <img :src="agentInfo.logo" alt width="100%" height="100%" style="object-fit:contain"/>
       </div>
       <div class="contact-detail">
         <div class="detail-title font-title">
           <span>联系</span>方式
         </div>
         <div class="detail-name">{{agentInfo.username}}</div>
-        <div class="detail-corp">{{agentInfo.corp}} | {{agentInfo.cityName}} 房产经纪</div>
+        <div class="detail-corp">{{agentInfo.corp||'大温专业房产经纪人'}} | {{agentInfo.cityName}} 房产经纪</div>
         <div class="detail-phone">
           <span>
             <img class="detail-icon" :src="require('../../assets/image/icon-phone.svg')" alt />
@@ -226,7 +226,7 @@
         </el-col>
         <el-col :span="14" class="contact-info">
           <p class="name">{{agentInfo.username}}</p>
-          <p class="company">{{agentInfo.note||'地产经纪'}} | {{agentInfo.cityName}}</p>
+          <p class="company">{{agentInfo.note||'海外房产投资估价'}} | {{agentInfo.cityName}}</p>
           <p class="contact-method">电话 | {{agentInfo.tel}}</p>
           <p class="contact-method">邮箱 | {{agentInfo.email}}</p>
           <p class="contact-method">地址 | {{agentInfo.address}}</p>
@@ -238,13 +238,13 @@
       </el-row>
     </el-dialog>
 
-    <el-dialog :visible.sync="showCSDialog" width="60%" center :show-close="false">
+    <el-dialog :visible.sync="showCSDialog" width="64vw" center :show-close="false">
       <div slot="title" class="dialog-title">
         <span>中文服务</span>
         <span class="el-icon-close dialog-close" @click="handleClose"></span>
       </div>
-      <el-row :gutter="12">
-        <el-col :span="12">
+      <div>
+        <div style="width:26vw;float:left">
           <el-input placeholder="您的姓名" v-model="serviceParams.custname"></el-input>
           <el-input placeholder="您的邮箱" v-model="serviceParams.custemail"></el-input>
           <el-input
@@ -255,19 +255,20 @@
             resize="none"
           ></el-input>
           <el-button type="primary" @click="handleSend" :disabled="!canSend">发送</el-button>
-        </el-col>
-        <el-col :span="10" :offset="2">
+        </div>
+        <div style="width:22vw;float:right">
           <div class="dialog-chinese-service">
             <div class="qrcode">
-              <p>扫一扫添加我为微信好友</p>
-              <img :src="qrcodeUrl" alt width="50%" height="auto" />
+              <p style="line-heigt:1.5em">扫一扫添加我为微信好友</p>
+              <img :src="agentInfo.qrcode" alt/>
             </div>
             <p class="name">{{agentInfo.username2}}</p>
             <p class="contact-method">电话 | {{agentInfo.tel2}}</p>
             <p class="contact-method">邮箱 | {{agentInfo.email2}}</p>
           </div>
-        </el-col>
-      </el-row>
+        </div>
+        <div style="clear:both"></div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -282,6 +283,7 @@ import playIcon from "../../assets/image/icon-play.svg";
 import pauseIcon from "../../assets/image/icon-pause.svg";
 import { TweenLite } from "gsap/TweenLite";
 import ScrollReveal from "scrollreveal";
+import { setTimeout } from 'timers';
 export default {
   name: "Middleman",
   components: { CommonHeader, CommonFooter },
@@ -302,12 +304,14 @@ export default {
         custmsg: "" //留言
       },
       sr: ScrollReveal(),
+      allRecommendData:[],
       recommendData: [],
       recommendHoverIndex: -1,
       visitData: {
         visit: 0,
         totalVist: 0
       },
+      normalAgentDesc:'欢迎您来我的中文网站，我是一名专业的海外房产经纪人。在这里您将看到我的介绍，我所代理的特色房源和我的团队介绍，无论您是首次置业者或者专业的海外房产投资人，或者要售出您的房屋，我都能为您提供全程房屋买售服务与专业的海外房产置业方案。',
       showPlayButton: true,
       iconPlayButton: playIcon,
       video: null,
@@ -372,6 +376,14 @@ export default {
         interval: 160
       });
     },
+    handleCheckMore(){
+      if(this.allRecommendData.length-this.recommendData.length==1){
+        this.recommendData.push(this.allRecommendData[this.recommendData.length-1]);
+      }else if(this.allRecommendData.length-this.recommendData.length>=2){
+        this.recommendData.push(this.allRecommendData[this.recommendData.length-1]);
+        this.recommendData.push(this.allRecommendData[this.recommendData.length]);
+      }
+    },
     handleClose() {
       this.showCTDialog = false;
       this.showCSDialog = false;
@@ -381,6 +393,10 @@ export default {
         this.agentInfo = resData;
         console.log(this.agentInfo);
         this.agentInfo.username = this.agentInfo.username.toUpperCase();
+        if(this.agentInfo.agentImgs.length==0){
+          this.agentInfo.agentImgs.push(require('../../assets/image/default-house2.jpg'));
+          this.agentInfo.agentImgs.push(require('../../assets/image/default-house3.jpg'));
+        }
         this.visitData.totalVisit = parseInt(resData.visit);
         try {
           let metas = document.querySelectorAll("meta");
@@ -406,7 +422,8 @@ export default {
       this.$get(
         `${this.$api.AGENT_LISTINGS}/?id=${this.agentId}&sort=${this.sortMethod}`
       ).then(resData => {
-        this.recommendData = resData.slice(0, 4);
+        this.recommendData = resData.slice(0, 2);
+        this.allRecommendData = resData;
         this.$nextTick(() => {
           this.setScrollReveal();
         });
@@ -448,7 +465,7 @@ export default {
       href = href.substr(0, href.length - 1);
     }
     this.agentId = href.substring(href.lastIndexOf("/") + 1);
-    // this.agentId = 2;
+    this.agentId = 13;
     this.getAgentById();
     this.getAgentListing();
 
@@ -582,7 +599,7 @@ visit: 146  访问量
     height: 100%;
     left: 0;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(66, 66, 66, 0.5);
     //姓名
     .agent-name {
       .mostLarge;
@@ -839,6 +856,8 @@ visit: 146  访问量
       width: 2vw;
       height: 2vw;
       padding: 2vw;
+      .flex;
+      .flexCenter;
       background-color: #fff;
       border-radius: 50%;
       transition: all 0.3s;
@@ -952,17 +971,20 @@ visit: 146  访问量
     margin: 2vw;
     width: 36vw;
     height: 24vw;
+    .flex;
+    .flexCenter;
   }
 
   .contact-detail {
     margin: 2vw;
     width: 36vw;
     height: 24vw;
-
+ 
     .detail-title {
       .extraLarge;
       .boldText;
       .primaryText;
+      line-height: 4.6vw;
       span {
         padding-bottom: 12px;
         border-bottom: 6px solid @themeColor;
@@ -974,13 +996,15 @@ visit: 146  访问量
       .large;
       .boldText;
       .primaryText;
+      line-height: 2vw;
     }
 
     .detail-corp {
       .large;
       color: #a9854e;
       .textOverflowEllipsis;
-      margin-bottom: 24px;
+      margin-bottom: 2.4vw;
+      line-height: 3vw;
     }
 
     .detail-addr,
@@ -990,11 +1014,11 @@ visit: 146  访问量
       .large;
       .textOverflowEllipsis;
       .regularText;
-
+      line-height: 2.4vw;
       .detail-icon {
         position: relative;
         margin-right: 12px;
-        line-height: 1.5em;
+        
         top: 6px;
         @media (max-width: 480px) {
           width: 20px;
@@ -1126,16 +1150,17 @@ visit: 146  访问量
   }
 
   .dialog-chinese-service {
+    line-height: 2em;
     .qrcode {
       width: 240px;
-      text-align: center;
+      text-align: left;
       p {
         color: @themeColor;
         .base;
       }
       img {
-        width: 90%;
-        height: auto;
+        width: 13.6vw;
+        height: 13.6vw;
       }
     }
 
@@ -1143,6 +1168,7 @@ visit: 146  访问量
       .boldText;
       .primaryText;
       .large;
+      line-height: 2em;
     }
 
     .contact-method {
@@ -1150,6 +1176,7 @@ visit: 146  访问量
       .secondaryText;
       .textOverflowEllipsis;
       text-align: left;
+      line-height: 1.5em;
     }
   }
 
