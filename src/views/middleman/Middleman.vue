@@ -20,15 +20,15 @@
           </div>
         </div>
       </div>
-      <div class="banner-share">
-        <a href>
+      <div class="banner-share bdsharebuttonbox">
+        <a href="'http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)">
           <img :src="require('../../assets/image/icon-facebook-white.svg')" alt />
         </a>
-        <a href>
-          <img :src="require('../../assets/image/icon-wechat-white.svg')" alt />
+        <a href='#'>
+          <img data-cmd='tsina' :src="require('../../assets/image/icon-weibo-white.svg')" alt />
         </a>
-        <a href>
-          <img :src="require('../../assets/image/icon-weibo-white.svg')" alt />
+        <a href='#'>
+          <img data-cmd='weixin' :src="require('../../assets/image/icon-wechat-white.svg')" alt />
         </a>
       </div>
     </div>
@@ -84,7 +84,7 @@
               <div class="item-detail-viewcount" style="margin-top:8px;">
                 <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
                 <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
-                <a :href="`/web/listing1/${item.listingid}`">查看房源</a>
+                <a :href="`/web/listing1/${item.htmlid}`">查看房源</a>
               </div>
             </div>
           </transition>
@@ -214,7 +214,7 @@
     <!-- 通用尾部 -->
     <CommonFooter></CommonFooter>
 
-    <el-dialog :visible.sync="showCTDialog" width="80%" center :show-close="false">
+    <el-dialog :visible.sync="showCTDialog" width="80%"  :lock-scroll='false' center :show-close="false">
       <div slot="title" class="dialog-title">
         <span>经纪人联系方式</span>
         <span class="el-icon-close dialog-close" @click="handleClose"></span>
@@ -238,7 +238,7 @@
       </el-row>
     </el-dialog>
 
-    <el-dialog :visible.sync="showCSDialog" width="64vw" center :show-close="false">
+    <el-dialog :visible.sync="showCSDialog" width="64vw" :lock-scroll='false'  center :show-close="false">
       <div slot="title" class="dialog-title">
         <span>中文服务</span>
         <span class="el-icon-close dialog-close" @click="handleClose"></span>
@@ -263,8 +263,8 @@
               <img :src="agentInfo.qrcode" alt/>
             </div>
             <p class="name">{{agentInfo.username2}}</p>
-            <p class="contact-method">电话 | {{agentInfo.tel2}}</p>
-            <p class="contact-method">邮箱 | {{agentInfo.email2}}</p>
+            <p class="contact-method">电话 | {{agentInfo.tel2||'400-877-1896'}}</p>
+            <p class="contact-method">邮箱 | {{agentInfo.email2||'info@realtoraccess.com'}}</p>
           </div>
         </div>
         <div style="clear:both"></div>
@@ -294,7 +294,7 @@ export default {
       middlemanUrl: middleman,
       qrcodeUrl: qrcode,
       showCTDialog: false,
-      showCSDialog: true,
+      showCSDialog: false,
       agentInfo: {},
       agentId: 222,
       sortMethod: "date",
@@ -364,8 +364,8 @@ export default {
         )
       );
       this.sr.reveal(".middleman-detail", this.getOptions());
-      this.sr.reveal(".middleman-recommend", this.getOptions(()=>{
-        this.showCSDialog = true;
+      this.sr.reveal(".middleman-recommend",this.getOptions(()=>{
+        // this.showCSDialog = true;
       }));
       this.sr.reveal(".agent-corp-wrap", this.getOptions());
       this.sr.reveal(".agent-personal-wrap", this.getOptions());
@@ -394,8 +394,8 @@ export default {
         console.log(this.agentInfo);
         this.agentInfo.username = this.agentInfo.username.toUpperCase();
         if(this.agentInfo.agentImgs.length==0){
-          this.agentInfo.agentImgs.push(require('../../assets/image/default-house2.jpg'));
-          this.agentInfo.agentImgs.push(require('../../assets/image/default-house3.jpg'));
+          this.agentInfo.agentImgs.push(require('../../assets/image/default-house4.jpeg'));
+          this.agentInfo.agentImgs.push(require('../../assets/image/default-house5.jpeg'));
         }
         this.visitData.totalVisit = parseInt(resData.visit);
         try {
@@ -468,7 +468,9 @@ export default {
     // this.agentId = 13;
     this.getAgentById();
     this.getAgentListing();
-
+    setTimeout(() => {
+      this.showCSDialog = true;
+    }, 6000);
     //经纪人信息
     /*
 active: "1"  废弃
@@ -577,6 +579,9 @@ visit: 146  访问量
     flex-direction: row;
     top: 48px;
     right: 64px;
+    a{
+      background-image: none !important;
+    }
     img {
       padding: 0.8vw;
       border: 3px solid #fff;
@@ -996,14 +1001,14 @@ visit: 146  访问量
       .large;
       .boldText;
       .primaryText;
-      line-height: 2vw;
+      line-height: 3vw;
     }
 
     .detail-corp {
       .large;
       color: #a9854e;
       .textOverflowEllipsis;
-      margin-bottom: 2.4vw;
+      margin-bottom: 1.4vw;
       line-height: 3vw;
     }
 
@@ -1129,13 +1134,14 @@ visit: 146  访问量
       .boldText;
       .primaryText;
       .large;
+      line-height: 2em;
       margin-top: 24px;
     }
 
     .company {
       .large;
       color: rgb(171, 137, 90);
-      margin-bottom: 2vw;
+      margin-bottom: 1.2vw;
     }
 
     .contact-method {

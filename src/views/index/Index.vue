@@ -184,7 +184,7 @@
                 <span style="margin-right:0.6vw; ">{{item.date}}</span>
                 <span style="margin-right:0.6vw; " class="icon-eye">{{item.visit}}</span>
                 <a
-                  :href="!item.mls.startsWith('r')||item.mls.length<8?item.htmlid:`/web/listing1/${item.mls}`"
+                  :href="`/web/listing1/${item.htmlid}`"
                   class="item-detail-checkhouse"
                 >查看房源</a>
                 <!-- <a
@@ -1053,7 +1053,7 @@ export default {
           height: 24vw;
         }
         @media (min-width: 1280px) {
-          width: 20vw;
+          width: 22vw;
           height: 16vw;
         }
       }

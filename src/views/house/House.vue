@@ -79,13 +79,13 @@
               <span>{{listingInfo.cityname}}</span>
             </p>
             <div style="height:12px;"></div>
-            <a href class="view-map el-icon-location-outline">地图看房</a>
+            <a href='http://www.realtoraccess.com/web/m/listings/#/' class="view-map el-icon-location-outline">地图看房</a>
             <div class="house-share">
               <span>分享到:</span>
-              <div class="share-icons">
-                <a :href="facebookShareUrl"><img :src="require('../../assets/image/icon-share-facebook.svg')" alt /></a>
-                <img :src="require('../../assets/image/icon-share-weibo.svg')" alt />
-                <img :src="require('../../assets/image/icon-share-wechat.svg')" alt />
+              <div class="share-icons bdsharebuttonbox">
+                <a href="'http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)"><img :src="require('../../assets/image/icon-share-facebook.svg')" alt /></a>
+                <a href=""><img data-cmd='tsina' :src="require('../../assets/image/icon-share-weibo.svg')" alt /></a>
+                <a href=""><img data-cmd='weixin' :src="require('../../assets/image/icon-share-wechat.svg')" alt /></a>
               </div>
             </div>
           </div>
@@ -108,7 +108,7 @@
             <div class="appointment-contact">
               <a :href="`/web/agent/${agentInfo.id}`"><img :src="agentInfo.head" class="middleman-head"  alt style="width:100%;height:auto"  /></a>
               <span class="middleman-name">{{agentInfo.username}}</span>
-              <span class="middleman-company">{{agentInfo.corp}} | {{agentInfo.city}}</span>
+              <span class="middleman-company">{{agentInfo.corp||'地产经纪公司名称'}} | {{agentInfo.city||'城市'}}</span>
               <span class="middleman-phone">{{agentInfo.tel}}</span>
             </div>
             <div class="appointment-form">
@@ -180,7 +180,7 @@
                       style="margin-right:12px; line-height:24px;"
                       class="icon-eye"
                     >{{item.visit}}</span>
-                    <a :href="`/web/listing1/${item.listingid}`">查看房源</a>
+                    <a :href="`/web/listing1/${item.htmlid}`">查看房源</a>
                   </div>
                 </div>
               </transition>
@@ -828,6 +828,9 @@ export default {
       line-height: 56px;
       .share-icons {
         .flex;
+        a{
+          background-image: none !important;
+        }
         img {
           width: 56px;
           height: 56px;
