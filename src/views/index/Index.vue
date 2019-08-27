@@ -90,7 +90,7 @@
               <img v-lazy="middlemanItem.img" alt class="middleman-photo" />
               <span class="middleman-auth" v-if="middlemanItem.auth==1">认证经纪</span>
               <span class="middleman-username">{{middlemanItem.username || '\ueaaa'}}</span>
-              <span class="middleman-usercity">{{middlemanItem.usercity}} | 经纪</span>
+              <span class="middleman-usercity">{{middlemanItem.usercity}} <span class="vl">|</span> 经纪</span>
               <span class="middleman-note">{{middlemanItem.note || '\ueaaa'}}</span>
               <div class="middleman-divider"></div>
               <div class="middleman-corp">
@@ -184,7 +184,7 @@
                 <span style="margin-right:0.6vw; ">{{item.date}}</span>
                 <span style="margin-right:0.6vw; " class="icon-eye">{{item.visit}}</span>
                 <a
-                  :href="`/web/listing1/${item.htmlid}`"
+                  :href="item.htmlid"
                   class="item-detail-checkhouse"
                 >查看房源</a>
                 <!-- <a
@@ -347,9 +347,9 @@
             <a href>全球资讯</a>
           </div>
           <div class="right-header">关注瑞安居微信公众平台</div>
-          <p>客服专线 | 400 877 1896</p>
-          <p>营业时间 | 周一至周日 | 9:00-17:00</p>
-          <p>客服邮箱 | info@realtoraccess.com</p>
+          <p>客服专线 <span class="vl">|</span> 400 877 1896</p>
+          <p>营业时间 <span class="vl">|</span> 周一至周日 <span class="vl"><span class="vl">|</span></span> 9:00-17:00</p>
+          <p>客服邮箱 <span class="vl">|</span> info@realtoraccess.com</p>
           <div class="right-qrcode">
             <img v-lazy="require('../../assets/image/qrcode.png')" width="96px" height="96px" alt />
           </div>

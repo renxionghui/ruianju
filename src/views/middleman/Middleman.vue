@@ -9,7 +9,7 @@
       <img :src="bannerUrl" />
       <div class="banner-masker">
         <div class="agent-name">{{agentInfo.username}}</div>
-        <div class="agent-corp">{{agentInfo.note||'海外房产投资估价'}} | {{agentInfo.corp|| '大温专业房产经纪人'}}</div>
+        <div class="agent-corp">{{agentInfo.note||'海外房产投资估价'}} <span class="vl">|</span> {{agentInfo.corp|| '大温专业房产经纪人'}}</div>
         <div class="agent-visit">访问量：{{visitNum}}</div>
         <div class="agent-contact">
           <div class="contact-type" @click="showCTDialog=true">
@@ -75,7 +75,7 @@
               <div class="item-detail-addr">{{item.address}}</div>
               <div class="item-detail-cityname">{{item.cityname}}</div>
 
-              <div class="item-detail-housetype">{{item.housetype}} | {{item.areas}}</div>
+              <div class="item-detail-housetype">{{item.housetype}} <span class="vl">|</span> {{item.areas}}</div>
               <div class="item-detail-roomcount">
                 <span class="icon-furniture">{{item.bashroom}}</span>
                 <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
@@ -84,7 +84,7 @@
               <div class="item-detail-viewcount" style="margin-top:8px;">
                 <span style="margin-right:12px; line-height:24px;">{{item.date}}</span>
                 <span style="margin-right:12px; line-height:24px;" class="icon-eye">{{item.visit}}</span>
-                <a :href="`/web/listing1/${item.htmlid}`">查看房源</a>
+                <a :href="item.htmlid">查看房源</a>
               </div>
             </div>
           </transition>
@@ -172,12 +172,12 @@
           <span>联系</span>方式
         </div>
         <div class="detail-name">{{agentInfo.username}}</div>
-        <div class="detail-corp">{{agentInfo.corp||'大温专业房产经纪人'}} | {{agentInfo.cityName}} 房产经纪</div>
+        <div class="detail-corp">{{agentInfo.corp||'大温专业房产经纪人'}} <span class="vl">|</span> {{agentInfo.cityName}} 房产经纪</div>
         <div class="detail-phone">
           <span>
             <img class="detail-icon" :src="require('../../assets/image/icon-phone.svg')" alt />
           </span>
-          <span>{{agentInfo.tel}}</span>
+          <span>{{agentInfo.tel||'400 877 1896'}}</span>
         </div>
         <div class="detail-email">
           <span>
@@ -189,13 +189,13 @@
           <span>
             <img class="detail-icon" :src="require('../../assets/image/icon-location.svg')" alt />
           </span>
-          <span>{{agentInfo.address}}</span>
+          <span>{{agentInfo.address||'Vancouver, BC, Canada'}}</span>
         </div>
         <div class="detail-website">
           <span>
             <img class="detail-icon" :src="require('../../assets/image/icon-www.svg')" alt />
           </span>
-          <span>{{agentInfo.website}}</span>
+          <span>{{agentInfo.website||'www.realtoraccess.com'}}</span>
         </div>
       </div>
     </div>
@@ -226,13 +226,13 @@
         </el-col>
         <el-col :span="14" class="contact-info">
           <p class="name">{{agentInfo.username}}</p>
-          <p class="company">{{agentInfo.note||'海外房产投资估价'}} | {{agentInfo.cityName}}</p>
-          <p class="contact-method">电话 | {{agentInfo.tel}}</p>
-          <p class="contact-method">邮箱 | {{agentInfo.email}}</p>
-          <p class="contact-method">地址 | {{agentInfo.address}}</p>
+          <p class="company">{{agentInfo.note||'海外房产投资估价'}} <span class="vl">|</span> {{agentInfo.cityName}}</p>
+          <p class="contact-method">电话 <span class="vl">|</span> {{agentInfo.tel||'400 877 1896'}}</p>
+          <p class="contact-method">邮箱 <span class="vl">|</span> {{agentInfo.email}}</p>
+          <p class="contact-method">地址 <span class="vl">|</span> {{agentInfo.address||'Vancouver, BC, Canada'}}</p>
           <p class="contact-method">
-            网站 |
-            <a :href="`http://${agentInfo.website}`" target="_blank">{{agentInfo.website}}</a>
+            网站 <span class="vl">|</span>
+            <a :href="`http://${agentInfo.website}`" target="_blank">{{agentInfo.website||'www.realtoraccess.com'}}</a>
           </p>
         </el-col>
       </el-row>
@@ -263,8 +263,8 @@
               <img :src="agentInfo.qrcode" alt/>
             </div>
             <p class="name">{{agentInfo.username2}}</p>
-            <p class="contact-method">电话 | {{agentInfo.tel2||'400-877-1896'}}</p>
-            <p class="contact-method">邮箱 | {{agentInfo.email2||'info@realtoraccess.com'}}</p>
+            <p class="contact-method">电话 <span class="vl">|</span> {{agentInfo.tel2||'400-877-1896'}}</p>
+            <p class="contact-method">邮箱 <span class="vl">|</span> {{agentInfo.email2||'info@realtoraccess.com'}}</p>
           </div>
         </div>
         <div style="clear:both"></div>

@@ -35,8 +35,8 @@
                   <div class="contact-qrcode">
                     <img :src="qrcodeUrl" alt />
                     <div>
-                      <p>国内专线 | 400-877-1896</p>
-                      <p>客服邮箱 | info@realtoraccess.com</p>
+                      <p>国内专线 <span class="vl">|</span> 400-877-1896</p>
+                      <p>客服邮箱 <span class="vl">|</span> info@realtoraccess.com</p>
                     </div>
                   </div>
                   <div>
@@ -108,7 +108,7 @@
             <div class="appointment-contact">
               <a :href="`/web/agent/${agentInfo.id}`"><img :src="agentInfo.head" class="middleman-head"  alt style="width:100%;height:auto"  /></a>
               <span class="middleman-name">{{agentInfo.username}}</span>
-              <span class="middleman-company">{{agentInfo.corp||'地产经纪公司名称'}} | {{agentInfo.city||'城市'}}</span>
+              <span class="middleman-company">{{agentInfo.corp||'地产经纪公司名称'}} <span class="vl">|</span> {{agentInfo.city||'城市'}}</span>
               <span class="middleman-phone">{{agentInfo.tel}}</span>
             </div>
             <div class="appointment-form">
@@ -168,7 +168,7 @@
                   <div class="item-detail-addr">{{item.listingname}}</div>
                   <div class="item-detail-cityname">{{item.cityname}}</div>
 
-                  <div class="item-detail-housetype">{{item.housetype}} | {{item.areas}}</div>
+                  <div class="item-detail-housetype">{{item.housetype}} <span class="vl">|</span> {{item.areas}}</div>
                   <div class="item-detail-roomcount">
                     <span class="icon-furniture">{{parseInt(item.toilet)}}</span>
                     <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
@@ -180,7 +180,7 @@
                       style="margin-right:12px; line-height:24px;"
                       class="icon-eye"
                     >{{item.visit}}</span>
-                    <a :href="`/web/listing1/${item.htmlid}`">查看房源</a>
+                    <a :href="item.htmlid">查看房源</a>
                   </div>
                 </div>
               </transition>
