@@ -83,7 +83,10 @@
             <div class="house-share">
               <span>分享到: </span>
               <div class="share-icons bdsharebuttonbox">
-                <a href="'http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)"><img :src="require('../../assets/image/icon-share-facebook.svg')" alt /></a>
+                <!-- <a href="'http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)"><img :src="require('../../assets/image/icon-share-facebook.svg')" alt /></a> -->
+                <a href="javascript:window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)">
+                  <img :src="require('../../assets/image/icon-share-facebook.svg')" alt />
+                </a>
                 <a href=""><img data-cmd='tsina' :src="require('../../assets/image/icon-share-weibo.svg')" alt /></a>
                 <a href=""><img data-cmd='weixin' :src="require('../../assets/image/icon-share-wechat.svg')" alt /></a>
               </div>
@@ -170,8 +173,8 @@
 
                   <div class="item-detail-housetype">{{item.housetype}} <span class="vl">|</span> {{item.areas}}</div>
                   <div class="item-detail-roomcount">
-                    <span class="icon-furniture">{{parseInt(item.toilet)}}</span>
-                    <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
+                    <span class="icon-furniture"> {{parseInt(item.toilet)}}</span>
+                    <span class="icon-bed" style="margin-left:12px;"> {{item.bedroom}}</span>
                   </div>
 
                   <div class="item-detail-viewcount" style="margin-top:8px;">
@@ -283,7 +286,7 @@
           <div class="about-title">周边房产</div>
           <div class="about-list">
             <div class="about-item" v-for="(item,index) in nearbyList" :key="index">
-              <a :href="item.url">{{item[1]}}</a>
+              <a :href="item[2]" target="_blank">{{item[1]}}</a>
             </div>
           </div>
           <a href="http://www.realtoraccess.com/web/houses/" class="view-more">查看更多</a>

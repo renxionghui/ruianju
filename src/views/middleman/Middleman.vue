@@ -25,9 +25,12 @@
         </div>
       </div>
       <div class="banner-share bdsharebuttonbox">
-        <a
+        <!-- <a
           href="'http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)"
         >
+          <img :src="require('../../assets/image/icon-facebook-white.svg')" alt />
+        </a> -->
+        <a href="javascript:window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)">
           <img :src="require('../../assets/image/icon-facebook-white.svg')" alt />
         </a>
         <a href="#">
@@ -42,7 +45,7 @@
     <!-- 经纪人详情 -->
     <div class="middleman-detail">
       <div class="agent-head">
-        <img :src="agentInfo.head2" alt class="agent-photo" />
+        <img :src="agentInfo.head" alt class="agent-photo" />
         <span class="agent-auth" v-if="agentInfo.auth">认证经纪</span>
       </div>
       <div class="detail-descript">
@@ -88,8 +91,8 @@
                 {{item.areas}}
               </div>
               <div class="item-detail-roomcount">
-                <span class="icon-furniture">{{item.bashroom||0}}</span>
-                <span class="icon-bed" style="margin-left:12px;">{{item.bedroom||0}}</span>
+                <span class="icon-furniture"> {{parseInt(item.toilet)||0}}</span>
+                <span class="icon-bed" style="margin-left:12px;"> {{item.bedroom||0}}</span>
               </div>
 
               <div class="item-detail-viewcount" style="margin-top:8px;">
@@ -136,6 +139,7 @@
             v-if="agentInfo.corpVideo"
             width="100%"
             height="100%"
+            :poster="require('../../assets/image/default-poster.png')"
             style="object-fit:fill"
           ></video>
           <img
@@ -465,10 +469,10 @@ export default {
         this.agentInfo.username = this.agentInfo.username.toUpperCase();
         if (this.agentInfo.agentImgs.length == 0) {
           this.agentInfo.agentImgs.push(
-            require("../../assets/image/default-house4.jpeg")
+            require("../../assets/image/default-house2.jpg")
           );
           this.agentInfo.agentImgs.push(
-            require("../../assets/image/default-house5.jpeg")
+            require("../../assets/image/default-house3.jpg")
           );
         }
         this.visitData.totalVisit = parseInt(resData.visit);
@@ -690,9 +694,12 @@ visit: 146  访问量
     }
     //公司
     .agent-corp {
-      font-size: 22px;
+      font-size: 1.6vw;
       .whiteText;
       line-height: 3em;
+      width: 100%;
+      text-align: center;
+      .textOverflowEllipsis;
     }
     //访问量
     .agent-visit {
@@ -1054,6 +1061,7 @@ visit: 146  访问量
     height: 24vw;
     .flex;
     .flexCenter;
+    overflow: hidden;
   }
 
   .contact-detail {

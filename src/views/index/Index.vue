@@ -83,7 +83,7 @@
     <!-- 经纪人轮播图 -->
     <div class="index-banner-middleman">
       <div class="index-banner-middleman-title font-title" style="color:#fff !important;">专业的海外置业顾问</div>
-      <el-carousel :interval="3000" height="400px" arrow="always">
+      <el-carousel :interval="5000" height="400px" arrow="always">
         <el-carousel-item v-for="(item,i) of middlemanBanner" :key="i">
           <div class="index-banner-middleman-item">
             <div class="middleman-detail" v-for="(middlemanItem,index) of item" :key="index">
@@ -176,8 +176,8 @@
               <div class="item-detail-housetype">{{item.housetype}}</div>
               <div class="item-detail-areas">{{item.areas}}</div>
               <div class="item-detail-roomcount">
-                <span class="icon-furniture">{{item.bashroom}}</span>
-                <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
+                <span class="icon-furniture"> {{item.bashroom}}</span>
+                <span class="icon-bed" style="margin-left:12px;"> {{item.bedroom}}</span>
               </div>
 
               <div class="item-detail-viewcount" style="margin-top:0.4vw;">
