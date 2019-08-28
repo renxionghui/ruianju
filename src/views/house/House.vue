@@ -20,11 +20,11 @@
       <el-row type="flex" justify="center">
         <el-col>
           <el-row type="flex">
-            <el-col :span="14" class="house-view-img">
+            <el-col :span="13" class="house-view-img">
               <img :src="houseViewUrl" alt style="width:100%;height:100%;display:block" />
             </el-col>
             <el-col
-              :span="10"
+              :span="11"
               :style="{height:'auto',backgroundImage:`url(${houseViewBg})`}"
               class="house-view-bg"
             >
@@ -81,7 +81,7 @@
             <div style="height:12px;"></div>
             <a href='http://www.realtoraccess.com/web/m/listings/#/' class="view-map el-icon-location-outline">地图看房</a>
             <div class="house-share">
-              <span>分享到:</span>
+              <span>分享到: </span>
               <div class="share-icons bdsharebuttonbox">
                 <a href="'http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)"><img :src="require('../../assets/image/icon-share-facebook.svg')" alt /></a>
                 <a href=""><img data-cmd='tsina' :src="require('../../assets/image/icon-share-weibo.svg')" alt /></a>
@@ -108,7 +108,7 @@
             <div class="appointment-contact">
               <a :href="`/web/agent/${agentInfo.id}`"><img :src="agentInfo.head" class="middleman-head"  alt style="width:100%;height:auto"  /></a>
               <span class="middleman-name">{{agentInfo.username}}</span>
-              <span class="middleman-company">{{agentInfo.corp||'地产经纪公司名称'}} <span class="vl">|</span> {{agentInfo.city||'城市'}}</span>
+              <span class="middleman-company">{{agentInfo.corp||'海外房产经纪人'}} <span class="vl">|</span> {{agentInfo.city||'加拿大'}}</span>
               <span class="middleman-phone">{{agentInfo.tel}}</span>
             </div>
             <div class="appointment-form">
@@ -282,7 +282,9 @@
         <el-col :span="8">
           <div class="about-title">周边房产</div>
           <div class="about-list">
-            <div class="about-item" v-for="(item,index) in nearbyList" :key="index">{{item[1]}}</div>
+            <div class="about-item" v-for="(item,index) in nearbyList" :key="index">
+              <a :href="item.url">{{item[1]}}</a>
+            </div>
           </div>
           <a href="http://www.realtoraccess.com/web/houses/" class="view-more">查看更多</a>
         </el-col>
@@ -363,7 +365,8 @@ export default {
       newListingList: null, //区域新盘
       showHouseChart: false,
       facebookShareUrl:'',
-      showHouseMore:false
+      showHouseMore:false,
+      pageSize:2,
     };
   },
   computed: {
@@ -511,12 +514,9 @@ export default {
       this.showHouseDetail = true;
     },
     handleViewMore() {
-      if(this.allRecommendData.length-this.recommendData.length==1){
-        this.recommendData.push(this.allRecommendData[this.recommendData.length-1]);
-      }else if(this.allRecommendData.length-this.recommendData.length>=2){
-        this.recommendData.push(this.allRecommendData[this.recommendData.length-1]);
-        this.recommendData.push(this.allRecommendData[this.recommendData.length]);
-      }
+      console.log('查看更多');
+      this.pageSize+=2;
+      this.getRecommend();
     },
     isEmail(str) {
       let email = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
@@ -616,9 +616,12 @@ export default {
     //推荐房源
     getRecommend() {
       this.$get(
-        `${this.$api.GET_RECOMMEND}?mls=${this.mls}&page=${this.page}&page_size=10`
+        `${this.$api.GET_RECOMMEND}?mls=${this.mls}&page=${this.page}&page_size=${this.pageSize}`
       ).then(resData => {
-        this.recommendData = resData.slice(0,2);
+        this.recommendData = resData.map(item=>{
+          item.imgs = item.imgs.length>0?item.imgs:[require('../../assets/image/default-house4.jpeg')];
+          return item;
+        });
         this.allRecommendData = resData;
         if (resData.length == 0) {
           this.page = 1;
@@ -820,20 +823,26 @@ export default {
 
     .house-share {
       position: absolute;
-      right: 48px;
-      top: 24px;
+      right: 2vw;
+      top: 1vw;
       .base;
       .boldText;
       .flex;
-      line-height: 56px;
+      line-height: 3.2vw;
+      span{
+        height: 3.2vw;
+      }
       .share-icons {
         .flex;
         a{
+          padding: 0 !important;
+          margin: 0 !important;
+          height: 3.2vw !important;
           background-image: none !important;
         }
         img {
-          width: 56px;
-          height: 56px;
+          width: 3.2vw;
+          height: 3.2vw;
           &:hover {
             opacity: 0.8;
           }

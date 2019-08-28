@@ -9,7 +9,11 @@
       <img :src="bannerUrl" />
       <div class="banner-masker">
         <div class="agent-name">{{agentInfo.username}}</div>
-        <div class="agent-corp">{{agentInfo.note||'海外房产投资估价'}} <span class="vl">|</span> {{agentInfo.corp|| '大温专业房产经纪人'}}</div>
+        <div class="agent-corp">
+          {{agentInfo.note||'海外房产投资估价'}}
+          <span class="vl">|</span>
+          {{agentInfo.corp|| '大温专业房产经纪人'}}
+        </div>
         <div class="agent-visit">访问量：{{visitNum}}</div>
         <div class="agent-contact">
           <div class="contact-type" @click="showCTDialog=true">
@@ -21,14 +25,16 @@
         </div>
       </div>
       <div class="banner-share bdsharebuttonbox">
-        <a href="'http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)">
+        <a
+          href="'http://www.facebook.com/sharer.php?u='+encodeURIComponent(document.location.href)+'&amp;t='+encodeURIComponent(document.title),'_blank','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=450,top=100,left=350');void(0)"
+        >
           <img :src="require('../../assets/image/icon-facebook-white.svg')" alt />
         </a>
-        <a href='#'>
-          <img data-cmd='tsina' :src="require('../../assets/image/icon-weibo-white.svg')" alt />
+        <a href="#">
+          <img data-cmd="tsina" :src="require('../../assets/image/icon-weibo-white.svg')" alt />
         </a>
-        <a href='#'>
-          <img data-cmd='weixin' :src="require('../../assets/image/icon-wechat-white.svg')" alt />
+        <a href="#">
+          <img data-cmd="weixin" :src="require('../../assets/image/icon-wechat-white.svg')" alt />
         </a>
       </div>
     </div>
@@ -65,7 +71,8 @@
           :key="index"
           @mouseover="recommendHoverIndex = index"
           @mouseout="recommendHoverIndex = -1"
-          :style="{backgroundImage:`url('${item.img}')`}">
+          :style="{backgroundImage:`url('${item.img}')`}"
+        >
           <div class="item-agent" v-show="recommendHoverIndex != index">
             <span v-if="item.listingtype">{{item.listingtype}}</span>
           </div>
@@ -75,10 +82,14 @@
               <div class="item-detail-addr">{{item.address}}</div>
               <div class="item-detail-cityname">{{item.cityname}}</div>
 
-              <div class="item-detail-housetype">{{item.housetype}} <span class="vl">|</span> {{item.areas}}</div>
+              <div class="item-detail-housetype">
+                {{item.housetype}}
+                <span class="vl">|</span>
+                {{item.areas}}
+              </div>
               <div class="item-detail-roomcount">
-                <span class="icon-furniture">{{item.bashroom}}</span>
-                <span class="icon-bed" style="margin-left:12px;">{{item.bedroom}}</span>
+                <span class="icon-furniture">{{item.bashroom||0}}</span>
+                <span class="icon-bed" style="margin-left:12px;">{{item.bedroom||0}}</span>
               </div>
 
               <div class="item-detail-viewcount" style="margin-top:8px;">
@@ -93,21 +104,23 @@
       <div v-else class="recommend-list">
         <div
           class="recommend-item"
-          :style="{backgroundImage:`url(${require('../../assets/image/default-house4.jpeg')}`}">
+          :style="{backgroundImage:`url(${require('../../assets/image/default-house4.jpeg')}`}"
+        >
           <div class="item-agent">
-            <span >敬请期待</span>
+            <span>敬请期待</span>
           </div>
         </div>
         <div
           class="recommend-item"
-          :style="{backgroundImage:`url(${require('../../assets/image/default-house5.jpeg')}`}">
+          :style="{backgroundImage:`url(${require('../../assets/image/default-house5.jpeg')}`}"
+        >
           <div class="item-agent">
-            <span >敬请期待</span>
+            <span>敬请期待</span>
           </div>
         </div>
       </div>
       <div style="text-align:center">
-        <span class="recommend-button" @click='handleCheckMore'>查看更多</span>
+        <span class="recommend-button" @click="handleCheckMore">查看更多</span>
       </div>
     </div>
 
@@ -125,7 +138,13 @@
             height="100%"
             style="object-fit:fill"
           ></video>
-          <img :src="require('../../assets/image/default-house.jpg')" v-else alt width="100%" height="100%"/>
+          <img
+            :src="require('../../assets/image/default-house.jpg')"
+            v-else
+            alt
+            width="100%"
+            height="100%"
+          />
         </div>
       </div>
       <div class="corp-desc">
@@ -154,8 +173,8 @@
           <span>关于</span>
         </div>
         <div style="margin-top:2.4vw">
-          <div v-if="showAboutMore" class="desc-text-more">{{agentInfo.selfintro}}</div>
-          <div v-else class="desc-text">{{agentInfo.selfintro}}</div>
+          <div v-if="showAboutMore" class="desc-text-more">{{agentInfo.teamintro}}</div>
+          <div v-else class="desc-text">{{agentInfo.teamintro}}</div>
         </div>
 
         <span class="more" @click="showAboutMore=!showAboutMore">{{showAboutMore?'收起':'详情'}}>></span>
@@ -165,14 +184,18 @@
     <!-- 联系方式 -->
     <div class="agent-contact-wrap">
       <div class="corp-logo">
-        <img :src="agentInfo.logo" alt width="100%" height="100%" style="object-fit:contain"/>
+        <img :src="agentInfo.logo" alt style="object-fit:contain" />
       </div>
       <div class="contact-detail">
         <div class="detail-title font-title">
           <span>联系</span>方式
         </div>
         <div class="detail-name">{{agentInfo.username}}</div>
-        <div class="detail-corp">{{agentInfo.corp||'大温专业房产经纪人'}} <span class="vl">|</span> {{agentInfo.cityName}} 房产经纪</div>
+        <div class="detail-corp">
+          {{agentInfo.corp||'大温专业房产经纪人'}}
+          <span class="vl">|</span>
+          {{agentInfo.cityName}} 房产经纪
+        </div>
         <div class="detail-phone">
           <span>
             <img class="detail-icon" :src="require('../../assets/image/icon-phone.svg')" alt />
@@ -214,7 +237,13 @@
     <!-- 通用尾部 -->
     <CommonFooter></CommonFooter>
 
-    <el-dialog :visible.sync="showCTDialog" width="80%"  :lock-scroll='false' center :show-close="false">
+    <el-dialog
+      :visible.sync="showCTDialog"
+      width="80%"
+      :lock-scroll="false"
+      center
+      :show-close="false"
+    >
       <div slot="title" class="dialog-title">
         <span>经纪人联系方式</span>
         <span class="el-icon-close dialog-close" @click="handleClose"></span>
@@ -226,19 +255,45 @@
         </el-col>
         <el-col :span="14" class="contact-info">
           <p class="name">{{agentInfo.username}}</p>
-          <p class="company">{{agentInfo.note||'海外房产投资估价'}} <span class="vl">|</span> {{agentInfo.cityName}}</p>
-          <p class="contact-method">电话 <span class="vl">|</span> {{agentInfo.tel||'400 877 1896'}}</p>
-          <p class="contact-method">邮箱 <span class="vl">|</span> {{agentInfo.email}}</p>
-          <p class="contact-method">地址 <span class="vl">|</span> {{agentInfo.address||'Vancouver, BC, Canada'}}</p>
+          <p class="company">
+            {{agentInfo.note||'海外房产投资估价'}}
+            <span class="vl">|</span>
+            {{agentInfo.cityName}}
+          </p>
           <p class="contact-method">
-            网站 <span class="vl">|</span>
-            <a :href="`http://${agentInfo.website}`" target="_blank">{{agentInfo.website||'www.realtoraccess.com'}}</a>
+            电话
+            <span class="vl">|</span>
+            {{agentInfo.tel||'400 877 1896'}}
+          </p>
+          <p class="contact-method">
+            邮箱
+            <span class="vl">|</span>
+            {{agentInfo.email}}
+          </p>
+          <p class="contact-method">
+            地址
+            <span class="vl">|</span>
+            {{agentInfo.address||'Vancouver, BC, Canada'}}
+          </p>
+          <p class="contact-method">
+            网站
+            <span class="vl">|</span>
+            <a
+              :href="`http://${agentInfo.website}`"
+              target="_blank"
+            >{{agentInfo.website||'www.realtoraccess.com'}}</a>
           </p>
         </el-col>
       </el-row>
     </el-dialog>
 
-    <el-dialog :visible.sync="showCSDialog" width="64vw" :lock-scroll='false'  center :show-close="false">
+    <el-dialog
+      :visible.sync="showCSDialog"
+      width="64vw"
+      :lock-scroll="false"
+      center
+      :show-close="false"
+    >
       <div slot="title" class="dialog-title">
         <span>中文服务</span>
         <span class="el-icon-close dialog-close" @click="handleClose"></span>
@@ -260,11 +315,19 @@
           <div class="dialog-chinese-service">
             <div class="qrcode">
               <p style="line-heigt:1.5em">扫一扫添加我为微信好友</p>
-              <img :src="agentInfo.qrcode" alt/>
+              <img :src="agentInfo.qrcode2" alt />
             </div>
             <p class="name">{{agentInfo.username2}}</p>
-            <p class="contact-method">电话 <span class="vl">|</span> {{agentInfo.tel2||'400-877-1896'}}</p>
-            <p class="contact-method">邮箱 <span class="vl">|</span> {{agentInfo.email2||'info@realtoraccess.com'}}</p>
+            <p class="contact-method">
+              电话
+              <span class="vl">|</span>
+              {{agentInfo.tel2||'400-877-1896'}}
+            </p>
+            <p class="contact-method">
+              邮箱
+              <span class="vl">|</span>
+              {{agentInfo.email2||'info@realtoraccess.com'}}
+            </p>
           </div>
         </div>
         <div style="clear:both"></div>
@@ -283,7 +346,7 @@ import playIcon from "../../assets/image/icon-play.svg";
 import pauseIcon from "../../assets/image/icon-pause.svg";
 import { TweenLite } from "gsap/TweenLite";
 import ScrollReveal from "scrollreveal";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 export default {
   name: "Middleman",
   components: { CommonHeader, CommonFooter },
@@ -304,21 +367,23 @@ export default {
         custmsg: "" //留言
       },
       sr: ScrollReveal(),
-      allRecommendData:[],
+      allRecommendData: [],
       recommendData: [],
       recommendHoverIndex: -1,
       visitData: {
         visit: 0,
         totalVist: 0
       },
-      normalAgentDesc:'欢迎您来我的中文网站，我是一名专业的海外房产经纪人。在这里您将看到我的介绍，我所代理的特色房源和我的团队介绍，无论您是首次置业者或者专业的海外房产投资人，或者要售出您的房屋，我都能为您提供全程房屋买售服务与专业的海外房产置业方案。',
+      normalAgentDesc:
+        "欢迎您来我的中文网站，我是一名专业的海外房产经纪人。在这里您将看到我的介绍，我所代理的特色房源和我的团队介绍，无论您是首次置业者或者专业的海外房产投资人，或者要售出您的房屋，我都能为您提供全程房屋买售服务与专业的海外房产置业方案。",
       showPlayButton: true,
       iconPlayButton: playIcon,
       video: null,
       showQrcode: true,
       showAgentMore: false,
       showCorpMore: false,
-      showAboutMore: false
+      showAboutMore: false,
+      viewMoreIndex: 1
     };
   },
   computed: {
@@ -364,9 +429,12 @@ export default {
         )
       );
       this.sr.reveal(".middleman-detail", this.getOptions());
-      this.sr.reveal(".middleman-recommend",this.getOptions(()=>{
-        // this.showCSDialog = true;
-      }));
+      this.sr.reveal(
+        ".middleman-recommend",
+        this.getOptions(() => {
+          // this.showCSDialog = true;
+        })
+      );
       this.sr.reveal(".agent-corp-wrap", this.getOptions());
       this.sr.reveal(".agent-personal-wrap", this.getOptions());
       this.sr.reveal(".agent-contact-wrap", this.getOptions());
@@ -376,13 +444,15 @@ export default {
         interval: 160
       });
     },
-    handleCheckMore(){
-      if(this.allRecommendData.length-this.recommendData.length==1){
-        this.recommendData.push(this.allRecommendData[this.recommendData.length-1]);
-      }else if(this.allRecommendData.length-this.recommendData.length>=2){
-        this.recommendData.push(this.allRecommendData[this.recommendData.length-1]);
-        this.recommendData.push(this.allRecommendData[this.recommendData.length]);
+    handleCheckMore() {
+      if (this.allRecommendData.length <= this.recommendData.length) {
+        return;
       }
+      this.viewMoreIndex++;
+      this.recommendData = this.allRecommendData.slice(
+        0,
+        this.viewMoreIndex * 2
+      );
     },
     handleClose() {
       this.showCTDialog = false;
@@ -393,9 +463,13 @@ export default {
         this.agentInfo = resData;
         console.log(this.agentInfo);
         this.agentInfo.username = this.agentInfo.username.toUpperCase();
-        if(this.agentInfo.agentImgs.length==0){
-          this.agentInfo.agentImgs.push(require('../../assets/image/default-house4.jpeg'));
-          this.agentInfo.agentImgs.push(require('../../assets/image/default-house5.jpeg'));
+        if (this.agentInfo.agentImgs.length == 0) {
+          this.agentInfo.agentImgs.push(
+            require("../../assets/image/default-house4.jpeg")
+          );
+          this.agentInfo.agentImgs.push(
+            require("../../assets/image/default-house5.jpeg")
+          );
         }
         this.visitData.totalVisit = parseInt(resData.visit);
         try {
@@ -465,7 +539,7 @@ export default {
       href = href.substr(0, href.length - 1);
     }
     this.agentId = href.substring(href.lastIndexOf("/") + 1);
-    // this.agentId = 13;
+    // this.agentId = 2;
     this.getAgentById();
     this.getAgentListing();
     setTimeout(() => {
@@ -579,7 +653,9 @@ visit: 146  访问量
     flex-direction: row;
     top: 48px;
     right: 64px;
-    a{
+    a {
+      padding: 0 !important;
+      margin: 0 !important;
       background-image: none !important;
     }
     img {
@@ -984,7 +1060,7 @@ visit: 146  访问量
     margin: 2vw;
     width: 36vw;
     height: 24vw;
- 
+
     .detail-title {
       .extraLarge;
       .boldText;
@@ -1023,7 +1099,7 @@ visit: 146  访问量
       .detail-icon {
         position: relative;
         margin-right: 12px;
-        
+
         top: 6px;
         @media (max-width: 480px) {
           width: 20px;
