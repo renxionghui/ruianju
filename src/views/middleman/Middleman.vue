@@ -93,14 +93,14 @@
       <div v-else class="recommend-list">
         <div
           class="recommend-item"
-          :style="{backgroundImage:`url(${require('../../assets/image/default-house.jpg')}`}">
+          :style="{backgroundImage:`url(${require('../../assets/image/default-house4.jpeg')}`}">
           <div class="item-agent">
             <span >敬请期待</span>
           </div>
         </div>
         <div
           class="recommend-item"
-          :style="{backgroundImage:`url(${require('../../assets/image/default-house.jpg')}`}">
+          :style="{backgroundImage:`url(${require('../../assets/image/default-house5.jpeg')}`}">
           <div class="item-agent">
             <span >敬请期待</span>
           </div>
