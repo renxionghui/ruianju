@@ -236,7 +236,7 @@
     <!-- 免费注册 -->
     <div class="agent-signin-wrap">
       <span class="signin-text font-title">海外房产经纪人?</span>
-      <el-button type="primary">免费注册</el-button>
+      <el-button type="primary"><a href="/web/page/signup" style='color:#fff'>免费注册</a></el-button>
     </div>
     <!-- 通用尾部 -->
     <CommonFooter></CommonFooter>
