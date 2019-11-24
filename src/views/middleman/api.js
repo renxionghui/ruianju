@@ -5,6 +5,6 @@ export default {
     // 推荐房源
     AGENT_LISTINGS:host+'/portal/agent/listings',
     //
-    AGENT_CHINESE_SERVICE:host+'/portal/chinese/service'
+    AGENT_CHINESE_SERVICE:host+'/portal/chinese/service/'
 
 }

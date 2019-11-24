@@ -509,10 +509,10 @@ export default {
     },
     handleSend() {
       let params = {
-        userid: agentInfo.userid,
-        custname: serviceParams.custname,
-        custemail: serviceParams.custemail,
-        custmsg: serviceParams.custmsg
+        userid: this.agentInfo.userid,
+        custname: this.serviceParams.custname,
+        custemail: this.serviceParams.custemail,
+        custmsg: this.serviceParams.custmsg
       };
       this.$post(this.$api.AGENT_CHINESE_SERVICE).then(resData => {
         this.$message({ type: "success", message: "发送成功" });
